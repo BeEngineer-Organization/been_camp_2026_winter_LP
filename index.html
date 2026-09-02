@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BeEngineer プログラミング合宿 2026年度 参加申込ページ。自然の中で学び、仲間とつくり、成長する2泊3日のプログラミングキャンプ。">
+    <title>BeEngineer Programming Camp 2026 | 参加申込LP</title>
+    <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="mobile-fixed-cta-bar" id="mobile-fixed-cta-bar" aria-hidden="true">
+        <p class="lp-cta-meta lp-cta-meta--mobile">
+            <span class="lp-cta-meta-item">申込期限：6月30日（火）</span>
+            <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
+        </p>
+        <a href="https://be-engineer.tech/event-list/447" class="hero-cta mobile-fixed-cta" data-registration-cta target="_blank" rel="noopener noreferrer">参加申し込みへ</a>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/fav/LOGOSLAND_logo.svg" alt="LOGOS LAND" class="logo-image">
+            <div class="logo-separator">×</div>
+            <img src="assets/fav/BeEngineer_logo.svg" alt="BeEngineer" class="logo-image logo-been">
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#hero">トップ</a></li>
+                <li data-info-session-nav><a href="#info-session">オンライン説明会</a></li>
+                <li><a href="#entry">申込概要</a></li>
+                <li><a href="#features">合宿の特徴</a></li>
+                <li><a href="#program">学習内容</a></li>
+                <li><a href="#schedule">当日の流れ</a></li>
+                <li><a href="#voice">昨年度の様子</a></li>
+                <li><a href="#testimonials">参加者の声</a></li>
+                <li><a href="#faq">よくある質問</a></li>
+                <li><a href="#contact">申込・お問い合わせ</a></li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p class="lp-cta-meta lp-cta-meta--sidebar">
+                <span class="lp-cta-meta-item">申込期限：6月30日（火）</span>
+                <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
+            </p>
+            <div class="sidebar-footer-characters">
+                <img src="assets/fav/dot_girl.svg" alt="" class="sidebar-footer-char sidebar-footer-char-left">
+                <div class="sidebar-footer-action">
+                    <a href="https://be-engineer.tech/event-list/447" class="character-speech-cta" data-registration-cta target="_blank" rel="noopener noreferrer"><span>参加する！</span></a>
+                    <img src="assets/fav/dot_boy.svg" alt="" class="sidebar-footer-char sidebar-footer-char-right">
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main-content">
+        <section id="hero" class="hero lp-hero">
+            <div class="hero-photos" aria-hidden="true">
+                <img src="assets/photos/hero/hero-01.jpg" alt="" class="hero-photo hero-photo--1" width="320" height="240" decoding="async">
+                <img src="assets/photos/hero/hero-02.jpg" alt="" class="hero-photo hero-photo--2" width="280" height="210" decoding="async">
+                <img src="assets/photos/hero/hero-03.jpg" alt="" class="hero-photo hero-photo--3" width="260" height="195" decoding="async">
+                <img src="assets/photos/hero/hero-04.jpg" alt="" class="hero-photo hero-photo--4" width="300" height="225" decoding="async">
+                <img src="assets/photos/hero/hero-05.jpg" alt="" class="hero-photo hero-photo--5" width="270" height="203" decoding="async">
+                <img src="assets/photos/hero/hero-06.jpg" alt="" class="hero-photo hero-photo--6" width="290" height="218" decoding="async">
+                <img src="assets/photos/hero/hero-07.jpg" alt="" class="hero-photo hero-photo--7" width="250" height="188" decoding="async">
+                <img src="assets/photos/hero/hero-08.jpg" alt="" class="hero-photo hero-photo--8" width="240" height="180" decoding="async">
+                <img src="assets/photos/hero/hero-09.jpg" alt="" class="hero-photo hero-photo--9" width="255" height="191" decoding="async">
+                <img src="assets/photos/hero/hero-10.jpg" alt="" class="hero-photo hero-photo--10" width="265" height="199" decoding="async">
+                <img src="assets/photos/hero/hero-11.jpg" alt="" class="hero-photo hero-photo--11" width="245" height="184" decoding="async">
+                <img src="assets/photos/hero/hero-12.jpg" alt="" class="hero-photo hero-photo--12" width="240" height="180" decoding="async">
+                <img src="assets/photos/hero/hero-13.jpg" alt="" class="hero-photo hero-photo--13" width="250" height="188" decoding="async">
+                <img src="assets/photos/hero/hero-14.jpg" alt="" class="hero-photo hero-photo--14" width="235" height="176" decoding="async">
+            </div>
+            <div class="hero-content">
+                <div class="hero-panel">
+                    <p class="hero-study-highlight">16時間<br>短期集中授業</p>
+                    <p class="hero-kicker">2026年度 <br class="sp-br">参加申込受付</p>
+                    <h1 class="hero-title">外で、学んで、<br>楽しんで、成長する。</h1>
+                    <p class="hero-subtitle">いつもと異なる環境で、<br class="sp-br">プログラミングに集中する2泊3日。<br>仲間とつくり、考え、発表する<br class="sp-br">BeEngineerの合宿型プログラムです。</p>
+                    <div class="hero-date">8/8<small>(土)</small> ー 8/10<small>(月)</small></div>
+                    <div class="hero-location">BeEngineer生向けの合宿型プログラム</div>
+                    <div class="hero-cta-group">
+                        <a href="https://be-engineer.tech/event-list/447" class="hero-cta" data-registration-cta target="_blank" rel="noopener noreferrer">参加申込へ</a>
+                        <a href="#entry" class="hero-cta hero-cta-secondary">申込概要を見る</a>
+                    </div>
+                    <p class="hero-note">会場はロゴスランド京都。2泊3日でプログラミングに集中します。</p>
+                    <p class="lp-cta-meta">
+                        <span class="lp-cta-meta-item">申込期限：6月30日（火）</span>
+                        <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="lp-hero-marquee-section" aria-label="合宿の様子">
+            <div class="lp-photo-marquee lp-hero-marquee">
+                <div class="lp-photo-marquee-viewport">
+                    <ul class="lp-photo-marquee-track" data-hero-marquee-track></ul>
+                </div>
+                <div class="lp-photo-lightbox" data-photo-lightbox hidden aria-hidden="true">
+                    <button type="button" class="lp-photo-lightbox-close" data-lightbox-close aria-label="閉じる">×</button>
+                    <img src="" alt="" class="lp-photo-lightbox-image" data-lightbox-image width="1280" height="853">
+                </div>
+            </div>
+        </div>
+
+        <section id="info-session" class="lp-info-session" data-info-session-banner aria-labelledby="info-session-title">
+            <div class="container">
+                <div class="lp-info-session-card">
+                    <p class="lp-info-session-kicker">オンライン説明会</p>
+                    <h2 id="info-session-title" class="lp-info-session-title">直接詳しく聞きたい方へ</h2>
+                    <p class="lp-info-session-datetime"><time datetime="2026-06-12T19:00+09:00">6月12日（金）19:00</time>〜20:00</p>
+                    <p class="lp-info-session-text">合宿の内容・申込の流れ・不安な点などをオンラインでご説明します。詳細を確認したい方は、下記フォームよりお申し込みください。</p>
+                    <a href="https://forms.gle/XrrNmby2S5P93jGu9" class="hero-cta lp-info-session-cta" target="_blank" rel="noopener noreferrer">説明会に申し込む</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="entry" class="section overview-section">
+            <div class="container">
+                <h2 class="section-title section-title-white">申込概要</h2>
+                <p class="overview-lead">まず確認してほしい4つのポイント</p>
+                <div class="overview-grid lp-overview-grid">
+                    <div class="overview-card">
+                        <div class="overview-icon">📅</div>
+                        <h3>開催日程</h3>
+                        <p class="overview-main">8/8(土)〜10(月)</p>
+                        <p class="overview-sub">2026年・2泊3日</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon">📍</div>
+                        <h3>会場</h3>
+                        <p class="overview-main">ロゴスランド京都</p>
+                        <p class="overview-sub">京都府城陽市</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon">💻</div>
+                        <h3>内容</h3>
+                        <p class="overview-main">トランプゲームAI</p>
+                        <p class="overview-sub">戦略を考え、実装して対戦</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-icon">💰</div>
+                        <h3>参加費</h3>
+                        <p class="overview-main">99,000円</p>
+                        <p class="overview-sub">税込</p>
+                    </div>
+                </div>
+                <p class="section-note section-note-white">現在BeEngineerに通っている生徒が対象です。6月12日（金）19:00〜の<a href="#info-session" data-info-session-inline-link>オンライン説明会</a>でも詳細をご案内します（6月12日0時以降は申込案内を表示しません）。</p>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <div class="container">
+                <h2 class="section-title">合宿で得られること</h2>
+                <p class="section-intro">普段の授業とは違う環境で、技術だけでなく、考え抜く力・伝える力・やりきる力を育てます。</p>
+                <div class="card-grid">
+                    <div class="card card-green">
+                        <div class="card-icon">🌲</div>
+                        <h3 class="card-title">集中できる環境</h3>
+                        <div class="card-content">
+                            <p>日常から少し離れ、プログラミングに向き合う時間をしっかり確保します。自然の中でリフレッシュしながら、学習に没頭できます。</p>
+                        </div>
+                    </div>
+                    <div class="card card-orange">
+                        <div class="card-icon">🤝</div>
+                        <h3 class="card-title">仲間と学ぶ体験</h3>
+                        <div class="card-content">
+                            <p>同じ目標を持つ仲間と過ごし、相談しながら進めることで、ひとりでは届きにくい発想や粘り強さを育てます。</p>
+                        </div>
+                    </div>
+                    <div class="card card-green">
+                        <div class="card-icon">🎤</div>
+                        <h3 class="card-title">成果を伝える力</h3>
+                        <div class="card-content">
+                            <p>つくって終わりではなく、取り組みの過程や工夫を発表します。技術を言葉にして伝える経験まで大切にします。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="program" class="section program-section">
+            <div class="program-section-felt" aria-hidden="true"></div>
+            <div class="program-suit-floats" data-program-suit-floats aria-hidden="true"></div>
+            <div class="container">
+                <h2 class="section-title program-section-title">学習プログラム</h2>
+                <p class="section-intro program-section-intro">オリジナルトランプゲームを自動でプレイするAIをつくります。自分で戦略を考え、講師のサポートを受けながら実装し、最後は最強のAIを競います。</p>
+                <div class="program-card-hand" data-program-deal aria-label="学習プログラム">
+                    <div class="program-deal-deck" aria-hidden="true"></div>
+                    <div class="program-card-hand-flank program-card-hand-flank--left" aria-hidden="true">
+                        <div class="playing-card playing-card--back playing-card--fan-left-1"><span class="playing-card-back-mark">BeEn</span></div>
+                        <div class="playing-card playing-card--club playing-card--deco playing-card--fan-left-2">
+                            <div class="playing-card-corner playing-card-corner--tl">
+                                <span class="playing-card-rank">J</span>
+                                <span class="playing-card-suit">♣</span>
+                            </div>
+                            <div class="playing-card-corner playing-card-corner--br">
+                                <span class="playing-card-rank">J</span>
+                                <span class="playing-card-suit">♣</span>
+                            </div>
+                            <span class="playing-card-suit-large">♣</span>
+                        </div>
+                    </div>
+                    <div class="program-card-hand-core">
+                    <article class="playing-card playing-card--spade playing-card--content playing-card--content-1">
+                        <div class="playing-card-corner playing-card-corner--tl">
+                            <span class="playing-card-rank">A</span>
+                            <span class="playing-card-suit">♠</span>
+                        </div>
+                        <div class="playing-card-corner playing-card-corner--br">
+                            <span class="playing-card-rank">A</span>
+                            <span class="playing-card-suit">♠</span>
+                        </div>
+                        <div class="playing-card-center">
+                            <span class="playing-card-suit-large" aria-hidden="true">♠</span>
+                            <h3 class="playing-card-title">AIを開発！</h3>
+                            <p class="playing-card-text">オリジナルトランプゲームを自動で戦うAIを開発する。</p>
+                        </div>
+                    </article>
+                    <article class="playing-card playing-card--diamond playing-card--content playing-card--content-2">
+                        <div class="playing-card-corner playing-card-corner--tl">
+                            <span class="playing-card-rank">K</span>
+                            <span class="playing-card-suit">♦</span>
+                        </div>
+                        <div class="playing-card-corner playing-card-corner--br">
+                            <span class="playing-card-rank">K</span>
+                            <span class="playing-card-suit">♦</span>
+                        </div>
+                        <div class="playing-card-center">
+                            <span class="playing-card-suit-large" aria-hidden="true">♦</span>
+                            <h3 class="playing-card-title">オリジナル戦略！</h3>
+                            <p class="playing-card-text">一人一人が自分のアイデアで、そのままAIとして実装する。</p>
+                        </div>
+                    </article>
+                    <article class="playing-card playing-card--heart playing-card--content playing-card--content-3">
+                        <div class="playing-card-corner playing-card-corner--tl">
+                            <span class="playing-card-rank">A</span>
+                            <span class="playing-card-suit">♥</span>
+                        </div>
+                        <div class="playing-card-corner playing-card-corner--br">
+                            <span class="playing-card-rank">A</span>
+                            <span class="playing-card-suit">♥</span>
+                        </div>
+                        <div class="playing-card-center">
+                            <span class="playing-card-suit-large" aria-hidden="true">♥</span>
+                            <h3 class="playing-card-title">最強を決定！</h3>
+                            <p class="playing-card-text">最強のAIを開発して、最後日に勝負して誰のAIが最強なのかを決める。</p>
+                        </div>
+                    </article>
+                    </div>
+                    <div class="program-card-hand-flank program-card-hand-flank--right" aria-hidden="true">
+                        <div class="playing-card playing-card--spade playing-card--deco playing-card--fan-right-1">
+                            <div class="playing-card-corner playing-card-corner--tl">
+                                <span class="playing-card-rank">Q</span>
+                                <span class="playing-card-suit">♠</span>
+                            </div>
+                            <div class="playing-card-corner playing-card-corner--br">
+                                <span class="playing-card-rank">Q</span>
+                                <span class="playing-card-suit">♠</span>
+                            </div>
+                            <span class="playing-card-suit-large">♠</span>
+                        </div>
+                        <div class="playing-card playing-card--back playing-card--fan-right-2"><span class="playing-card-back-mark">BeEn</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule" class="section">
+            <div class="container">
+                <h2 class="section-title">合宿の流れ</h2>
+                <p class="section-desc">2泊3日で、戦略づくりから実装、対戦まで一気通貫で取り組みます。</p>
+                <div class="lp-timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-day">CHAPTER1</span>
+                        <h3>ルール理解</h3>
+                        <p>簡単な戦略の一例を授業形式で実装して、「アイデアを実装に移す論理的思考」を学びます。</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-day">CHAPTER2</span>
+                        <h3>戦略設計・AI実装・調整</h3>
+                        <p>思いついた戦略をコードにします。アイデアを形にして、コンピュータと戦わせることを繰り返しながら、最強のAIを完成させます。</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-day">CHAPTER3</span>
+                        <h3>最終対戦・ふり返り</h3>
+                        <p>完成したAI同士で勝負し、最強AIを決めます。工夫した点や学びを共有してふり返ります。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="voice" class="section">
+            <div class="container">
+                <h2 class="section-title">昨年度の様子</h2>
+                <div class="lp-photo-marquee" aria-label="昨年度合宿の写真">
+                    <div class="lp-photo-marquee-viewport">
+                        <ul class="lp-photo-marquee-track" data-voice-marquee-track></ul>
+                    </div>
+                    <div class="lp-photo-lightbox" data-photo-lightbox hidden aria-hidden="true">
+                        <button type="button" class="lp-photo-lightbox-close" data-lightbox-close aria-label="閉じる">×</button>
+                        <img src="" alt="" class="lp-photo-lightbox-image" data-lightbox-image width="1280" height="853">
+                    </div>
+                </div>
+                <div class="lp-highlight">
+                    <div>
+                        <p class="guide-main">前回の合宿では、画像処理や機械学習をテーマに2泊3日で学びました。</p>
+                        <p class="guide-detail">2026年度も、合宿ならではの集中感と仲間との交流を大切にしながら、より参加しやすく、学びの濃いプログラムとして準備します。</p>
+                        <a href="https://keigo-fujiwara.github.io/public_beengineer_camp25/" target="_blank" rel="noopener noreferrer" class="hero-cta lp-external-link">昨年度の様子を見る</a>
+                    </div>
+                    <div class="lp-highlight-tags-wrap">
+                        <p class="lp-highlight-tags-heading">合宿の4つのこと</p>
+                        <ul class="lp-highlight-tags" aria-label="合宿の実施要素">
+                            <li class="lp-highlight-tag lp-highlight-tag--stay">
+                                <span class="lp-highlight-tag-icon" aria-hidden="true">🏕️</span>
+                                <span class="lp-highlight-tag-label">2泊3日</span>
+                            </li>
+                            <li class="lp-highlight-tag lp-highlight-tag--focus">
+                                <span class="lp-highlight-tag-icon" aria-hidden="true">📚</span>
+                                <span class="lp-highlight-tag-label">集中学習</span>
+                            </li>
+                            <li class="lp-highlight-tag lp-highlight-tag--present">
+                                <span class="lp-highlight-tag-icon" aria-hidden="true">🎤</span>
+                                <span class="lp-highlight-tag-label">成果発表</span>
+                            </li>
+                            <li class="lp-highlight-tag lp-highlight-tag--connect">
+                                <span class="lp-highlight-tag-icon" aria-hidden="true">🤝</span>
+                                <span class="lp-highlight-tag-label">交流</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="section">
+            <div class="container">
+                <h2 class="section-title">参加者の声</h2>
+                <p class="section-intro">昨年度の参加者から届いた感想です。</p>
+                <div class="testimonial-grid">
+                    <article class="testimonial-card">
+                        <div class="testimonial-meta">高1女子・梅田校</div>
+                        <p>機械学習って最初聞いたときに、めっちゃ難しそうだなって少し身構えてたけど、実際やってみたら一からわかりやすく説明されたおかげでめちゃめちゃ楽しく頭使いまくりながらできたのですごく有意義で楽しくできました！普段と違う環境だからこそ新しい友達もたくさんで来て良かったって思います！</p>
+                    </article>
+                    <article class="testimonial-card">
+                        <div class="testimonial-meta">高1男子・飯田橋校</div>
+                        <p>色んな生徒の自学自習や勉強の方法を見ていて、どんな時も時間の使い方が自分の目的に沿ったものになっているのが理想で、それを実現できるよう努力したいと私なりに感じた。目的を明確にして学ぼうと思った。</p>
+                        <p>ちゃんと紅葉が咲いてて良い景色だった。自由時間でもっと外に出る機会が欲しかった。</p>
+                        <p>先生方が寄り添って話を聞いてくれるので、今回の合宿は自分が働きかければ得れる物がある環境だったと思う。</p>
+                    </article>
+                    <article class="testimonial-card">
+                        <div class="testimonial-meta">中1男子・京大本校</div>
+                        <p>初めは知らない先生が多くて緊張したけど実際に授業をしてみたら、親切にわかりやすく説明してくれ、また長い授業でも楽しく学べるようにしてくれて、プログラミングについてより興味が湧いたし、自分の力がついた感じがして、とてもいい2泊3日でした。</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="section">
+            <div class="container">
+                <h2 class="section-title">よくある質問</h2>
+                <div class="faq-list">
+                    <details class="faq-item" open>
+                        <summary>申込方法はどこで確認できますか？</summary>
+                        <p data-faq-registration-answer>BeEngineerの<a href="https://be-engineer.tech/event-list/447" data-registration-cta target="_blank" rel="noopener noreferrer">申込ページ</a>、またはこのページ下部のボタンからお申し込みいただけます。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>プログラミング経験に差があっても参加できますか？</summary>
+                        <p>参加者の状況に合わせて進められるよう、スタッフがサポートします。必要な前提条件がある場合は募集時に明記します。</p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>持ち物や集合場所はどこで確認できますか？</summary>
+                        <p>参加確定後に、集合場所・持ち物・緊急連絡先などの詳細案内をお送りします。</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section lp-apply-section">
+            <div class="container">
+                <h2 class="section-title">申込・お問い合わせ</h2>
+                <div class="lp-apply-card">
+                    <p class="lp-apply-lead" data-apply-lead>2026年度の参加申込は、BeEngineerの申込ページからお手続きください。</p>
+                    <p data-apply-detail>空き状況の確認や申込は、下記ボタンから行えます（BeEngineerサイトへ移動します）。</p>
+                    <div class="lp-apply-actions">
+                        <a href="https://be-engineer.tech/event-list/447" class="hero-cta" data-registration-cta target="_blank" rel="noopener noreferrer">参加を申し込む</a>
+                    </div>
+                    <p class="lp-cta-meta">
+                        <span class="lp-cta-meta-item">申込期限：6月30日（火）</span>
+                        <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
+                    </p>
+                    <p class="contact-note">お問い合わせ先：<a href="mailto:support@be-engineer.tech">support@be-engineer.tech</a></p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-character footer-character-left">
+                    <img src="assets/fav/dot_girl.svg" alt="キャラクター" class="footer-character-img">
+                </div>
+
+                <div class="footer-main">
+                    <div class="footer-logo-wrapper">
+                        <div class="footer-logo footer-logo-images">
+                            <a href="https://logosland.jp/" target="_blank" rel="noopener noreferrer" aria-label="LOGOS LAND">
+                                <img src="assets/fav/LOGOSLAND_logo.svg" alt="LOGOS LAND" class="footer-logo-img footer-logo-logos">
+                            </a>
+                            <span class="footer-logo-separator">×</span>
+                            <a href="https://be-engineer.tech/" target="_blank" rel="noopener noreferrer" aria-label="BeEngineer">
+                                <img src="assets/fav/BeEngineer_logo.svg" alt="BeEngineer" class="footer-logo-img footer-logo-been">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-info">
+                        京大ITベンチャー発、実践的なチカラを鍛える<br>
+                        中高生対象のプログラミング塾
+                    </div>
+                    <div class="footer-links">
+                        <span>京大本校</span>
+                        <span>梅田校</span>
+                        <span>飯田橋校</span>
+                        <span>横浜校</span>
+                        <span>首里校</span>
+                    </div>
+                    <div class="footer-copyright">
+                        © 2026 BeEngineer. All Rights Reserved.
+                    </div>
+                </div>
+
+                <div class="footer-character footer-character-right">
+                    <img src="assets/fav/dot_boy.svg" alt="キャラクター" class="footer-character-img">
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
