@@ -5,7 +5,7 @@
 
 
 /** 定員到達時は true に変更（キャンセル待ちモードへ切り替え） */
-const IS_REGISTRATION_WAITLIST = true;
+const IS_REGISTRATION_WAITLIST = false;
 
 
 /**
@@ -32,16 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // 定員到達時のキャンセル待ち切り替え
   initRegistrationWaitlist();
 
-  // SP版ヒーロー直下・昨年度の様子・写真マーキー
+  // SP版ヒーロー直下・2026年夏の様子・写真マーキー
   initHeroPhotoMarquee();
   initVoicePhotoMarquee();
   initPhotoLightbox();
-
-  // 学習プログラムのトランプ配り演出
-  initProgramDealAnimation();
-
-  // 学習プログラム背景のトランプマーク演出
-  initProgramSuitFloats();
 
   // プログラムカードのトグル機能を初期化（SP版のみ）
   initProgramCardToggle();
@@ -408,16 +402,16 @@ const HERO_MARQUEE_PHOTOS = [
   { src: 'assets/photos/hero/hero-14.jpg', alt: '合宿の様子' }
 ];
 
-/** 昨年度の様子マーキー用写真（hero + voice） */
+/** 2026年夏の様子マーキー用写真（hero + voice） */
 const VOICE_MARQUEE_PHOTOS = HERO_MARQUEE_PHOTOS.map(function(photo) {
-  return { src: photo.src, alt: '昨年度合宿の様子' };
+  return { src: photo.src, alt: '2026年夏合宿の様子' };
 }).concat([
-  { src: 'assets/photos/voice/voice-01.jpg', alt: '昨年度合宿：プログラミングの様子' },
-  { src: 'assets/photos/voice/voice-02.jpg', alt: '昨年度合宿：学習の様子' },
-  { src: 'assets/photos/voice/voice-03.jpg', alt: '昨年度合宿：参加者の様子' },
-  { src: 'assets/photos/voice/voice-04.jpg', alt: '昨年度合宿：参加者の様子' },
-  { src: 'assets/photos/voice/voice-05.jpg', alt: '昨年度合宿：参加者の様子' },
-  { src: 'assets/photos/voice/voice-06.jpg', alt: '昨年度合宿：参加者の様子' }
+  { src: 'assets/photos/voice/voice-01.jpg', alt: '2026年夏合宿：プログラミングの様子' },
+  { src: 'assets/photos/voice/voice-02.jpg', alt: '2026年夏合宿：学習の様子' },
+  { src: 'assets/photos/voice/voice-03.jpg', alt: '2026年夏合宿：参加者の様子' },
+  { src: 'assets/photos/voice/voice-04.jpg', alt: '2026年夏合宿：参加者の様子' },
+  { src: 'assets/photos/voice/voice-05.jpg', alt: '2026年夏合宿：参加者の様子' },
+  { src: 'assets/photos/voice/voice-06.jpg', alt: '2026年夏合宿：参加者の様子' }
 ]);
 
 /**
@@ -475,7 +469,7 @@ function initHeroPhotoMarquee() {
 }
 
 /**
- * 昨年度の様子・写真マーキー（hero と voice の全写真をループ表示）
+ * 2026年夏の様子・写真マーキー（hero と voice の全写真をループ表示）
  */
 function initVoicePhotoMarquee() {
   buildPhotoMarquee(
