@@ -3,382 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BeEngineer プログラミング合宿 2026年度冬 参加申込ページ。自然の中で学び、仲間とつくり、成長する2泊3日のプログラミングキャンプ。">
-    <title>BeEngineer Programming Camp 2026 冬 | 参加申込LP</title>
+    <meta name="description" content="BeEngineer × LOGOS LAND プログラミングキャンプ 2026 冬。12月26日(土)〜28日(月)、ロゴスランド京都で開催する2泊3日の合宿型プログラム。">
+    <title>好評につき冬も開催！プログラミングキャンプ | BeEngineer × LOGOS LAND</title>
     <link rel="icon" type="image/svg+xml" href="assets/fav/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Silkscreen:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button class="hamburger" id="hamburger" aria-label="メニュー">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-    <div class="mobile-fixed-cta-bar" id="mobile-fixed-cta-bar" aria-hidden="true">
-        <p class="lp-cta-meta lp-cta-meta--mobile">
-            <span class="lp-cta-meta-item">申込期限：11月30日（月）</span>
-            <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
-        </p>
-        <span class="hero-cta mobile-fixed-cta hero-cta--soon" data-registration-cta aria-disabled="true">申込準備中</span>
-    </div>
+    <header class="site-header" id="top">
+        <div class="site-header__inner">
+            <a href="#top" class="site-header__logos" aria-label="BeEngineer × LOGOS LAND トップへ">
+                <img src="images/冬合宿LP＿イラスト＿svg/BeEngineer_ロゴ＿白.svg" alt="BeEngineer" class="site-header__logo-been" width="198" height="79">
+                <span class="site-header__cross" aria-hidden="true">×</span>
+                <img src="images/冬合宿LP＿イラスト＿svg/ロゴスランド＿ロゴ＿白.svg" alt="LOGOS LAND" class="site-header__logo-logos" width="105" height="168">
+            </a>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-logo">
-            <img src="assets/fav/LOGOSLAND_logo.svg" alt="LOGOS LAND" class="logo-image">
-            <div class="logo-separator">×</div>
-            <img src="assets/fav/BeEngineer_logo.svg" alt="BeEngineer" class="logo-image logo-been">
+            <nav class="global-nav" id="global-nav" aria-label="ページ内メニュー">
+                <ul class="global-nav__list">
+                    <li><a href="#overview" class="global-nav__link">申込概要</a></li>
+                    <li><a href="#program" class="global-nav__link">学習プログラム</a></li>
+                    <li><a href="#schedule" class="global-nav__link">合宿の流れ</a></li>
+                    <li><a href="#gallery" class="global-nav__link">昨年度の様子</a></li>
+                    <li><a href="#voice" class="global-nav__link">参加者の声</a></li>
+                    <li><a href="#faq" class="global-nav__link">よくある質問</a></li>
+                </ul>
+                <div class="site-header__cta">
+                    <p class="deadline deadline--small">＼ 締切は<b>11月22日(日)</b>！／</p>
+                    <a href="#" class="apply-button apply-button--header" data-apply-link>申し込みフォーム</a>
+                </div>
+            </nav>
+
+            <button type="button" class="menu-toggle" id="menu-toggle" aria-controls="global-nav" aria-expanded="false" aria-label="メニューを開く">
+                <span></span><span></span><span></span>
+            </button>
         </div>
+    </header>
 
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#hero">トップ</a></li>
-                <li><a href="#info-session">オンライン説明会</a></li>
-                <li><a href="#entry">申込概要</a></li>
-                <li><a href="#features">合宿の特徴</a></li>
-                <li><a href="#program">学習内容</a></li>
-                <li><a href="#schedule">当日の流れ</a></li>
-                <li><a href="#voice">2026年夏の様子</a></li>
-                <li><a href="#testimonials">参加者の声</a></li>
-                <li><a href="#faq">よくある質問</a></li>
-                <li><a href="#contact">申込・お問い合わせ</a></li>
+    <main>
+        <!-- ファーストビュー -->
+        <section class="fv" aria-labelledby="fv-title">
+            <div class="fv__inner">
+                <div class="fv__copy">
+                    <p class="fv__subtitle">
+                        <img src="images/冬合宿LP＿イラスト＿svg/FV＿サブタイトル.svg" alt="好評につき冬も開催！" width="289" height="33">
+                    </p>
+                    <h1 class="fv__title" id="fv-title">
+                        <img src="images/冬合宿LP＿イラスト＿svg/FV＿タイトル.svg" alt="プログラミングキャンプ" width="911" height="120" fetchpriority="high">
+                    </h1>
+                    <p class="fv__info pixel-card">
+                        <span class="fv__info-item">
+                            <svg class="fv__info-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H4a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-3V2h-2v2H9V2zM5 9h14v10H5zm2 2v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2z"/></svg>
+                            12月26日(土)<span class="fv__info-arrow" aria-label="から">▸</span>28日(月)
+                        </span>
+                        <span class="fv__info-item">
+                            <svg class="fv__info-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7.5 7.5 0 0 0-7.5 7.5C4.5 15 12 22 12 22s7.5-7 7.5-12.5A7.5 7.5 0 0 0 12 2zm0 2.2a5.3 5.3 0 0 1 5.3 5.3c0 3.3-3.6 7.6-5.3 9.4-1.7-1.8-5.3-6.1-5.3-9.4A5.3 5.3 0 0 1 12 4.2zm0 2.3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                            ロゴスランド京都
+                        </span>
+                    </p>
+                </div>
+
+                <div class="fv__scene" aria-hidden="true">
+                    <img src="images/冬合宿LP＿イラスト＿svg/木＿積雪＿３.svg" alt="" class="fv__tree-left" width="768" height="999">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿木＿積雪＿２.svg" alt="" class="fv__tree-right" width="1097" height="1434">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿雪の結晶＿左.svg" alt="" class="fv__flake-left" width="114" height="80">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿雪の結晶＿右.svg" alt="" class="fv__flake-right" width="471" height="468">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿テント.svg" alt="" class="fv__tent" width="1448" height="1086">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿積雪＿小.svg" alt="" class="fv__snow-small" width="566" height="339">
+                    <img src="images/冬合宿LP＿イラスト＿svg/BBQ＿人あり.svg" alt="" class="fv__bbq" width="1536" height="1024">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿積雪＿大.svg" alt="" class="fv__snow-large" width="1254" height="1254">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿集団.svg" alt="" class="fv__group" width="1300" height="1004">
+                </div>
+
+                <div class="fv__cta">
+                    <p class="deadline">＼ 締切は<b>11月22日(日)</b>！／</p>
+                    <a href="#" class="apply-button apply-button--large" data-apply-link>申し込みフォーム</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 申込概要 -->
+        <section class="section overview" id="overview" aria-labelledby="overview-title">
+            <h2 class="section-title" id="overview-title">申込概要</h2>
+            <ul class="overview__list">
+                <li class="overview__card pixel-card">
+                    <div class="overview__icon overview__icon--date"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿開催日程.svg" alt="" width="1254" height="1254" loading="lazy"></div>
+                    <h3 class="overview__label">開催日程</h3>
+                    <p class="overview__date">
+                        <span class="overview__date-day"><b>12</b>月<b>26</b>日(土)</span>
+                        <span class="overview__date-arrow" aria-label="から"></span>
+                        <span class="overview__date-day"><b>28</b>日(月)</span>
+                        <span class="overview__date-note">-2泊3日-</span>
+                    </p>
+                </li>
+                <li class="overview__card pixel-card">
+                    <div class="overview__icon overview__icon--venue"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿会場.svg" alt="" width="1402" height="1122" loading="lazy"></div>
+                    <h3 class="overview__label">会場</h3>
+                    <p class="overview__value">ロゴスランド京都</p>
+                </li>
+                <li class="overview__card pixel-card">
+                    <div class="overview__icon overview__icon--content"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿内容.svg" alt="" width="782" height="796" loading="lazy"></div>
+                    <h3 class="overview__label">内容</h3>
+                    <p class="overview__value overview__value--content">SNSアプリを<br>グループで開発！</p>
+                </li>
+                <li class="overview__card pixel-card">
+                    <div class="overview__icon overview__icon--fee"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿参加費.svg" alt="" width="1254" height="1254" loading="lazy"></div>
+                    <h3 class="overview__label">参加費</h3>
+                    <p class="overview__value overview__value--fee">¥99,000</p>
+                </li>
             </ul>
-        </nav>
+            <p class="overview__note">現在BeEngineerに通っている生徒が対象です。<br>オンライン説明会をご参加希望の方は、各校舎へお問い合わせください。</p>
+        </section>
 
-        <div class="sidebar-footer">
-            <p class="lp-cta-meta lp-cta-meta--sidebar">
-                <span class="lp-cta-meta-item">申込期限：11月30日（月）</span>
-                <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
-            </p>
-            <div class="sidebar-footer-characters">
-                <img src="assets/fav/dot_girl.svg" alt="" class="sidebar-footer-char sidebar-footer-char-left">
-                <div class="sidebar-footer-action">
-                    <span class="character-speech-cta character-speech-cta--soon" data-registration-cta aria-disabled="true"><span>準備中</span></span>
-                    <img src="assets/fav/dot_boy.svg" alt="" class="sidebar-footer-char sidebar-footer-char-right">
+        <!-- 合宿で得られる力 -->
+        <section class="section features" id="features" aria-labelledby="features-title">
+            <div class="features__heading">
+                <img src="images/冬合宿LP＿イラスト＿svg/特徴＿雲＿左.svg" alt="" class="features__cloud-left" width="2172" height="724" loading="lazy">
+                <img src="images/冬合宿LP＿イラスト＿svg/特徴＿キラキラ＿左.svg" alt="" class="features__sparkle-left" width="63" height="51" loading="lazy">
+                <h2 class="section-title" id="features-title">合宿で得られる力</h2>
+                <img src="images/冬合宿LP＿イラスト＿svg/特徴＿キラキラ＿右.svg" alt="" class="features__sparkle-right" width="54" height="45" loading="lazy">
+                <img src="images/冬合宿LP＿イラスト＿svg/特徴＿雲＿右.svg" alt="" class="features__cloud-right" width="795" height="379" loading="lazy">
+            </div>
+            <p class="section-lead">普段の授業とは違う環境で、技術だけでなく、考え抜く力・伝える力・やりきる力を育てます。</p>
+            <ol class="features__list">
+                <li class="features__card pixel-card">
+                    <span class="features__num">01</span>
+                    <img src="images-optimized/開発.webp" alt="ノートパソコンで開発に取り組む参加者" class="features__photo" width="4032" height="3024" loading="lazy">
+                    <h3 class="features__title">集中できる環境</h3>
+                    <p class="features__text">日常から少し離れ、自然の中でリフレッシュしながらプログラミング学習にじっくり没頭できます。</p>
+                </li>
+                <li class="features__card pixel-card">
+                    <span class="features__num">02</span>
+                    <img src="images-optimized/授業.webp" alt="教室で講義を受ける参加者" class="features__photo features__photo--class" width="1108" height="1477" loading="lazy">
+                    <h3 class="features__title">仲間と学ぶ体験</h3>
+                    <p class="features__text">同じ目標を持つ仲間と過ごし、相談しながら進めることで、ひとりでは届きにくい発想や粘り強さを育てます。</p>
+                </li>
+                <li class="features__card pixel-card">
+                    <span class="features__num">03</span>
+                    <img src="images-optimized/ピース.webp" alt="紅葉の中でピースをする参加者たち" class="features__photo" width="1447" height="1087" loading="lazy">
+                    <h3 class="features__title">成果を伝える力</h3>
+                    <p class="features__text">つくるだけで終わらず、取り組みの過程や工夫を言葉にして伝える経験まで大切にします。</p>
+                </li>
+            </ol>
+        </section>
+
+        <!-- 学習プログラム -->
+        <section class="section program" id="program" aria-labelledby="program-title">
+            <div class="program__deco" aria-hidden="true">
+                <img src="images/冬合宿LP＿イラスト＿svg/学習内容＿キラキラ.svg" alt="" class="program__sparkle-left" width="1374" height="1145" loading="lazy">
+                <img src="images/冬合宿LP＿イラスト＿svg/学習内容＿吹き出し＿ユーザー.svg" alt="" class="program__bubble-user" width="1358" height="1158" loading="lazy">
+                <img src="images/冬合宿LP＿イラスト＿svg/学習内容＿吹き出し＿ハート.svg" alt="" class="program__bubble-heart" width="1432" height="1098" loading="lazy">
+                <img src="images/冬合宿LP＿イラスト＿svg/学習内容＿キラキラ.svg" alt="" class="program__sparkle-right" width="1374" height="1145" loading="lazy">
+                <img src="images/冬合宿LP＿イラスト＿svg/学習内容＿吹き出し＿コメント.svg" alt="" class="program__bubble-comment" width="1089" height="846" loading="lazy">
+            </div>
+            <h2 class="section-title" id="program-title">学習プログラム</h2>
+            <p class="program__catch">DjangoでオリジナルのSNSアプリを開発！</p>
+            <p class="program__lead">実務の形を体験しながら、GitHubなどグループ開発ならではのツールの使い方を学びます！<br>２泊３日で授業から開発、発表まで集中して取り組みます。</p>
+            <div class="program__panel pixel-card">
+                <ul class="program__list">
+                    <li class="program__item">
+                        <h3 class="program__tag">グループ開発</h3>
+                        <img src="images/冬合宿LP＿イラスト＿svg/グループ開発.svg" alt="" class="program__illust" width="1536" height="1024" loading="lazy">
+                        <p class="program__text">実務に近い形でグループ開発を行います。ツールを使った開発を通じて、グループ開発だからこそのスピード感や難しさを体験します。</p>
+                    </li>
+                    <li class="program__item">
+                        <h3 class="program__tag">スキル習得</h3>
+                        <img src="images/冬合宿LP＿イラスト＿svg/スキル習得.svg" alt="" class="program__illust" width="1536" height="1024" loading="lazy">
+                        <p class="program__text">JavaScriptでアプリを高機能にするスキルを学びます。ここで学んだことを活かしてグループ開発をレベルアップさせます。</p>
+                    </li>
+                    <li class="program__item">
+                        <h3 class="program__tag">発表</h3>
+                        <img src="images/冬合宿LP＿イラスト＿svg/学習内容＿発表.svg" alt="" class="program__illust" width="1536" height="1024" loading="lazy">
+                        <p class="program__text">最後に、作成したアプリについて発表します。<br>講師や仲間からの評価やフィードバック、<br>他のグループのいいところを今後に活かせます。</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 合宿の流れ -->
+        <section class="section schedule" id="schedule" aria-labelledby="schedule-title">
+            <img src="images/冬合宿LP＿イラスト＿svg/ランタン.svg" alt="" class="schedule__lantern" width="1223" height="1286" loading="lazy">
+            <h2 class="section-title" id="schedule-title">合宿の流れ</h2>
+            <p class="section-lead">短期集中でグループ開発を通じて実務としてのプログラミングに取り組みます。</p>
+            <ol class="schedule__list">
+                <li class="schedule__card pixel-card">
+                    <h3 class="schedule__heading"><span class="schedule__chapter">CHAPTER 1</span><span class="schedule__title">ベースアプリの完成</span></h3>
+                    <p class="schedule__text">オリジナル開発の元となるSNSアプリを開発します。グループ開発の基本を学びます。</p>
+                </li>
+                <li class="schedule__card pixel-card">
+                    <h3 class="schedule__heading"><span class="schedule__chapter">CHAPTER 2</span><span class="schedule__title">グループ開発</span></h3>
+                    <p class="schedule__text">チームに分かれて、役割分担をしながら開発をします。グループごとに相談して、<br>オリジナルの機能を実装します。</p>
+                </li>
+                <li class="schedule__card pixel-card">
+                    <h3 class="schedule__heading"><span class="schedule__chapter">CHAPTER 3</span><span class="schedule__title">発表</span></h3>
+                    <p class="schedule__text">作成したアプリを発表します。講師からの評価やフィードバック、他のグループの<br>いいところを今後に活かしましょう。</p>
+                    <img src="images/冬合宿LP＿イラスト＿svg/スケジュール＿BBQ＿人なし.svg" alt="" class="schedule__fire" width="1536" height="1024" loading="lazy">
+                </li>
+            </ol>
+        </section>
+
+        <!-- 前回の合宿の様子 -->
+        <section class="section gallery" id="gallery" aria-labelledby="gallery-title">
+            <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿おいかけっこ.svg" alt="" class="gallery__kids" width="1312" height="1199" loading="lazy">
+            <img src="images/冬合宿LP＿イラスト＿svg/FV＿雪の結晶＿右.svg" alt="" class="gallery__flake-top" width="471" height="468" loading="lazy">
+            <img src="images/冬合宿LP＿イラスト＿svg/木＿積雪＿１.svg" alt="" class="gallery__tree" width="951" height="1144" loading="lazy">
+            <h2 class="section-title" id="gallery-title">前回の合宿の様子</h2>
+
+            <div class="gallery__carousel" data-carousel>
+                <div class="gallery__caption">
+                    <p class="gallery__caption-text" data-carousel-caption aria-live="polite"></p>
+                    <span class="gallery__caption-tail" aria-hidden="true"></span>
+                </div>
+                <div class="gallery__stage">
+                    <ul class="gallery__track">
+                        <li class="gallery__slide" data-caption="自然豊かなロゴスランドで気分転換！開放的な環境でのびのび過ごせます"><img src="images-optimized/ピース.webp" alt="紅葉の中でピースをする参加者たち" width="1447" height="1087" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="開発のあとはみんなでBBQ！仲間との交流も合宿の楽しみのひとつ"><img src="images-optimized/BBQ.webp" alt="BBQを楽しむ参加者たち" width="1477" height="1108" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="講義では新しい知識を吸収し、すぐに自分の開発へ活かします"><img src="images-optimized/授業.webp" alt="講義を受ける参加者たち" width="1108" height="1477" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="みんなで過ごす夜も合宿ならでは！笑顔の絶えない時間になりました"><img src="images-optimized/お泊まり.webp" alt="宿泊部屋でくつろぐ参加者たち" width="1100" height="1108" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="分からないところは相談しながら、じっくり開発に向き合います"><img src="images-optimized/パソコン.webp" alt="開発中のノートパソコン" width="2750" height="2287" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="試行錯誤を重ねながら、自分の手で少しずつ形にしていきます"><img src="images-optimized/開発.webp" alt="ノートパソコンで開発に取り組む参加者" width="4032" height="3024" loading="lazy"></li>
+                    </ul>
+                    <button type="button" class="gallery__arrow gallery__arrow--prev" data-carousel-prev aria-label="前の写真"></button>
+                    <button type="button" class="gallery__arrow gallery__arrow--next" data-carousel-next aria-label="次の写真"></button>
                 </div>
             </div>
-        </div>
-    </aside>
 
-    <div class="overlay" id="overlay"></div>
+            <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿雪だるま.svg" alt="" class="gallery__snowman" width="1327" height="1186" loading="lazy">
+            <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿雪の結晶.svg" alt="" class="gallery__flake-bottom" width="1021" height="529" loading="lazy">
+        </section>
 
-    <main class="main-content">
-        <section id="hero" class="hero lp-hero">
-            <div class="hero-photos" aria-hidden="true">
-                <img src="assets/photos/hero/hero-01.jpg" alt="" class="hero-photo hero-photo--1" width="320" height="240" decoding="async">
-                <img src="assets/photos/hero/hero-02.jpg" alt="" class="hero-photo hero-photo--2" width="280" height="210" decoding="async">
-                <img src="assets/photos/hero/hero-03.jpg" alt="" class="hero-photo hero-photo--3" width="260" height="195" decoding="async">
-                <img src="assets/photos/hero/hero-04.jpg" alt="" class="hero-photo hero-photo--4" width="300" height="225" decoding="async">
-                <img src="assets/photos/hero/hero-05.jpg" alt="" class="hero-photo hero-photo--5" width="270" height="203" decoding="async">
-                <img src="assets/photos/hero/hero-06.jpg" alt="" class="hero-photo hero-photo--6" width="290" height="218" decoding="async">
-                <img src="assets/photos/hero/hero-07.jpg" alt="" class="hero-photo hero-photo--7" width="250" height="188" decoding="async">
-                <img src="assets/photos/hero/hero-08.jpg" alt="" class="hero-photo hero-photo--8" width="240" height="180" decoding="async">
-                <img src="assets/photos/hero/hero-09.jpg" alt="" class="hero-photo hero-photo--9" width="255" height="191" decoding="async">
-                <img src="assets/photos/hero/hero-10.jpg" alt="" class="hero-photo hero-photo--10" width="265" height="199" decoding="async">
-                <img src="assets/photos/hero/hero-11.jpg" alt="" class="hero-photo hero-photo--11" width="245" height="184" decoding="async">
-                <img src="assets/photos/hero/hero-12.jpg" alt="" class="hero-photo hero-photo--12" width="240" height="180" decoding="async">
-                <img src="assets/photos/hero/hero-13.jpg" alt="" class="hero-photo hero-photo--13" width="250" height="188" decoding="async">
-                <img src="assets/photos/hero/hero-14.jpg" alt="" class="hero-photo hero-photo--14" width="235" height="176" decoding="async">
-            </div>
-            <div class="hero-content">
-                <div class="hero-panel">
-                    <p class="hero-study-highlight">16時間<br>短期集中授業</p>
-                    <p class="hero-kicker">2026年度 冬合宿 <br class="sp-br">参加案内</p>
-                    <h1 class="hero-title">外で、学んで、<br>楽しんで、成長する。</h1>
-                    <p class="hero-subtitle">いつもと異なる環境で、<br class="sp-br">プログラミングに集中する2泊3日。<br>仲間とつくり、考え、発表する<br class="sp-br">BeEngineerの合宿型プログラムです。</p>
-                    <div class="hero-date">12/26<small>(土)</small> ー 12/28<small>(月)</small></div>
-                    <div class="hero-location">BeEngineer生向けの合宿型プログラム</div>
-                    <div class="hero-cta-group">
-                        <span class="hero-cta hero-cta--soon" data-registration-cta aria-disabled="true">申込準備中</span>
-                        <a href="#entry" class="hero-cta hero-cta-secondary">申込概要を見る</a>
-                    </div>
-                    <p class="hero-note">会場はロゴスランド京都。2泊3日でプログラミングに集中します。</p>
-                    <p class="lp-cta-meta">
-                        <span class="lp-cta-meta-item">申込期限：11月30日（月）</span>
-                        <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
-                    </p>
+        <!-- 参加者の声 -->
+        <section class="section voice" id="voice" aria-labelledby="voice-title">
+            <h2 class="section-title" id="voice-title">参加者の声</h2>
+            <div class="voice__body" data-voice>
+                <div class="voice__entries">
+                    <article class="voice__entry is-active" data-voice-entry data-avatar="images/冬合宿LP＿イラスト＿svg/参加者の声＿男子学生.svg">
+                        <div class="voice__profile">
+                            <div class="voice__avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿男子学生.svg" alt="" width="826" height="969" loading="lazy"></div>
+                            <p class="voice__label pixel-card">中2男子・京都校</p>
+                        </div>
+                        <div class="voice__bubble">
+                            <h3 class="voice__title">いつもは1人で悩んでしまうけど・・・<br><mark>合宿で同じように頑張る仲間に出会えました！</mark></h3>
+                            <div class="voice__text">
+                                <p>いつもはそれほど授業で取り扱わないことや、他校の生徒並びに先生達がいてその人達などとコードを見せて対決してみたりなど、いつも自分の校舎ではできないことなどができて楽しかったです。</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="voice__entry" data-voice-entry data-avatar="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" hidden>
+                        <div class="voice__profile">
+                            <div class="voice__avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" alt="" width="779" height="932" loading="lazy"></div>
+                            <p class="voice__label pixel-card">高2女子・梅田校</p>
+                        </div>
+                        <div class="voice__bubble">
+                            <h3 class="voice__title">難しそうだった機械学習も、<br><mark>楽しく学べて友達も増えました！</mark></h3>
+                            <div class="voice__text">
+                                <p>機械学習って最初聞いたときに、めっちゃ難しそうだなって少し身構えてたけど、実際やってみたら一からわかりやすく説明されたおかげでめちゃめちゃ楽しく頭使いまくりながらできたのですごく有意義で楽しくできました！普段と違う環境だからこそ新しい友達もたくさんで来て良かったって思います！</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="voice__entry" data-voice-entry data-avatar="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" hidden>
+                        <div class="voice__profile">
+                            <div class="voice__avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" alt="" width="820" height="946" loading="lazy"></div>
+                            <p class="voice__label pixel-card">中2保護者</p>
+                        </div>
+                        <div class="voice__bubble">
+                            <h3 class="voice__title">帰ってからも「もっとやりたかった」と話すほど、<br><mark>充実した3日間だったようです。</mark></h3>
+                            <div class="voice__text">
+                                <p>帰宅後は、疲れた様子はありましたが、とても楽しそうに3日間の出来事を話してくれました。</p>
+                                <p>本人は「疲れたけれど、もっとプログラミングをしたかった。時間が足りなかった。」と話しており、もう少し長い合宿でも良いくらい楽しかったようです。</p>
+                                <p>普段とは違う環境で仲間と過ごし、好きなプログラミングに思い切り取り組めたことが、本人にとってとても良い経験になったようです。</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <!-- 次の声へのカード（内容はJSで差し替え） -->
+                <div class="voice__others">
+                    <button type="button" class="voice__mini pixel-card" data-voice-mini data-target="1">
+                        <span class="voice__mini-avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" alt="" width="779" height="932" loading="lazy"></span>
+                        <span class="voice__mini-text">難しそうだった機械学習も、楽しく学べて友達も増えました！</span>
+                        <span class="voice__mini-arrow" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="voice__mini pixel-card" data-voice-mini data-target="2">
+                        <span class="voice__mini-avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" alt="" width="820" height="946" loading="lazy"></span>
+                        <span class="voice__mini-text">帰ってからも「もっとやりたかった」と話すほど、充実した3日間だったようです。</span>
+                        <span class="voice__mini-arrow" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </section>
 
-        <div class="lp-hero-marquee-section" aria-label="合宿の様子">
-            <div class="lp-photo-marquee lp-hero-marquee">
-                <div class="lp-photo-marquee-viewport">
-                    <ul class="lp-photo-marquee-track" data-hero-marquee-track></ul>
-                </div>
-                <div class="lp-photo-lightbox" data-photo-lightbox hidden aria-hidden="true">
-                    <button type="button" class="lp-photo-lightbox-close" data-lightbox-close aria-label="閉じる">×</button>
-                    <img src="" alt="" class="lp-photo-lightbox-image" data-lightbox-image width="1280" height="853">
-                </div>
-            </div>
-        </div>
-
-        <section id="info-session" class="lp-info-session" aria-labelledby="info-session-title">
-            <div class="container">
-                <div class="lp-info-session-card">
-                    <p class="lp-info-session-kicker">オンライン説明会</p>
-                    <h2 id="info-session-title" class="lp-info-session-title">開催日時は準備中です</h2>
-                    <p class="lp-info-session-datetime">日時未定</p>
-                    <p class="lp-info-session-text">合宿の内容・申込の流れ・不安な点などをオンラインでご説明する予定です。日時が決まり次第、このページでご案内します。</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="entry" class="section overview-section">
-            <div class="container">
-                <h2 class="section-title section-title-white">申込概要</h2>
-                <p class="overview-lead">まず確認してほしい4つのポイント</p>
-                <div class="overview-grid lp-overview-grid">
-                    <div class="overview-card">
-                        <div class="overview-icon">📅</div>
-                        <h3>開催日程</h3>
-                        <p class="overview-main">12/26(土)〜28(月)</p>
-                        <p class="overview-sub">2026年冬・2泊3日</p>
-                    </div>
-                    <div class="overview-card">
-                        <div class="overview-icon">📍</div>
-                        <h3>会場</h3>
-                        <p class="overview-main">ロゴスランド京都</p>
-                        <p class="overview-sub">京都府城陽市</p>
-                    </div>
-                    <div class="overview-card">
-                        <div class="overview-icon">💻</div>
-                        <h3>内容</h3>
-                        <p class="overview-main">準備中</p>
-                        <p class="overview-sub">詳細は近日公開</p>
-                    </div>
-                    <div class="overview-card">
-                        <div class="overview-icon">💰</div>
-                        <h3>参加費</h3>
-                        <p class="overview-main">99,000円</p>
-                        <p class="overview-sub">税込</p>
-                    </div>
-                </div>
-                <p class="section-note section-note-white">現在BeEngineerに通っている生徒が対象です。学習内容や申込の詳細は、決まり次第このページでご案内します。</p>
-            </div>
-        </section>
-
-        <section id="features" class="section">
-            <div class="container">
-                <h2 class="section-title">合宿で得られること</h2>
-                <p class="section-intro">普段の授業とは違う環境で、技術だけでなく、考え抜く力・伝える力・やりきる力を育てます。</p>
-                <div class="card-grid">
-                    <div class="card card-green">
-                        <div class="card-icon">🌲</div>
-                        <h3 class="card-title">集中できる環境</h3>
-                        <div class="card-content">
-                            <p>日常から少し離れ、プログラミングに向き合う時間をしっかり確保します。自然の中でリフレッシュしながら、学習に没頭できます。</p>
+        <!-- よくある質問 -->
+        <section class="section faq" id="faq" aria-labelledby="faq-title">
+            <h2 class="section-title" id="faq-title">よくある質問</h2>
+            <div class="faq__list" data-faq>
+                <div class="faq__item is-open">
+                    <h3 class="faq__q">
+                        <button type="button" class="faq__button pixel-card" aria-expanded="true" aria-controls="faq-a1" id="faq-q1">
+                            <span class="faq__q-mark">Q.</span><span class="faq__q-text">申し込み方法はどこで確認できますか？</span><span class="faq__icon" aria-hidden="true"></span>
+                        </button>
+                    </h3>
+                    <div class="faq__a" id="faq-a1" role="region" aria-labelledby="faq-q1">
+                        <div class="faq__a-inner">
+                            <p class="faq__a-box"><span class="faq__a-mark">A.</span>以下の<a href="#apply" class="faq__link" data-apply-link>Googleフォーム</a>よりご回答ください。</p>
                         </div>
                     </div>
-                    <div class="card card-orange">
-                        <div class="card-icon">🤝</div>
-                        <h3 class="card-title">仲間と学ぶ体験</h3>
-                        <div class="card-content">
-                            <p>同じ目標を持つ仲間と過ごし、相談しながら進めることで、ひとりでは届きにくい発想や粘り強さを育てます。</p>
+                </div>
+                <div class="faq__item">
+                    <h3 class="faq__q">
+                        <button type="button" class="faq__button pixel-card" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+                            <span class="faq__q-mark">Q.</span><span class="faq__q-text">プログラミング経験に差があっても参加できますか？</span><span class="faq__icon" aria-hidden="true"></span>
+                        </button>
+                    </h3>
+                    <div class="faq__a" id="faq-a2" role="region" aria-labelledby="faq-q2">
+                        <div class="faq__a-inner">
+                            <p class="faq__a-box"><span class="faq__a-mark">A.</span>参加者の状況に合わせて進められるよう、スタッフがサポートします。必要な前提条件がある場合は募集時に明記します。</p>
                         </div>
                     </div>
-                    <div class="card card-green">
-                        <div class="card-icon">🎤</div>
-                        <h3 class="card-title">成果を伝える力</h3>
-                        <div class="card-content">
-                            <p>つくって終わりではなく、取り組みの過程や工夫を発表します。技術を言葉にして伝える経験まで大切にします。</p>
+                </div>
+                <div class="faq__item">
+                    <h3 class="faq__q">
+                        <button type="button" class="faq__button pixel-card" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+                            <span class="faq__q-mark">Q.</span><span class="faq__q-text">持ち物や集合場所はどこで確認できますか？</span><span class="faq__icon" aria-hidden="true"></span>
+                        </button>
+                    </h3>
+                    <div class="faq__a" id="faq-a3" role="region" aria-labelledby="faq-q3">
+                        <div class="faq__a-inner">
+                            <p class="faq__a-box"><span class="faq__a-mark">A.</span>参加確定後に、集合場所・持ち物・緊急連絡先などの詳細案内をお送りします。</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="program" class="section">
-            <div class="container">
-                <h2 class="section-title">学習プログラム</h2>
-                <p class="section-intro">冬合宿の学習内容は現在準備中です。決まり次第、このページでご案内します。</p>
-                <div class="program-placeholder-grid" aria-label="学習プログラム（準備中）">
-                    <article class="program-placeholder-card">
-                        <p class="program-placeholder-badge">準備中</p>
-                        <h3>学習テーマ</h3>
-                        <p class="program-placeholder-body">近日公開</p>
-                    </article>
-                    <article class="program-placeholder-card">
-                        <p class="program-placeholder-badge">準備中</p>
-                        <h3>プログラム内容</h3>
-                        <p class="program-placeholder-body">近日公開</p>
-                    </article>
-                    <article class="program-placeholder-card">
-                        <p class="program-placeholder-badge">準備中</p>
-                        <h3>成果発表</h3>
-                        <p class="program-placeholder-body">近日公開</p>
-                    </article>
-                </div>
+        <!-- 申し込み・お問い合わせ -->
+        <section class="section apply" id="apply" aria-labelledby="apply-title">
+            <img src="images/冬合宿LP＿イラスト＿svg/申し込み・お問い合わせ＿雲＿左.svg" alt="" class="apply__cloud-left" width="1983" height="793" loading="lazy">
+            <img src="images/冬合宿LP＿イラスト＿svg/申し込み・お問い合わせ＿雲＿右.svg" alt="" class="apply__cloud-right" width="676" height="268" loading="lazy">
+            <h2 class="section-title" id="apply-title">申し込み・お問い合わせ</h2>
+            <div class="apply__card pixel-card">
+                <p class="apply__catch">＼冬の最高の思い出をつくろう！／</p>
+                <p class="apply__text">以下のボタンから<br><strong>Googleフォーム</strong>にお答えください。</p>
+                <p class="deadline deadline--dark">＼ 締切は<b>11月22日(日)</b>！／</p>
+                <a href="#" class="apply-button apply-button--large" data-apply-link>申し込みフォーム</a>
             </div>
+            <img src="images/冬合宿LP＿イラスト＿svg/プログラミング＿男子.svg" alt="" class="apply__boy" width="1312" height="1199" loading="lazy">
         </section>
-
-        <section id="schedule" class="section">
-            <div class="container">
-                <h2 class="section-title">合宿の流れ</h2>
-                <p class="section-desc">2泊3日の詳しい流れは、現在準備中です。決まり次第ご案内します。</p>
-                <div class="lp-timeline">
-                    <div class="timeline-item timeline-item--soon">
-                        <span class="timeline-day">1日目</span>
-                        <h3>準備中</h3>
-                        <p>詳細は近日公開</p>
-                    </div>
-                    <div class="timeline-item timeline-item--soon">
-                        <span class="timeline-day">2日目</span>
-                        <h3>準備中</h3>
-                        <p>詳細は近日公開</p>
-                    </div>
-                    <div class="timeline-item timeline-item--soon">
-                        <span class="timeline-day">3日目</span>
-                        <h3>準備中</h3>
-                        <p>詳細は近日公開</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="voice" class="section">
-            <div class="container">
-                <h2 class="section-title">2026年夏の様子</h2>
-                <div class="lp-photo-marquee" aria-label="2026年夏合宿の写真">
-                    <div class="lp-photo-marquee-viewport">
-                        <ul class="lp-photo-marquee-track" data-voice-marquee-track></ul>
-                    </div>
-                    <div class="lp-photo-lightbox" data-photo-lightbox hidden aria-hidden="true">
-                        <button type="button" class="lp-photo-lightbox-close" data-lightbox-close aria-label="閉じる">×</button>
-                        <img src="" alt="" class="lp-photo-lightbox-image" data-lightbox-image width="1280" height="853">
-                    </div>
-                </div>
-                <div class="lp-highlight">
-                    <div>
-                        <p class="guide-main">2026年夏の合宿では、オリジナルトランプゲームのAI実装をテーマに2泊3日で学びました。</p>
-                        <p class="guide-detail">冬合宿でも、合宿ならではの集中感と仲間との交流を大切にしながら準備を進めています。</p>
-                        <a href="https://keigo-fujiwara.github.io/public_beengineer_camp26_summer/blog/day1.html" target="_blank" rel="noopener noreferrer" class="hero-cta lp-external-link">2026年夏の様子を見る</a>
-                    </div>
-                    <div class="lp-highlight-tags-wrap">
-                        <p class="lp-highlight-tags-heading">合宿の4つのこと</p>
-                        <ul class="lp-highlight-tags" aria-label="合宿の実施要素">
-                            <li class="lp-highlight-tag lp-highlight-tag--stay">
-                                <span class="lp-highlight-tag-icon" aria-hidden="true">🏕️</span>
-                                <span class="lp-highlight-tag-label">2泊3日</span>
-                            </li>
-                            <li class="lp-highlight-tag lp-highlight-tag--focus">
-                                <span class="lp-highlight-tag-icon" aria-hidden="true">📚</span>
-                                <span class="lp-highlight-tag-label">集中学習</span>
-                            </li>
-                            <li class="lp-highlight-tag lp-highlight-tag--present">
-                                <span class="lp-highlight-tag-icon" aria-hidden="true">🎤</span>
-                                <span class="lp-highlight-tag-label">成果発表</span>
-                            </li>
-                            <li class="lp-highlight-tag lp-highlight-tag--connect">
-                                <span class="lp-highlight-tag-icon" aria-hidden="true">🤝</span>
-                                <span class="lp-highlight-tag-label">交流</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="testimonials" class="section">
-            <div class="container">
-                <h2 class="section-title">参加者の声</h2>
-                <p class="section-intro">これまでの参加者から届いた感想です。</p>
-                <div class="testimonial-grid">
-                    <article class="testimonial-card">
-                        <div class="testimonial-meta">高1女子・梅田校</div>
-                        <p>機械学習って最初聞いたときに、めっちゃ難しそうだなって少し身構えてたけど、実際やってみたら一からわかりやすく説明されたおかげでめちゃめちゃ楽しく頭使いまくりながらできたのですごく有意義で楽しくできました！普段と違う環境だからこそ新しい友達もたくさんで来て良かったって思います！</p>
-                    </article>
-                    <article class="testimonial-card">
-                        <div class="testimonial-meta">高1男子・飯田橋校</div>
-                        <p>色んな生徒の自学自習や勉強の方法を見ていて、どんな時も時間の使い方が自分の目的に沿ったものになっているのが理想で、それを実現できるよう努力したいと私なりに感じた。目的を明確にして学ぼうと思った。</p>
-                        <p>ちゃんと紅葉が咲いてて良い景色だった。自由時間でもっと外に出る機会が欲しかった。</p>
-                        <p>先生方が寄り添って話を聞いてくれるので、今回の合宿は自分が働きかければ得れる物がある環境だったと思う。</p>
-                    </article>
-                    <article class="testimonial-card">
-                        <div class="testimonial-meta">中1男子・京大本校</div>
-                        <p>初めは知らない先生が多くて緊張したけど実際に授業をしてみたら、親切にわかりやすく説明してくれ、また長い授業でも楽しく学べるようにしてくれて、プログラミングについてより興味が湧いたし、自分の力がついた感じがして、とてもいい2泊3日でした。</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section id="faq" class="section">
-            <div class="container">
-                <h2 class="section-title">よくある質問</h2>
-                <div class="faq-list">
-                    <details class="faq-item" open>
-                        <summary>申込方法はどこで確認できますか？</summary>
-                        <p data-faq-registration-answer>申込フォームは現在準備中です。公開までしばらくお待ちください。お問い合わせは <a href="mailto:support@be-engineer.tech">support@be-engineer.tech</a> までお願いします。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>プログラミング経験に差があっても参加できますか？</summary>
-                        <p>参加者の状況に合わせて進められるよう、スタッフがサポートします。必要な前提条件がある場合は募集時に明記します。</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>持ち物や集合場所はどこで確認できますか？</summary>
-                        <p>参加確定後に、集合場所・持ち物・緊急連絡先などの詳細案内をお送りします。</p>
-                    </details>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section lp-apply-section">
-            <div class="container">
-                <h2 class="section-title">申込・お問い合わせ</h2>
-                <div class="lp-apply-card">
-                    <p class="lp-apply-lead" data-apply-lead>2026年度冬合宿の参加申込フォームは、現在準備中です。</p>
-                    <p data-apply-detail>公開までしばらくお待ちください。詳細が決まり次第、このページでご案内します。</p>
-                    <div class="lp-apply-actions">
-                        <span class="hero-cta hero-cta--soon" data-registration-cta aria-disabled="true">申込準備中</span>
-                    </div>
-                    <p class="lp-cta-meta">
-                        <span class="lp-cta-meta-item">申込期限：11月30日（月）</span>
-                        <span class="lp-cta-meta-item" data-capacity-status>申込定員：20名</span>
-                    </p>
-                    <p class="contact-note">お問い合わせ先：<a href="mailto:support@be-engineer.tech">support@be-engineer.tech</a></p>
-                </div>
-            </div>
-        </section>
-
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-character footer-character-left">
-                    <img src="assets/fav/dot_girl.svg" alt="キャラクター" class="footer-character-img">
-                </div>
-
-                <div class="footer-main">
-                    <div class="footer-logo-wrapper">
-                        <div class="footer-logo footer-logo-images">
-                            <a href="https://logosland.jp/" target="_blank" rel="noopener noreferrer" aria-label="LOGOS LAND">
-                                <img src="assets/fav/LOGOSLAND_logo.svg" alt="LOGOS LAND" class="footer-logo-img footer-logo-logos">
-                            </a>
-                            <span class="footer-logo-separator">×</span>
-                            <a href="https://be-engineer.tech/" target="_blank" rel="noopener noreferrer" aria-label="BeEngineer">
-                                <img src="assets/fav/BeEngineer_logo.svg" alt="BeEngineer" class="footer-logo-img footer-logo-been">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="footer-info">
-                        京大ITベンチャー発、実践的なチカラを鍛える<br>
-                        中高生対象のプログラミング塾
-                    </div>
-                    <div class="footer-links">
-                        <span>京大本校</span>
-                        <span>梅田校</span>
-                        <span>飯田橋校</span>
-                        <span>横浜校</span>
-                        <span>首里校</span>
-                    </div>
-                    <div class="footer-copyright">
-                        © 2026 BeEngineer. All Rights Reserved.
-                    </div>
-                </div>
-
-                <div class="footer-character footer-character-right">
-                    <img src="assets/fav/dot_boy.svg" alt="キャラクター" class="footer-character-img">
-                </div>
-            </div>
-        </footer>
     </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <div class="site-footer__logos">
+                    <a href="https://be-engineer.tech/" target="_blank" rel="noopener noreferrer"><img src="images/冬合宿LP＿イラスト＿svg/BeEngineer_ロゴ＿白.svg" alt="BeEngineer" class="site-footer__logo-been" width="198" height="79" loading="lazy"></a>
+                    <span class="site-footer__cross" aria-hidden="true">×</span>
+                    <a href="https://logosland.jp/" target="_blank" rel="noopener noreferrer"><img src="images/冬合宿LP＿イラスト＿svg/ロゴスランド＿ロゴ＿白.svg" alt="LOGOS LAND" class="site-footer__logo-logos" width="105" height="168" loading="lazy"></a>
+                </div>
+                <p class="site-footer__tagline">京大ITベンチャー発、実践的なチカラを鍛える<br>中高生対象のプログラミング塾</p>
+            </div>
+            <nav class="site-footer__nav" aria-label="フッターメニュー">
+                <ul>
+                    <li><a href="#overview">申込概要</a></li>
+                    <li><a href="#program">学習プログラム</a></li>
+                    <li><a href="#schedule">合宿の流れ</a></li>
+                    <li><a href="#gallery">昨年度の様子</a></li>
+                    <li><a href="#voice">参加者の声</a></li>
+                    <li><a href="#faq">よくある質問</a></li>
+                </ul>
+            </nav>
+            <p class="site-footer__copy"><small>© 2026 BeEngineer. All Rights Reserved.</small></p>
+        </div>
+    </footer>
+
+    <p class="apply-toast" data-apply-toast role="status" aria-live="polite" hidden>お申し込みフォームは準備中です。公開までお待ちください。</p>
 
     <script src="script.js"></script>
 </body>

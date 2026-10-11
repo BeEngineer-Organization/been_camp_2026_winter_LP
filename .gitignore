@@ -1,0 +1,5 @@
+# npm（`npm install` で再生成できるため管理しない）
+node_modules/
+
+# macOS
+.DS_Store
