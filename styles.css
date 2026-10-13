@@ -296,6 +296,44 @@ mark {
     font-size: max(20px, calc(38 * var(--s)));
 }
 
+/* サブCTA（説明会）: メインCTAと同じ形・動きで、白地＋青に色を変え一回り小さく */
+.apply-button--sub {
+    --sx: max(3px, calc(4 * var(--s)));
+    --sy: max(3px, calc(4 * var(--s)));
+    gap: 0.6em;
+    width: calc(300 * var(--s));
+    min-width: 220px;
+    height: calc(56 * var(--s));
+    min-height: 44px;
+    border-color: var(--blue);
+    background: var(--white);
+    box-shadow: var(--sx) var(--sy) 0 var(--blue);
+    color: var(--blue);
+    font-size: max(16px, calc(24 * var(--s)));
+}
+
+/* ゲーム風の ▶ */
+.apply-button--sub::after {
+    content: "";
+    border-top: 0.3em solid transparent;
+    border-bottom: 0.3em solid transparent;
+    border-left: 0.42em solid currentColor;
+    transition: translate 0.12s ease-out;
+}
+
+.apply-button--sub:hover {
+    background: #eaf5ff;
+    box-shadow: calc(var(--sx) + 1px) calc(var(--sy) + 2px) 0 var(--blue);
+}
+
+.apply-button--sub:hover::after {
+    translate: 3px 0;
+}
+
+.apply-button--sub:active {
+    box-shadow: 0 0 0 var(--blue);
+}
+
 /* 申し込みURL未設定時の通知 */
 .apply-toast {
     position: fixed;
@@ -412,6 +450,76 @@ mark {
     display: none;
 }
 
+/* PC（1024px 以上）: メニュー＋CTA を半透明白のカプセルにまとめ、画面右上に追従させる。
+   1023px 以下は従来どおりハンバーガーメニュー */
+@media (min-width: 1024px) {
+    /* ページ内リンクで移動したとき、見出しがカプセルに隠れないようにする */
+    html {
+        scroll-padding-top: 72px;
+    }
+
+    .global-nav {
+        position: fixed;
+        top: calc(44 * var(--s));
+        right: calc(40 * var(--sx));
+        left: auto;
+        align-items: center;
+        gap: calc(24 * var(--s));
+        /* 左はメニュー項目自体の余白（19）があるため小さめにし、左右の見た目の余白をそろえる */
+        padding: calc(8 * var(--s)) calc(24 * var(--s)) calc(8 * var(--s)) calc(6 * var(--s));
+        border: 1px solid rgb(255 255 255 / 0.85);
+        border-radius: 9999px;
+        background: rgb(255 255 255 / 0.72);
+        box-shadow: 0 4px 18px rgb(16 44 71 / 0.14);
+        -webkit-backdrop-filter: blur(10px) saturate(1.4);
+        backdrop-filter: blur(10px) saturate(1.4);
+    }
+
+    .global-nav__list {
+        margin-bottom: 0;
+    }
+
+    /* 白背景の上で読めるよう、文字と区切り線は紺系に */
+    .global-nav__list li + li {
+        border-left-color: rgb(16 44 71 / 0.3);
+    }
+
+    .global-nav__link {
+        color: var(--navy);
+        font-weight: 500;
+    }
+
+    .global-nav__link:hover {
+        color: var(--blue);
+    }
+
+    .global-nav__link:focus-visible {
+        outline-color: var(--blue);
+    }
+
+    .site-header__cta .deadline--small {
+        color: var(--navy);
+    }
+
+    /* カプセル内のボタンはドロップシャドウなし（枠線は残す） */
+    .apply-button--header,
+    .apply-button--header:hover,
+    .apply-button--header:active {
+        box-shadow: none;
+    }
+
+    .apply-button--header:active {
+        translate: 0 1px;
+    }
+}
+
+/* 1024〜1279px: ロゴとの間隔を確保するため、メニュー項目の間隔を詰める */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .global-nav__link {
+        padding: 0 10px;
+    }
+}
+
 /* =========================================================
    ファーストビュー
    ========================================================= */
@@ -456,12 +564,11 @@ mark {
     --off: 0px;
     display: inline-flex;
     align-items: center;
-    gap: calc(34 * var(--s));
     height: calc(54 * var(--s));
     margin: calc(22 * var(--s)) 0 0 calc(5 * var(--s));
-    padding: 0 calc(30 * var(--s));
+    padding: 0 calc(24 * var(--s));
     font-family: var(--font-head);
-    font-size: max(13px, calc(28 * var(--s)));
+    font-size: max(13px, calc(22 * var(--s)));
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0.02em;
@@ -471,11 +578,18 @@ mark {
 .fv__info-item {
     display: inline-flex;
     align-items: center;
-    gap: calc(12 * var(--s));
+    gap: calc(10 * var(--s));
+}
+
+/* 日程・会場・定員を細い区切り線で並べ、枠をタイトル幅に収める */
+.fv__info-item + .fv__info-item {
+    margin-left: calc(18 * var(--s));
+    padding-left: calc(18 * var(--s));
+    border-left: max(2px, calc(2 * var(--s))) solid rgb(16 44 71 / 0.25);
 }
 
 .fv__info-icon {
-    width: calc(28 * var(--s));
+    width: calc(24 * var(--s));
     min-width: 14px;
     height: auto;
     fill: var(--navy);
@@ -573,7 +687,7 @@ mark {
    申込概要
    ========================================================= */
 .overview {
-    padding: calc(100 * var(--s)) 0 calc(140 * var(--s));
+    padding: calc(100 * var(--s)) 0 calc(94 * var(--s));
 }
 
 .overview__list {
@@ -604,15 +718,6 @@ mark {
 .overview__icon--date {
     top: calc(-75 * var(--c));
     width: calc(212 * var(--c));
-}
-
-/* 白背景つきSVGのため、カレンダーの輪郭（リング含む）だけを表示 */
-.overview__icon--date img {
-    clip-path: polygon(
-        22% 22%, 27% 22%, 27% 16.5%, 36.5% 16.5%, 36.5% 22%, 39% 22%, 39% 16.5%, 48.5% 16.5%,
-        48.5% 22%, 52% 22%, 52% 16.5%, 61.5% 16.5%, 61.5% 22%, 64% 22%, 64% 16.5%, 73.5% 16.5%,
-        73.5% 22%, 81% 22%, 81% 24.5%, 87% 24.5%, 87% 83.5%, 3% 83.5%, 3% 36%, 17% 36%, 17% 24.5%, 19% 24.5%, 19% 22%
-    );
 }
 
 .overview__icon--venue {
@@ -703,10 +808,15 @@ mark {
 }
 
 .overview__note {
-    margin-top: calc(118 * var(--s));
+    margin-top: calc(80 * var(--s));
     font-size: max(14px, calc(20 * var(--s)));
     line-height: 1.55;
     letter-spacing: 0.1em;
+    text-align: center;
+}
+
+.overview__briefing {
+    margin-top: calc(24 * var(--s));
     text-align: center;
 }
 
@@ -1642,7 +1752,8 @@ mark {
    申し込み・お問い合わせ
    ========================================================= */
 .apply {
-    padding: calc(91 * var(--s)) 0 calc(209 * var(--s));
+    /* 上: 見出しが追従メニューに隠れない余白 / 下: カード左下のイラストのはみ出し分 */
+    padding: calc(120 * var(--s)) 0 calc(150 * var(--s));
 }
 
 .apply > img {
@@ -1652,13 +1763,13 @@ mark {
 
 .apply__cloud-left {
     left: calc(50% - 758 * var(--sx));
-    top: calc(30 * var(--s));
+    top: calc(59 * var(--s));
     width: calc(411 * var(--s));
 }
 
 .apply__cloud-right {
     left: calc(50% + 393 * var(--sx));
-    top: calc(26 * var(--s));
+    top: calc(55 * var(--s));
     width: calc(322 * var(--s));
 }
 
@@ -1668,9 +1779,8 @@ mark {
     flex-direction: column;
     align-items: center;
     width: calc(965 * var(--sx));
-    min-height: calc(571 * var(--s));
-    margin: calc(61 * var(--s)) auto 0;
-    padding: calc(88 * var(--s)) calc(40 * var(--s)) calc(100 * var(--s));
+    margin: calc(56 * var(--s)) auto 0;
+    padding: calc(64 * var(--s)) calc(40 * var(--s));
     color: var(--navy);
     text-align: center;
 }
@@ -1678,42 +1788,55 @@ mark {
 .apply__catch {
     color: var(--sky);
     font-family: var(--font-head);
-    font-size: max(16px, calc(32 * var(--s)));
+    font-size: max(18px, calc(34 * var(--s)));
     font-weight: 800;
     line-height: 1.4;
     letter-spacing: 0.1em;
 }
 
 .apply__text {
-    margin-top: calc(46 * var(--s));
-    font-family: var(--font-head);
-    font-size: max(16px, calc(28 * var(--s)));
-    font-weight: 800;
-    line-height: 1.85;
+    margin-top: calc(14 * var(--s));
+    font-size: max(14px, calc(20 * var(--s)));
+    font-weight: 700;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+}
+
+/* 合宿（メイン） */
+.apply__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(10 * var(--s));
+    margin-top: calc(40 * var(--s));
+}
+
+/* 説明会（サブ）: 点線で区切って「もう一つの選択肢」として見せる */
+.apply__sub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(12 * var(--s));
+    width: calc(460 * var(--s));
+    margin-top: calc(40 * var(--s));
+    padding-top: calc(28 * var(--s));
+    border-top: max(2px, calc(2 * var(--s))) dotted var(--sky);
+}
+
+.apply__sub-lead {
+    font-size: max(13px, calc(17 * var(--s)));
+    font-weight: 700;
     letter-spacing: 0.08em;
 }
 
-.apply__text strong {
-    color: var(--blue);
-    font-size: 1.3em;
-    line-height: 1;
-    font-weight: 900;
-    letter-spacing: 0.02em;
-}
-
-.apply__card .deadline {
-    margin-top: calc(48 * var(--s));
-}
-
-.apply__card .apply-button {
-    margin-top: calc(10 * var(--s));
-}
-
+/* カード左下の角に腰掛けるように配置（カードの高さが変わっても追従） */
 .apply__boy {
+    position: absolute;
     z-index: 2;
-    left: calc(50% - 482 * var(--sx) - 194 * var(--s)); /* カードの左端基準 */
-    top: calc(612 * var(--s));
-    width: calc(462 * var(--s));
+    left: calc(-200 * var(--s));
+    bottom: calc(-120 * var(--s));
+    width: calc(400 * var(--s));
+    pointer-events: none;
 }
 
 /* =========================================================
@@ -1727,7 +1850,7 @@ mark {
 .site-footer__inner {
     position: relative;
     max-width: 1440px;
-    height: calc(338 * var(--s));
+    height: calc(304 * var(--s));
     margin: 0 auto;
 }
 
@@ -1791,7 +1914,7 @@ mark {
 .site-footer__copy {
     position: absolute;
     right: calc(65 * var(--s));
-    top: calc(258 * var(--s));
+    bottom: calc(24 * var(--s)); /* 下の余白は控えめに */
     font-size: max(11px, calc(15 * var(--s)));
     letter-spacing: 0.1em;
 }
@@ -2110,6 +2233,13 @@ mark {
         gap: 6px;
     }
 
+    /* SP は折り返すため区切り線なし */
+    .fv__info-item + .fv__info-item {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: 0;
+    }
+
     .fv__info-icon {
         width: 1.1em;
     }
@@ -2157,6 +2287,16 @@ mark {
         width: min(100%, 340px);
         height: 64px;
         font-size: clamp(20px, 6.2vw, 26px);
+    }
+
+    .apply-button--sub {
+        width: min(100%, 280px);
+        height: 50px;
+        font-size: 18px;
+    }
+
+    .fv .apply-button--sub {
+        margin-top: 4px;
     }
 
     /* ---------- 申込概要 ---------- */
@@ -2222,6 +2362,10 @@ mark {
         line-height: 1.8;
         letter-spacing: 0.06em;
         text-align: left;
+    }
+
+    .overview__briefing {
+        margin-top: 20px;
     }
 
     .overview__note br {
@@ -2628,7 +2772,7 @@ mark {
     /* ---------- 申し込み・お問い合わせ ---------- */
     .apply {
         padding-top: 72px;
-        padding-bottom: 48px;
+        padding-bottom: 168px; /* はみ出したイラスト分 */
     }
 
     .apply__cloud-left {
@@ -2649,39 +2793,47 @@ mark {
         --off: 7px;
         width: 100%;
         max-width: 560px;
-        min-height: 0;
         margin-top: 40px;
-        padding: 40px 18px 44px;
+        padding: 40px 18px;
     }
 
     .apply__catch {
-        font-size: clamp(16px, 4.8vw, 20px);
+        font-size: clamp(17px, 5vw, 21px);
         letter-spacing: 0.04em;
     }
 
     .apply__text {
-        margin-top: 22px;
-        font-size: clamp(15px, 4.6vw, 19px);
-        line-height: 1.8;
+        margin-top: 10px;
+        font-size: 14px;
         letter-spacing: 0.04em;
     }
 
+    .apply__main {
+        gap: 8px;
+        width: 100%;
+        margin-top: 28px;
+    }
+
     .apply__card .deadline {
-        margin-top: 26px;
         font-size: 14px;
     }
 
-    .apply__card .apply-button {
-        margin-top: 8px;
+    .apply__sub {
+        gap: 10px;
+        width: 100%;
+        margin-top: 28px;
+        padding-top: 22px;
     }
 
+    .apply__sub-lead {
+        font-size: 13px;
+    }
+
+    /* SP もカード内の余白には影響させず、左下の角から下へはみ出させる */
     .apply__boy {
-        position: relative;
-        display: block;
-        left: auto;
-        top: auto;
-        width: min(64%, 280px);
-        margin: -18px 0 0 -6px;
+        left: -20px;
+        bottom: -136px;
+        width: min(46%, 180px);
     }
 
     /* ---------- フッター ---------- */
@@ -2691,7 +2843,7 @@ mark {
         align-items: center;
         gap: 28px;
         height: auto;
-        padding: 40px 20px 24px;
+        padding: 40px 20px 18px;
     }
 
     .site-footer__brand,

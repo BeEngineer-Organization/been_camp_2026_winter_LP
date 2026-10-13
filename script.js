@@ -3,11 +3,13 @@
    ========================================================= */
 
 /**
- * 申し込みフォーム（Googleフォーム）のURL。
- * ここに URL を入れると、data-apply-link が付いたすべてのボタン・リンクに反映されます。
+ * 申し込み先のURL。ここに URL を入れると、対応するボタン・リンクすべてに反映されます。
  * 空のままの場合はページ遷移せず、「準備中」の案内を表示します。
  */
+// 合宿への申し込みページ（data-apply-link）
 const APPLY_FORM_URL = "";
+// 説明会への申し込み Googleフォーム（data-briefing-link）
+const BRIEFING_FORM_URL = "";
 
 document.addEventListener("DOMContentLoaded", () => {
     initApplyLinks();
@@ -20,32 +22,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ---------- 申し込みボタン ---------- */
 function initApplyLinks() {
-    const links = document.querySelectorAll("[data-apply-link]");
     const toast = document.querySelector("[data-apply-toast]");
     let toastTimer;
 
-    if (APPLY_FORM_URL) {
-        links.forEach((link) => {
-            link.href = APPLY_FORM_URL;
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-        });
-        return;
-    }
+    const setup = (selector, url, pendingMessage) => {
+        const links = document.querySelectorAll(selector);
 
-    // URL 未設定: href="#" のボタンは遷移させず案内を表示（ページ内リンクはそのまま動作）
-    links.forEach((link) => {
-        if (link.getAttribute("href") !== "#") return;
-        link.addEventListener("click", (event) => {
-            event.preventDefault();
-            if (!toast) return;
-            toast.hidden = false;
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.hidden = true;
-            }, 2600);
+        if (url) {
+            links.forEach((link) => {
+                link.href = url;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+            });
+            return;
+        }
+
+        // URL 未設定: 遷移させず案内を表示
+        links.forEach((link) => {
+            link.addEventListener("click", (event) => {
+                event.preventDefault();
+                if (!toast) return;
+                toast.textContent = pendingMessage;
+                toast.hidden = false;
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.hidden = true;
+                }, 2600);
+            });
         });
-    });
+    };
+
+    setup("[data-apply-link]", APPLY_FORM_URL, "合宿のお申し込みは準備中です。公開までお待ちください。");
+    setup("[data-briefing-link]", BRIEFING_FORM_URL, "説明会のお申し込みは準備中です。公開までお待ちください。");
 }
 
 /* ---------- ハンバーガーメニュー（1023px 以下） ---------- */
