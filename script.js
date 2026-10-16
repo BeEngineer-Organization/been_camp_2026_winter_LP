@@ -101,13 +101,19 @@ function initCarousel() {
     let current = 0;
     let captionTimer;
 
-    // 「！」の後ろで改行して2行に収める
+    // 「！」の後ろで改行して2行に収める。data-caption 内の改行（&#10;）は PC だけの改行にする
     const renderCaption = (text) => {
         caption.textContent = "";
-        const parts = text.split(/(?<=！)/);
-        parts.forEach((part, i) => {
-            if (i > 0) caption.appendChild(document.createElement("br"));
-            caption.appendChild(document.createTextNode(part));
+        text.split("\n").forEach((line, j) => {
+            if (j > 0) {
+                const br = document.createElement("br");
+                br.className = "gallery__br-pc";
+                caption.appendChild(br);
+            }
+            line.split(/(?<=！)/).forEach((part, i) => {
+                if (i > 0) caption.appendChild(document.createElement("br"));
+                caption.appendChild(document.createTextNode(part));
+            });
         });
     };
 

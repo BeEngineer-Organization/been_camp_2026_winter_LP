@@ -21,7 +21,7 @@
     /* Figma の指定フォントは Inter（和文は Inter に含まれないため Noto Sans JP で表示） */
     --font-head: "Inter", "Noto Sans JP", sans-serif;
     --font-body: "Inter", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-    --font-pixel: "Silkscreen", var(--font-head);
+    --font-pixel: "Jersey 10", var(--font-head);
 
     --s: min(1px, calc(100vw / 1440));
     /* 横方向の配置・横幅用。画面の高さで縮めず、常に画面幅いっぱいを使う */
@@ -83,7 +83,8 @@ mark {
 }
 
 /* ---------- 共通: ピクセル風の角欠けカード ----------
-   ::before = 右下にずらした影 / ::after = 面（枠線は --bw / --bc） */
+   ::before = 右下にずらした影 / ::after = 面（枠線は --bw / --bc）
+   形は2段の角欠け（段の大きさ --n） */
 .pixel-card {
     --n: calc(7 * var(--s));
     --off: calc(10 * var(--s));
@@ -101,15 +102,30 @@ mark {
     position: absolute;
     inset: 0;
     z-index: -1;
+    /* 2段目までの大きさ。--n-outer を --n と同じにすると1段の切り欠きになる */
+    --n2: var(--n-outer, calc(var(--n) * 2));
     clip-path: polygon(
-        calc(var(--n) * 2) 0, calc(100% - var(--n) * 2) 0, calc(100% - var(--n) * 2) var(--n),
-        calc(100% - var(--n)) var(--n), calc(100% - var(--n)) calc(var(--n) * 2), 100% calc(var(--n) * 2),
-        100% calc(100% - var(--n) * 2), calc(100% - var(--n)) calc(100% - var(--n) * 2),
-        calc(100% - var(--n)) calc(100% - var(--n)), calc(100% - var(--n) * 2) calc(100% - var(--n)),
-        calc(100% - var(--n) * 2) 100%, calc(var(--n) * 2) 100%, calc(var(--n) * 2) calc(100% - var(--n)),
-        var(--n) calc(100% - var(--n)), var(--n) calc(100% - var(--n) * 2), 0 calc(100% - var(--n) * 2),
-        0 calc(var(--n) * 2), var(--n) calc(var(--n) * 2), var(--n) var(--n), calc(var(--n) * 2) var(--n)
+        calc(var(--n2)) 0, calc(100% - var(--n2)) 0, calc(100% - var(--n2)) var(--n),
+        calc(100% - var(--n)) var(--n), calc(100% - var(--n)) calc(var(--n2)), 100% calc(var(--n2)),
+        100% calc(100% - var(--n2)), calc(100% - var(--n)) calc(100% - var(--n2)),
+        calc(100% - var(--n)) calc(100% - var(--n)), calc(100% - var(--n2)) calc(100% - var(--n)),
+        calc(100% - var(--n2)) 100%, calc(var(--n2)) 100%, calc(var(--n2)) calc(100% - var(--n)),
+        var(--n) calc(100% - var(--n)), var(--n) calc(100% - var(--n2)), 0 calc(100% - var(--n2)),
+        0 calc(var(--n2)), var(--n) calc(var(--n2)), var(--n) var(--n), calc(var(--n2)) var(--n)
     );
+}
+
+/* 小さな枠の角: FV の日程枠を基準に、1段だけ欠く（段の大きさも共通） */
+.voice__label,
+.voice__bubble {
+    --n: calc(4.5 * var(--s));
+    --n-outer: var(--n);
+}
+
+/* 「他の参加者」のカードは面積が大きいので、同じ1段の切り欠きを約1.8倍に */
+.voice__mini {
+    --n: calc(8 * var(--s));
+    --n-outer: var(--n);
 }
 
 .pixel-card::before {
@@ -117,9 +133,14 @@ mark {
     translate: var(--off) var(--off);
 }
 
+/* 面: 角欠けの形を3枚の長方形で塗り、枠線ぶん内側に縮める。
+   外側に残る --bc の色が、階段状の角にも沿った均一な枠線になる */
 .pixel-card::after {
-    background: var(--face);
-    box-shadow: inset 0 0 0 var(--bw) var(--bc);
+    background:
+        linear-gradient(var(--face) 0 0) center / calc(100% - var(--n2) * 2 - var(--bw) * 2) calc(100% - var(--bw) * 2) no-repeat,
+        linear-gradient(var(--face) 0 0) center / calc(100% - var(--n) * 2 - var(--bw) * 2) calc(100% - var(--n) * 2 - var(--bw) * 2) no-repeat,
+        linear-gradient(var(--face) 0 0) center / calc(100% - var(--bw) * 2) calc(100% - var(--n2) * 2 - var(--bw) * 2) no-repeat,
+        var(--bc);
 }
 
 /* ---------- 画面の高さに合わせた縮尺（768px 以上） ----------
@@ -540,7 +561,7 @@ mark {
 .fv__copy {
     position: absolute;
     z-index: 3;
-    top: calc(210 * var(--s));
+    top: calc(196 * var(--s)); /* 看板の高さぶん、コピー全体を少し上げる */
     left: calc(50% + (37 - 720) * var(--fvx)); /* 中央基準 */
 }
 
@@ -557,22 +578,38 @@ mark {
     width: calc(783 * var(--s));
 }
 
+/* 開催情報: 木製看板の画像（背景）の上に、HTML の文字を重ねる。
+   PC 用の看板のクリーム色の板は画像の 横5.0〜95.0% / 縦39.0〜79.1%。
+   上下の余白は「板の位置 ÷ 縦横比（5.3625）」で幅に対する % に換算し、文字を板の中央に置く。
+   左右は四隅のネジ（横6% / 94%）より内側に収める */
 .fv__info {
-    --n: calc(3 * var(--s));
-    --bw: max(2px, calc(3 * var(--s)));
-    --bc: var(--navy);
-    --off: 0px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    height: calc(54 * var(--s));
-    margin: calc(22 * var(--s)) 0 0 calc(5 * var(--s));
-    padding: 0 calc(24 * var(--s));
+    justify-content: center;
+    width: calc(880 * var(--s));
+    aspect-ratio: 442.829 / 82.579;
+    margin: calc(14 * var(--s)) 0 0 calc(-48 * var(--s)); /* タイトルの中央にそろえる */
+    padding: 7.27% 7% 3.9%;
+    background: url("images/冬合宿LP＿イラスト＿svg/FV＿木製看板＿pc.svg") center / 100% 100% no-repeat;
+    color: var(--navy);
     font-family: var(--font-head);
-    font-size: max(13px, calc(22 * var(--s)));
+    font-size: max(11px, calc(21 * var(--s))); /* 看板の幅に比例（768px でも板に収まる下限） */
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0.02em;
     white-space: nowrap;
+}
+
+/* 1279px 以下は左に余白が少ないため、看板が画面の左端で切れないよう寄せ幅を小さく */
+@media (max-width: 1279px) {
+    .fv__info {
+        margin-left: calc(-14 * var(--s));
+    }
+}
+
+/* 日程はやや大きくして優先度を上げる */
+.fv__info-item:first-child {
+    font-size: 1.15em;
 }
 
 .fv__info-item {
@@ -583,14 +620,13 @@ mark {
 
 /* 日程・会場・定員を細い区切り線で並べ、枠をタイトル幅に収める */
 .fv__info-item + .fv__info-item {
-    margin-left: calc(18 * var(--s));
-    padding-left: calc(18 * var(--s));
+    margin-left: 0.7em; /* 文字サイズ基準にして、看板の幅に対する比率を一定に */
+    padding-left: 0.7em;
     border-left: max(2px, calc(2 * var(--s))) solid rgb(16 44 71 / 0.25);
 }
 
 .fv__info-icon {
-    width: calc(24 * var(--s));
-    min-width: 14px;
+    width: 1.1em; /* 文字サイズに合わせる（日程は少し大きく） */
     height: auto;
     fill: var(--navy);
 }
@@ -617,9 +653,9 @@ mark {
 }
 
 .fv__tree-left {
-    left: calc(50% + (0 - var(--cx)) * var(--ux) + (-72 - 0) * var(--u));
+    left: calc(50% + (0 - var(--cx)) * var(--ux) + (-68 - 0) * var(--u));
     top: calc((596 - var(--oy)) * var(--u));
-    width: calc(350 * var(--u));
+    width: calc(344 * var(--u)); /* 右と同じ木。以前の木と見た目の高さ・下端・中心をそろえた値 */
 }
 
 .fv__tree-right {
@@ -671,6 +707,29 @@ mark {
     width: calc(500 * var(--u));
 }
 
+/* PC・タブレット: 木製看板（支柱・雪を含む）と重ならないよう、近くのイラストを少しずらす
+   （SP は同じ指定を別の基準点で使うため対象外） */
+@media (min-width: 768px) {
+    .fv__bbq {
+        left: calc(50% + (500 - var(--cx)) * var(--uc));
+        top: calc((562 - var(--oy)) * var(--u));
+    }
+
+    .fv__snow-large {
+        left: calc(50% + (615 - var(--cx)) * var(--uc));
+        top: calc((830 - var(--oy)) * var(--u));
+    }
+
+    .fv__group {
+        left: calc(50% + (994 - var(--cx)) * var(--uc));
+    }
+
+    .fv__flake-left {
+        left: calc(50% + (0 - var(--cx)) * var(--ux) + (192 - 0) * var(--u));
+        top: calc((603 - var(--oy)) * var(--u));
+    }
+}
+
 .fv__cta {
     position: absolute;
     z-index: 3;
@@ -709,31 +768,39 @@ mark {
     text-align: center;
 }
 
+/* 4つのイラストの共通基準（単位はデザインpx × --c）
+   ・見た目の大きさ: 230×150 の枠に収まる最大サイズ（縦長は高さ、横長は幅でそろう）
+   ・配置: 見た目の下端をカード上端から 104 の位置、左右はカード中央にそろえる
+   各イラストは幅（--w）と、SVG 内の余白の補正（--dx / --dy）だけを持つ */
 .overview__icon {
     position: absolute;
     left: 50%;
-    translate: -50% 0;
+    bottom: calc(100% - 104 * var(--c));
+    width: calc(var(--w) * var(--c));
+    translate: calc(-50% + var(--dx, 0%)) var(--dy, 0%);
 }
 
+.overview__icon img {
+    width: 100%;
+}
+
+/* 開催日程の SVG は上下左右に余白があるため、絵の部分を基準に補正 */
 .overview__icon--date {
-    top: calc(-75 * var(--c));
-    width: calc(212 * var(--c));
+    --w: 191;
+    --dx: 3.44%;
+    --dy: 10.75%;
 }
 
 .overview__icon--venue {
-    top: calc(-110 * var(--c));
-    width: calc(264 * var(--c));
+    --w: 230;
 }
 
 .overview__icon--content {
-    top: calc(-49 * var(--c));
-    width: calc(158 * var(--c));
-    margin-left: calc(-6 * var(--c));
+    --w: 147;
 }
 
 .overview__icon--fee {
-    top: calc(-50 * var(--c));
-    width: calc(166 * var(--c));
+    --w: 170;
 }
 
 .overview__label {
@@ -876,47 +943,22 @@ mark {
     color: var(--navy);
 }
 
-/* 番号バッジ（クリーム地 + 青枠 + 下向きのしっぽ） */
+/* 番号: 吹き出しなしで大きく表示し、白枠の左上の辺にまたがるように重ねる */
 .features__num {
     position: absolute;
-    top: calc(-21 * var(--s));
-    left: calc(35 * var(--s));
+    top: calc(-44 * var(--s));
+    left: calc(28 * var(--s));
     z-index: 1;
-    display: grid;
-    place-items: center;
-    width: calc(98 * var(--s));
-    height: calc(60 * var(--s));
     font-family: var(--font-pixel);
-    font-size: max(18px, calc(36 * var(--s)));
-    font-weight: 700;
+    font-size: max(48px, calc(96 * var(--s)));
+    font-weight: 400; /* Jersey 10 は 400 のみ */
     line-height: 1;
-    color: var(--navy);
-}
-
-.features__num::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--cream);
-    box-shadow: inset 0 0 0 max(2px, calc(3 * var(--s))) var(--blue);
-    clip-path: polygon(
-        calc(4 * var(--s)) 0, calc(100% - 4 * var(--s)) 0, calc(100% - 4 * var(--s)) calc(4 * var(--s)), 100% calc(4 * var(--s)),
-        100% calc(100% - 4 * var(--s)), calc(100% - 4 * var(--s)) calc(100% - 4 * var(--s)), calc(100% - 4 * var(--s)) 100%,
-        calc(4 * var(--s)) 100%, calc(4 * var(--s)) calc(100% - 4 * var(--s)), 0 calc(100% - 4 * var(--s)),
-        0 calc(4 * var(--s)), calc(4 * var(--s)) calc(4 * var(--s))
-    );
-}
-
-.features__num::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 62%;
-    width: calc(12 * var(--s));
-    height: calc(5 * var(--s));
-    background: var(--blue);
-    box-shadow: calc(3 * var(--s)) calc(5 * var(--s)) 0 calc(-1 * var(--s)) var(--blue);
+    letter-spacing: 0.04em;
+    /* ブルーの数字 + 白の縁取り（影なし）。
+       4px の線を塗りの下に描き、外側に約 2px だけ見せる */
+    color: #176fc1;
+    -webkit-text-stroke: 4px var(--white);
+    paint-order: stroke fill;
 }
 
 .features__photo {
@@ -1037,12 +1079,14 @@ mark {
 }
 
 .program__tag {
+    --bw: max(2px, calc(3 * var(--s)));
+    --tail-h: calc(14 * var(--s)); /* しっぽの高さ（幅はその 11/14） */
     position: relative;
     display: grid;
     place-items: center;
     width: calc(285 * var(--s));
     height: calc(62 * var(--s));
-    border: max(2px, calc(3 * var(--s))) solid var(--blue);
+    border: var(--bw) solid var(--blue);
     border-radius: 999px;
     background: var(--cream);
     color: var(--blue);
@@ -1066,14 +1110,17 @@ mark {
     border-color: transparent;
 }
 
+/* 外側（青）と内側（クリーム）は同じ角度の三角形。
+   内側の先端を --bw × 1.62（= 斜辺の傾きで割った値）だけ上げると、
+   斜めの線の太さが本体の枠線（--bw）と同じになる。内側は下枠に重ねて口を開ける */
 .program__tag::before {
-    border-width: calc(14 * var(--s)) calc(11 * var(--s)) 0;
+    border-width: var(--tail-h) calc(var(--tail-h) * 11 / 14) 0;
     border-top-color: var(--blue);
 }
 
 .program__tag::after {
-    margin-top: calc(-4 * var(--s));
-    border-width: calc(10 * var(--s)) calc(8 * var(--s)) 0;
+    --inner-h: calc(var(--tail-h) - var(--bw) * 1.62);
+    border-width: var(--inner-h) calc(var(--inner-h) * 11 / 14) 0;
     border-top-color: var(--cream);
 }
 
@@ -1428,7 +1475,6 @@ mark {
 }
 
 .voice__label {
-    --n: calc(3 * var(--s));
     --off: calc(6 * var(--s));
     --bw: max(2px, calc(3 * var(--s)));
     --bc: var(--blue);
@@ -1451,25 +1497,42 @@ mark {
     grid-column: 2;
     grid-row: 1;
     min-height: calc(372 * var(--s));
+    --o: calc(9 * var(--s)); /* 影のずらし量（しっぽの影も同じ値） */
     padding: calc(50 * var(--s)) calc(40 * var(--s)) calc(46 * var(--s));
-    background: var(--white);
-    box-shadow: calc(9 * var(--s)) calc(9 * var(--s)) 0 var(--blue);
     color: var(--navy);
 }
 
-/* 吹き出しのしっぽ（左下のドット） */
-.voice__bubble::after {
+/* 面と影: 縦長・横長の長方形を重ねて1段の角欠け（段 = --n）を作り、影は --o だけ右下にずらす */
+.voice__bubble::before {
     content: "";
     position: absolute;
-    top: 100%;
-    left: calc(42 * var(--s));
-    width: calc(26 * var(--s));
-    height: calc(14 * var(--s));
-    background: var(--white);
-    box-shadow:
-        calc(9 * var(--s)) calc(9 * var(--s)) 0 var(--blue),
-        calc(-13 * var(--s)) calc(14 * var(--s)) 0 calc(-3 * var(--s)) var(--white),
-        calc(-4 * var(--s)) calc(23 * var(--s)) 0 calc(-3 * var(--s)) var(--blue);
+    inset: 0 calc(var(--o) * -1) calc(var(--o) * -1) 0;
+    z-index: -1;
+    background:
+        linear-gradient(var(--white) 0 0) var(--n) 0 / calc(100% - var(--o) - var(--n) * 2) calc(100% - var(--o)) no-repeat,
+        linear-gradient(var(--white) 0 0) 0 var(--n) / calc(100% - var(--o)) calc(100% - var(--o) - var(--n) * 2) no-repeat,
+        linear-gradient(var(--blue) 0 0) calc(var(--o) + var(--n)) var(--o) / calc(100% - var(--o) - var(--n) * 2) calc(100% - var(--o)) no-repeat,
+        linear-gradient(var(--blue) 0 0) var(--o) calc(var(--o) + var(--n)) / calc(100% - var(--o)) calc(100% - var(--o) - var(--n) * 2) no-repeat;
+}
+
+/* 吹き出しのしっぽ（左下へ3段の階段。1マス = --p の正方形）
+   段1:  ■■■   ← 本体の下に接し、本体の影の帯を白で覆ってつなげる
+   段2:  ■■
+   段3:  ■
+   影は本体と同じずらし量（--o）を drop-shadow で形に沿って付ける */
+.voice__bubble::after {
+    --p: round(calc(13 * var(--s)), 1px);
+    content: "";
+    position: absolute;
+    top: calc(100% - 1px); /* 境目に線が出ないよう本体に 1px 重ねる */
+    left: calc(42 * var(--s) - var(--p));
+    width: calc(var(--p) * 3);
+    height: calc(var(--p) * 3 + 1px);
+    background:
+        linear-gradient(var(--white) 0 0) 0 0 / calc(var(--p) * 3) calc(var(--p) + 1px) no-repeat,
+        linear-gradient(var(--white) 0 0) 0 calc(var(--p) + 1px) / calc(var(--p) * 2) var(--p) no-repeat,
+        linear-gradient(var(--white) 0 0) 0 calc(var(--p) * 2 + 1px) / var(--p) var(--p) no-repeat;
+    filter: drop-shadow(var(--o) var(--o) 0 var(--blue));
 }
 
 .voice__title {
@@ -1521,7 +1584,6 @@ mark {
 }
 
 .voice__mini {
-    --n: calc(5 * var(--s));
     --off: 0px;
     display: block;
     min-height: calc(193 * var(--s));
@@ -1956,9 +2018,61 @@ mark {
 }
 
 /* =========================================================
+   PC（1024px 以上）のみの調整
+   ========================================================= */
+@media (min-width: 1024px) {
+    /* 学習内容: 「発表」の説明文は改行位置を固定しているため、
+       箱を最も長い行の幅まで縮めて、イラスト・吹き出しの中央にそろえる */
+    .program__item:nth-child(3) .program__text {
+        width: fit-content;
+    }
+
+    /* 参加者の声: 基準の吹き出しに対し、他の参加者のカードを高さをずらして下げる */
+    .voice__others {
+        align-items: start;
+    }
+
+    .voice__mini:nth-child(1) {
+        margin-top: calc(24 * var(--s));
+    }
+
+    .voice__mini:nth-child(2) {
+        margin-top: calc(56 * var(--s));
+    }
+
+    /* 参加者の声: しっぽを吹き出しの左辺に移し、左の人物アイコン（中心は吹き出し上端から 298）へ向ける
+       列1: ■      ← 先端（下端をそろえた階段。1マス = --p）
+       列2: ■■
+       列3: ■■■   ← 本体の左辺に接する（本体に 1px 重ねる） */
+    .voice__bubble::after {
+        top: calc(298 * var(--s) - var(--p) * 2.5);
+        right: calc(100% - 1px);
+        left: auto;
+        width: calc(var(--p) * 3 + 1px);
+        height: calc(var(--p) * 3);
+        background:
+            linear-gradient(var(--white) 0 0) calc(var(--p) * 2) 0 / calc(var(--p) + 1px) calc(var(--p) * 3) no-repeat,
+            linear-gradient(var(--white) 0 0) var(--p) var(--p) / var(--p) calc(var(--p) * 2) no-repeat,
+            linear-gradient(var(--white) 0 0) 0 calc(var(--p) * 2) / var(--p) var(--p) no-repeat;
+        clip-path: inset(-40px 0 -40px -40px); /* 影が本体の白い面に落ちないよう、本体側を切る */
+    }
+
+    /* 申し込み: 右の雲を約1.2倍にし、左の雲と対称に画面の右端から少し見切れさせる */
+    .apply__cloud-right {
+        left: auto;
+        right: calc(50% - 758 * var(--sx));
+        width: calc(386 * var(--s));
+    }
+}
+
+/* =========================================================
    タブレット（1023px 以下）: ハンバーガーメニュー / 参加者の声を縦積み
    ========================================================= */
 @media (max-width: 1023px) {
+    .gallery__br-pc {
+        display: none;
+    }
+
     .site-header__inner {
         height: 72px;
     }
@@ -2108,19 +2222,23 @@ mark {
         grid-row: 2;
         min-height: 0;
         margin-top: 40px;
+        --o: 7px;
         padding: 32px 28px 36px;
-        box-shadow: 7px 7px 0 var(--blue);
     }
 
-    /* しっぽを上向きに（アバター側） */
+    /* しっぽを上向きに（アバター側）。段1: 左2マス / 段2: 3マス（本体の上に接する）
+       本体の上辺に影がないのに合わせ、白のみ。境目に線が出ないよう本体に 1px 重ねる */
     .voice__bubble::after {
+        --p: 8px;
         top: auto;
-        bottom: 100%;
+        bottom: calc(100% - 1px);
         left: 50%;
-        width: 20px;
-        height: 12px;
+        height: calc(var(--p) * 2 + 1px);
         translate: -50% 0;
-        box-shadow: 0 -10px 0 -4px var(--white);
+        background:
+            linear-gradient(var(--white) 0 0) 0 0 / calc(var(--p) * 2) var(--p) no-repeat,
+            linear-gradient(var(--white) 0 0) 0 var(--p) / calc(var(--p) * 3) calc(var(--p) + 1px) no-repeat;
+        filter: none;
     }
 
     .voice__title {
@@ -2143,7 +2261,6 @@ mark {
     }
 
     .voice__mini {
-        --n: 4px;
         min-height: 128px;
         padding: 24px 20px 56px 112px;
     }
@@ -2214,19 +2331,34 @@ mark {
         margin: 0 auto;
     }
 
+    /* SP は段の大きさを固定（FV の日程枠・プロフィール枠で共通） */
+    .voice__label,
+    .voice__bubble {
+        --n: 3px;
+    }
+
+    .voice__mini {
+        --n: 5px;
+    }
+
+    /* SP 用の看板（板は 横6.8〜93.1% / 縦36.6〜82.2%、縦横比 3.234）。
+       上下の余白は板の位置 ÷ 縦横比で幅に対する % に換算。
+       1段目: 日程（中央）/ 2段目: 会場・定員（横並び） */
     .fv__info {
-        --n: 2px;
-        --bw: 2px;
-        display: flex;
         flex-wrap: wrap;
+        align-content: center;
+        gap: 6px 14px;
+        width: min(100%, 400px);
+        margin: 10px auto 0;
+        padding: 11.3% 9% 5.5%;
+        background-image: url("images/冬合宿LP＿イラスト＿svg/FV＿木製看板＿sp.svg");
+        aspect-ratio: 342.209 / 105.809;
+        font-size: clamp(12.5px, 3.7vw, 15px);
+    }
+
+    .fv__info-item:first-child {
+        flex-basis: 100%;
         justify-content: center;
-        gap: 4px 16px;
-        width: fit-content;
-        max-width: 100%;
-        height: auto;
-        margin: 18px auto 0;
-        padding: 10px 16px;
-        font-size: clamp(14px, 4.2vw, 18px);
     }
 
     .fv__info-item {
@@ -2260,7 +2392,7 @@ mark {
         width: 100%;
         max-width: 640px;
         aspect-ratio: 1010 / 800;
-        margin: 4px auto 0;
+        margin: 0 auto; /* 看板とキャンプのイラストが重ならない間隔 */
         overflow: hidden;
     }
 
@@ -2415,22 +2547,11 @@ mark {
     }
 
     .features__num {
-        top: -18px;
-        left: 20px;
-        width: 72px;
-        height: 46px;
-        font-size: 26px;
+        top: -30px;
+        left: 18px;
+        font-size: 64px;
     }
 
-    .features__num::before {
-        box-shadow: inset 0 0 0 3px var(--blue);
-    }
-
-    .features__num::after {
-        width: 9px;
-        height: 4px;
-        box-shadow: 2px 4px 0 -1px var(--blue);
-    }
 
     .features__photo {
         width: 76%;
@@ -2505,6 +2626,7 @@ mark {
     }
 
     .program__tag {
+        --tail-h: 11px;
         width: auto;
         min-width: 200px;
         height: 48px;
@@ -2512,14 +2634,6 @@ mark {
         font-size: 20px;
     }
 
-    .program__tag::before {
-        border-width: 11px 9px 0;
-    }
-
-    .program__tag::after {
-        margin-top: -3px;
-        border-width: 8px 6px 0;
-    }
 
     .program__illust {
         width: min(100%, 320px);
