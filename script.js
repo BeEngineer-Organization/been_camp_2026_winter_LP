@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initCarousel();
     initFaq();
     initFadeIn();
+    initSnowfall();
 });
 
 /* ---------- 申し込みボタン ---------- */
@@ -216,4 +217,96 @@ function initFadeIn() {
         target.classList.add("fade-in");
         observer.observe(target);
     });
+}
+
+/* ---------- 背景の雪 ----------
+   淡いピクセル調の粒（正方形）を、粒ごとに速さ・揺れ幅・揺れの周期をランダムにして降らせる。
+   座標は1ドット単位に丸めてピクセルらしい動きに。動きを減らす設定のときは止めたまま表示する */
+function initSnowfall() {
+    const canvas = document.querySelector("[data-snowfall]");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const DOT = 2; // 1ドットの大きさ（CSS px）
+    let flakes = [];
+    let width = 0;
+    let height = 0;
+    let rafId = 0;
+    let last = 0;
+
+    const random = (min, max) => min + Math.random() * (max - min);
+
+    const createFlake = (y) => ({
+        x: random(0, width),
+        y,
+        size: DOT * Math.ceil(random(0.5, 2.5)), // 2px または 4px（まれに 6px）
+        speed: random(18, 48), // 落下速度（px/秒）
+        drift: random(-8, 8), // 一定方向への流れ（風）
+        sway: random(6, 22), // 横揺れの幅
+        freq: random(0.3, 1.1), // 横揺れの速さ
+        phase: random(0, Math.PI * 2),
+        alpha: random(0.35, 0.75),
+    });
+
+    const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = Math.min(140, Math.round((width * height) / 9000));
+        flakes = Array.from({ length: count }, () => createFlake(random(0, height)));
+    };
+
+    const draw = (time) => {
+        ctx.clearRect(0, 0, width, height);
+        flakes.forEach((f) => {
+            const x = Math.round((f.x + Math.sin(time * f.freq + f.phase) * f.sway) / DOT) * DOT;
+            const y = Math.round(f.y / DOT) * DOT;
+            ctx.fillStyle = `rgba(255, 255, 255, ${f.alpha})`;
+            ctx.fillRect(x, y, f.size, f.size);
+        });
+    };
+
+    const tick = (now) => {
+        const dt = Math.min((now - last) / 1000, 0.1);
+        last = now;
+        flakes.forEach((f, i) => {
+            f.y += f.speed * dt;
+            f.x += f.drift * dt;
+            if (f.y > height + 8) {
+                flakes[i] = createFlake(-8);
+            } else if (f.x < -30) {
+                f.x += width + 60;
+            } else if (f.x > width + 30) {
+                f.x -= width + 60;
+            }
+        });
+        draw(now / 1000);
+        rafId = requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+        cancelAnimationFrame(rafId);
+        if (reduceMotion.matches) {
+            draw(0);
+            return;
+        }
+        last = performance.now();
+        rafId = requestAnimationFrame(tick);
+    };
+
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            resize();
+            start();
+        }, 150);
+    });
+    reduceMotion.addEventListener("change", start);
+
+    resize();
+    start();
 }

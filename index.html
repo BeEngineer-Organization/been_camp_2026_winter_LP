@@ -9,9 +9,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Jersey+10&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261017s">
+    <link rel="stylesheet" href="styles.css?v=20261018b">
 </head>
 <body>
+    <!-- 背景の雪（背景色のすぐ上の層。文字・イラストより下） -->
+    <canvas class="snowfall" data-snowfall aria-hidden="true"></canvas>
+
     <header class="site-header" id="top">
         <div class="site-header__inner">
             <a href="#top" class="site-header__logos" aria-label="BeEngineer × LOGOS LAND トップへ">
@@ -50,7 +53,7 @@
                         <img src="images/冬合宿LP＿イラスト＿svg/FV＿サブタイトル.svg" alt="好評につき冬も開催！" width="289" height="33">
                     </p>
                     <h1 class="fv__title" id="fv-title">
-                        <img src="images/冬合宿LP＿イラスト＿svg/FV＿タイトル.svg" alt="プログラミングキャンプ" width="911" height="120" fetchpriority="high">
+                        <img src="images/冬合宿LP＿イラスト＿svg/FV＿タイトル＿２行.svg?v=2" alt="プログラミングキャンプ" width="457" height="165" fetchpriority="high">
                     </h1>
                     <p class="fv__info">
                         <span class="fv__info-item">
@@ -191,7 +194,7 @@
         <section class="section schedule" id="schedule" aria-labelledby="schedule-title">
             <img src="images/冬合宿LP＿イラスト＿svg/ランタン.svg" alt="" class="schedule__lantern" width="1223" height="1286" loading="lazy">
             <h2 class="section-title" id="schedule-title">合宿の流れ</h2>
-            <p class="section-lead">短期集中でグループ開発を通じて実務としてのプログラミングに取り組みます。</p>
+            <p class="section-lead">短期集中でグループ開発を通じて<br class="schedule__br-sp">実務としてのプログラミングに取り組みます。</p>
             <ol class="schedule__list">
                 <li class="schedule__card pixel-card">
                     <h3 class="schedule__heading"><span class="schedule__chapter">CHAPTER 1</span><span class="schedule__title">ベースアプリの完成</span></h3>
@@ -386,6 +389,6 @@
 
     <p class="apply-toast" data-apply-toast role="status" aria-live="polite" hidden></p>
 
-    <script src="script.js?v=20261016c"></script>
+    <script src="script.js?v=20261018b"></script>
 </body>
 </html>

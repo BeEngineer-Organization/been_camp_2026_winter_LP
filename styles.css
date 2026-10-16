@@ -187,8 +187,19 @@ mark {
 .section {
     position: relative;
     overflow: hidden;
-    background: var(--sky);
-    color: var(--white);
+    color: var(--white); /* 背景色は body の空色を見せ、その上に雪を降らせる */
+}
+
+/* ---------- 背景の雪 ----------
+   z-index: -1 で、body の背景色（空色）のすぐ上・すべてのコンテンツの下に置く */
+.snowfall {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    image-rendering: pixelated;
 }
 
 .section-title {
@@ -216,8 +227,9 @@ mark {
     translate: -50% 0;
 }
 
-/* SP だけの改行（特徴の説明文） */
-.features__br-sp {
+/* SP だけの改行（特徴・合宿の流れの説明文） */
+.features__br-sp,
+.schedule__br-sp {
     display: none;
 }
 
@@ -548,7 +560,6 @@ mark {
     --fvx: calc((var(--s) + var(--sx)) / 2);
     position: relative;
     overflow: clip visible; /* 横は画面幅で切り、下へはみ出すイラストは次のセクションに重ねて見せる */
-    background: var(--sky);
 }
 
 .fv__inner {
@@ -559,21 +570,23 @@ mark {
 .fv__copy {
     position: absolute;
     z-index: 3;
-    top: calc(196 * var(--s)); /* 看板の高さぶん、コピー全体を少し上げる */
+    top: calc(160 * var(--s)); /* 上の追従メニューとの間を空ける */
     left: calc(50% + (37 - 720) * var(--fvx)); /* 中央基準 */
 }
 
+/* サブタイトル・2行タイトルは、下の木製看板（左端 -48 / 幅 880 → 中心 392）の中央にそろえる */
 .fv__subtitle img {
-    width: calc(454 * var(--s));
-    margin-left: calc(48 * var(--s));
+    width: calc(350 * var(--s)); /* タイトルより控えめに */
+    margin-left: calc((392 - 175) * var(--s));
 }
 
 .fv__title {
-    margin-top: calc(31 * var(--s));
+    margin-top: calc(14 * var(--s));
 }
 
 .fv__title img {
-    width: calc(783 * var(--s));
+    width: calc(680 * var(--s));
+    margin-left: calc((392 - 340) * var(--s)); /* 下の日程の看板の中央にそろえる */
 }
 
 /* 開催情報: 木製看板の画像（背景）の上に、HTML の文字を重ねる。
@@ -586,7 +599,7 @@ mark {
     justify-content: center;
     width: calc(880 * var(--s));
     aspect-ratio: 442.829 / 82.579;
-    margin: calc(14 * var(--s)) 0 0 calc(-48 * var(--s)); /* タイトルの中央にそろえる */
+    margin: calc(-16 * var(--s)) 0 0 calc(-48 * var(--s)); /* タイトルのすぐ下に寄せる / タイトルの中央にそろえる */
     padding: 7.27% 7% 3.9%;
     background: url("images/冬合宿LP＿イラスト＿svg/FV＿木製看板＿pc.svg") center / 100% 100% no-repeat;
     color: var(--navy);
@@ -602,6 +615,15 @@ mark {
 @media (max-width: 1279px) {
     .fv__info {
         margin-left: calc(-14 * var(--s));
+    }
+
+    /* 看板の中心（-14 + 880 / 2 = 426）に合わせる */
+    .fv__subtitle img {
+        margin-left: calc((426 - 175) * var(--s));
+    }
+
+    .fv__title img {
+        margin-left: calc((426 - 340) * var(--s));
     }
 }
 
@@ -712,14 +734,16 @@ mark {
 @media (min-width: 768px) {
     .fv__tent {
     left: calc(50% + (891 - var(--cx)) * var(--uc));
-    top: calc((237 - var(--oy)) * var(--u));
+    top: calc((200 - var(--oy)) * var(--u));
     width: calc(597 * var(--u));
     scale: -1 1; /* デザインでは入口が左向き */
     }
 
+    
+
     .fv__bbq {
-        left: calc(50% + (570 - var(--cx)) * var(--uc));
-        top: calc((442 - var(--oy)) * var(--u));
+        left: calc(50% + (600 - var(--cx)) * var(--uc));
+        top: calc((410 - var(--oy)) * var(--u));
     }
 
     .fv__snow-large {
@@ -728,8 +752,8 @@ mark {
     }
 
     .fv__group {
-        left: calc(50% + (994 - var(--cx)) * var(--uc));
-        top: calc((724 - var(--oy)) * var(--u)); /* BBQ と重ならないよう少し下げる */
+        left: calc(50% + (1010 - var(--cx)) * var(--uc));
+        top: calc((670 - var(--oy)) * var(--u)); /* BBQ と重ならないよう少し下げる */
     }
 
     .fv__flake-left {
@@ -741,7 +765,7 @@ mark {
 .fv__cta {
     position: absolute;
     z-index: 3;
-    top: calc(670 * var(--s));
+    top: calc(688 * var(--s)); /* タイトルが大きくなった分、少し下げる */
     left: calc(50% + (162 - 720) * var(--fvx)); /* 中央基準 */
     display: flex;
     flex-direction: column;
@@ -754,8 +778,6 @@ mark {
    申込概要
    ========================================================= */
 .overview {
-    /* FV からはみ出したイラストが見えるよう背景は透明に（body と同じ空色が見える） */
-    background: none;
     padding: calc(150 * var(--s)) 0 calc(94 * var(--s)); /* FV からはみ出したイラストとの間隔を広めに */
 }
 
@@ -1008,8 +1030,16 @@ mark {
 /* =========================================================
    学習プログラム
    ========================================================= */
+/* 青い背景は雪より下の層に置く（z-index: -2）ため、疑似要素で塗る */
 .program {
     padding: calc(118 * var(--sv, var(--s))) 0 calc(173 * var(--sv, var(--s)));
+}
+
+.program::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
     background: var(--blue);
 }
 
@@ -2156,11 +2186,12 @@ mark {
     }
 
     .fv__title {
-        margin-top: 14px;
+        margin-top: 10px;
     }
 
+    /* SP は2行のタイトル画像（457×165）を大きめに表示 */
     .fv__title img {
-        width: min(100%, 560px);
+        width: min(86%, 380px);
         margin: 0 auto;
     }
 
@@ -2563,10 +2594,15 @@ mark {
         width: 72px;
     }
 
+    /* 中央揃え。「実務と / しての」と切れないよう、意味の区切りで2行に */
     .schedule .section-lead {
         margin-top: 24px;
         font-size: 15px;
-        text-align: left;
+        text-align: center;
+    }
+
+    .schedule__br-sp {
+        display: inline;
     }
 
     .schedule__list {
