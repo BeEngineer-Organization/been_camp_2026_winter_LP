@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initApplyLinks();
     initMenu();
     initCarousel();
-    initVoice();
     initFaq();
     initFadeIn();
 });
@@ -175,54 +174,6 @@ function initCarousel() {
     });
 
     update(false);
-}
-
-/* ---------- 参加者の声：切り替え ---------- */
-function initVoice() {
-    const root = document.querySelector("[data-voice]");
-    if (!root) return;
-
-    const entries = Array.from(root.querySelectorAll("[data-voice-entry]"));
-    const minis = Array.from(root.querySelectorAll("[data-voice-mini]"));
-    let current = entries.findIndex((entry) => !entry.hidden);
-
-    // 下のカードには「次の声」を順番に表示する
-    const renderMinis = () => {
-        minis.forEach((mini, i) => {
-            const target = (current + i + 1) % entries.length;
-            const entry = entries[target];
-            const title = entry.querySelector(".voice__title").textContent.trim();
-            const label = entry.querySelector(".voice__label").textContent.trim();
-            mini.dataset.target = String(target);
-            mini.querySelector("img").src = entry.dataset.avatar;
-            mini.querySelector(".voice__mini-text").textContent = title;
-            mini.setAttribute("aria-label", `${label}の声を見る：${title}`);
-        });
-    };
-
-    const show = (index) => {
-        entries[current].hidden = true;
-        entries[current].classList.remove("is-active", "is-entering");
-        current = index;
-        const entry = entries[current];
-        entry.hidden = false;
-        entry.classList.add("is-active", "is-entering");
-        renderMinis();
-
-        // SP で本文が画面外に出た場合は先頭へ戻す
-        const top = root.getBoundingClientRect().top;
-        if (top < 0) root.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-
-    minis.forEach((mini) => {
-        mini.addEventListener("click", () => show(Number(mini.dataset.target)));
-    });
-
-    root.addEventListener("animationend", (event) => {
-        event.target.closest("[data-voice-entry]")?.classList.remove("is-entering");
-    });
-
-    renderMinis();
 }
 
 /* ---------- よくある質問：アコーディオン ---------- */

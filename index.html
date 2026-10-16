@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Jersey+10&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20261017s">
 </head>
 <body>
     <header class="site-header" id="top">
@@ -118,7 +118,7 @@
                     <p class="overview__value overview__value--fee">¥99,000</p>
                 </li>
             </ul>
-            <p class="overview__note">オンライン説明会への参加を希望の方は、以下よりお申し込みください。</p>
+            <p class="overview__note">オンライン説明会への参加を希望の方は、<br class="overview__br-sp">以下よりお申し込みください。</p>
             <p class="overview__briefing"><a href="#" class="apply-button apply-button--sub" data-briefing-link>説明会に申し込む</a></p>
         </section>
 
@@ -131,7 +131,7 @@
                 <img src="images/冬合宿LP＿イラスト＿svg/特徴＿キラキラ＿右.svg" alt="" class="features__sparkle-right" width="54" height="45" loading="lazy">
                 <img src="images/冬合宿LP＿イラスト＿svg/特徴＿雲＿右.svg" alt="" class="features__cloud-right" width="795" height="379" loading="lazy">
             </div>
-            <p class="section-lead">普段の授業とは違う環境で、技術だけでなく、考え抜く力・伝える力・やりきる力を育てます。</p>
+            <p class="section-lead">普段の授業とは違う環境で、技術だけでなく、<br class="features__br-sp">考え抜く力・伝える力・やりきる力を育てます。</p>
             <ol class="features__list">
                 <li class="features__card pixel-card">
                     <span class="features__num">01</span>
@@ -242,60 +242,41 @@
         <!-- 参加者の声 -->
         <section class="section voice" id="voice" aria-labelledby="voice-title">
             <h2 class="section-title" id="voice-title">参加者の声</h2>
-            <div class="voice__body" data-voice>
-                <div class="voice__entries">
-                    <article class="voice__entry is-active" data-voice-entry data-avatar="images/冬合宿LP＿イラスト＿svg/参加者の声＿男子学生.svg">
-                        <div class="voice__profile">
-                            <div class="voice__avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿男子学生.svg" alt="" width="826" height="969" loading="lazy"></div>
+            <div class="voice__body">
+                <ul class="voice__list">
+                    <li class="voice__card pixel-card">
+                        <div class="voice__head">
+                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿男子学生.svg" alt="" width="826" height="969" loading="lazy"></span></div>
                             <p class="voice__label pixel-card">中2男子・京都校</p>
                         </div>
-                        <div class="voice__bubble">
-                            <h3 class="voice__title">いつもは1人で悩んでしまうけど・・・<br><mark>合宿で同じように頑張る仲間に出会えました！</mark></h3>
-                            <div class="voice__text">
-                                <p>いつもはそれほど授業で取り扱わないことや、他校の生徒並びに先生達がいてその人達などとコードを見せて対決してみたりなど、いつも自分の校舎ではできないことなどができて楽しかったです。</p>
-                            </div>
+                        <h3 class="voice__title">いつもは1人で悩んでしまうけど・・・<br><mark>合宿で同じように頑張る仲間に<br>出会えました！</mark></h3>
+                        <div class="voice__text">
+                            <p>いつもはそれほど授業で取り扱わないことや、他校の生徒並びに先生達がいてその人達などとコードを見せて対決してみたりなど、いつも自分の校舎ではできないことなどができて楽しかったです。</p>
                         </div>
-                    </article>
-                    <article class="voice__entry" data-voice-entry data-avatar="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" hidden>
-                        <div class="voice__profile">
-                            <div class="voice__avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" alt="" width="779" height="932" loading="lazy"></div>
+                    </li>
+                    <li class="voice__card pixel-card">
+                        <div class="voice__head">
+                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" alt="" width="779" height="932" loading="lazy"></span></div>
                             <p class="voice__label pixel-card">高2女子・梅田校</p>
                         </div>
-                        <div class="voice__bubble">
-                            <h3 class="voice__title">難しそうだった機械学習も、<br><mark>楽しく学べて友達も増えました！</mark></h3>
-                            <div class="voice__text">
-                                <p>機械学習って最初聞いたときに、めっちゃ難しそうだなって少し身構えてたけど、実際やってみたら一からわかりやすく説明されたおかげでめちゃめちゃ楽しく頭使いまくりながらできたのですごく有意義で楽しくできました！普段と違う環境だからこそ新しい友達もたくさんで来て良かったって思います！</p>
-                            </div>
+                        <h3 class="voice__title">難しそうだった機械学習も、<br><mark>楽しく学べて友達も増えました！</mark></h3>
+                        <div class="voice__text">
+                            <p>機械学習って最初聞いたときに、めっちゃ難しそうだなって少し身構えてたけど、実際やってみたら一からわかりやすく説明されたおかげでめちゃめちゃ楽しく頭使いまくりながらできたのですごく有意義で楽しくできました！普段と違う環境だからこそ新しい友達もたくさんで来て良かったって思います！</p>
                         </div>
-                    </article>
-                    <article class="voice__entry" data-voice-entry data-avatar="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" hidden>
-                        <div class="voice__profile">
-                            <div class="voice__avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" alt="" width="820" height="946" loading="lazy"></div>
+                    </li>
+                    <li class="voice__card pixel-card">
+                        <div class="voice__head">
+                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" alt="" width="820" height="946" loading="lazy"></span></div>
                             <p class="voice__label pixel-card">中2保護者</p>
                         </div>
-                        <div class="voice__bubble">
-                            <h3 class="voice__title">帰ってからも「もっとやりたかった」と話すほど、<br><mark>充実した3日間だったようです。</mark></h3>
-                            <div class="voice__text">
-                                <p>帰宅後は、疲れた様子はありましたが、とても楽しそうに3日間の出来事を話してくれました。</p>
-                                <p>本人は「疲れたけれど、もっとプログラミングをしたかった。時間が足りなかった。」と話しており、もう少し長い合宿でも良いくらい楽しかったようです。</p>
-                                <p>普段とは違う環境で仲間と過ごし、好きなプログラミングに思い切り取り組めたことが、本人にとってとても良い経験になったようです。</p>
-                            </div>
+                        <h3 class="voice__title">帰ってからも<br class="voice__br-sp">「もっとやりたかった」と<br>話すほど、<br><mark>充実した3日間だったようです。</mark></h3>
+                        <div class="voice__text">
+                            <p>帰宅後は、疲れた様子はありましたが、とても楽しそうに3日間の出来事を話してくれました。</p>
+                            <p>本人は「疲れたけれど、もっとプログラミングをしたかった。時間が足りなかった。」と話しており、もう少し長い合宿でも良いくらい楽しかったようです。</p>
+                            <p>普段とは違う環境で仲間と過ごし、好きなプログラミングに思い切り取り組めたことが、本人にとってとても良い経験になったようです。</p>
                         </div>
-                    </article>
-                </div>
-                <!-- 次の声へのカード（内容はJSで差し替え） -->
-                <div class="voice__others">
-                    <button type="button" class="voice__mini pixel-card" data-voice-mini data-target="1">
-                        <span class="voice__mini-avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" alt="" width="779" height="932" loading="lazy"></span>
-                        <span class="voice__mini-text">難しそうだった機械学習も、楽しく学べて友達も増えました！</span>
-                        <span class="voice__mini-arrow" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="voice__mini pixel-card" data-voice-mini data-target="2">
-                        <span class="voice__mini-avatar"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" alt="" width="820" height="946" loading="lazy"></span>
-                        <span class="voice__mini-text">帰ってからも「もっとやりたかった」と話すほど、充実した3日間だったようです。</span>
-                        <span class="voice__mini-arrow" aria-hidden="true"></span>
-                    </button>
-                </div>
+                    </li>
+                </ul>
             </div>
         </section>
 
@@ -336,6 +317,22 @@
                     <div class="faq__a" id="faq-a3" role="region" aria-labelledby="faq-q3">
                         <div class="faq__a-inner">
                             <p class="faq__a-box"><span class="faq__a-mark">A.</span>参加確定後に、集合場所・持ち物・緊急連絡先などの詳細案内をお送りします。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq__item">
+                    <h3 class="faq__q">
+                        <button type="button" class="faq__button pixel-card" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+                            <span class="faq__q-mark">Q.</span><span class="faq__q-text"><span class="faq__q-phrase">アレルギーを持っていますが、参加することは可能でしょうか？</span><span class="faq__q-phrase">また、アレルギー対応の食事は提供されますか？</span></span><span class="faq__icon" aria-hidden="true"></span>
+                        </button>
+                    </h3>
+                    <div class="faq__a" id="faq-a4" role="region" aria-labelledby="faq-q4">
+                        <div class="faq__a-inner">
+                            <div class="faq__a-box">
+                            <p><span class="faq__a-mark">A.</span>ご参加いただけます。お申し込み後に「食物アレルギー事前調査票」をご提出いただき、事前に確認させていただきます。</p>
+                            <p>当日、アレルギー成分を含むメニューがある場合は、対象の方へ別の食事（除去食・代替食）をご用意いたします。</p>
+                            <p>ただし、調理過程におけるアレルギー物質の微量混入（コンタミネーション）への完全な配慮はできかねます。重度のアレルギーをお持ちの場合は、ロゴスランドでは対応できないので、あらかじめご了承ください。</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -389,6 +386,6 @@
 
     <p class="apply-toast" data-apply-toast role="status" aria-live="polite" hidden></p>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20261016c"></script>
 </body>
 </html>
