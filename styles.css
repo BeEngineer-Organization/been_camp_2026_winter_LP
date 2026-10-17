@@ -687,7 +687,7 @@ mark {
 
 .fv__flake-left {
     left: calc(50% + (0 - var(--cx)) * var(--ux) + (98 - 0) * var(--u));
-    top: calc((512 - var(--oy)) * var(--u));
+    top: calc((640 - var(--oy)) * var(--u));
     width: calc(115 * var(--u));
 }
 
@@ -758,7 +758,7 @@ mark {
 
     .fv__flake-left {
         left: calc(50% + (0 - var(--cx)) * var(--ux) + (192 - 0) * var(--u));
-        top: calc((603 - var(--oy)) * var(--u));
+        top: calc((640 - var(--oy)) * var(--u));
     }
 }
 
@@ -1872,10 +1872,19 @@ mark {
     width: calc(83 * var(--s));
 }
 
+/* BeEngineer のロゴ（幅170）の下に収まる大きさで添える。
+   ブラウザの最小文字サイズに左右されないよう、14 の文字を縮小表示する
+   （1行目22文字 = 308 × 0.55 ≒ 169）。
+   ロゴの並びはロゴスランド（高さ133）に合わせて縦中央なので、BeEngineer の下の空き（約32）に食い込ませる */
 .site-footer__tagline {
-    margin-top: calc(10 * var(--s));
-    font-size: max(11px, calc(14 * var(--s)));
-    line-height: 1.25;
+    width: max-content;
+    margin-top: calc(-28 * var(--s));
+    font-size: calc(14 * var(--s));
+    line-height: 1.5;
+    letter-spacing: 0;
+    white-space: nowrap;
+    scale: 0.55;
+    transform-origin: left top;
 }
 
 .site-footer__nav {
