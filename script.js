@@ -7,9 +7,9 @@
  * 空のままの場合はページ遷移せず、「準備中」の案内を表示します。
  */
 // 合宿への申し込みページ（data-apply-link）
-const APPLY_FORM_URL = "";
+const APPLY_FORM_URL = "https://be-engineer.tech/event-list/514";
 // 説明会への申し込み Googleフォーム（data-briefing-link）
-const BRIEFING_FORM_URL = "";
+const BRIEFING_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform";
 
 document.addEventListener("DOMContentLoaded", () => {
     initApplyLinks();
