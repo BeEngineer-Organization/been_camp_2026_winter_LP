@@ -3,6 +3,21 @@
    ========================================================= */
 
 /**
+ * ★ キャンセル待ち画面への切り替え ★
+ * 定員に達したら true にするだけで、ページ全体がキャンセル待ちの表示になります。
+ *   false: 通常の申し込み受付（合宿に申し込む／締切表示）
+ *   true : キャンセル待ち（キャンセル待ちフォーム／キャンセル待ち受付中の表示）
+ * 切り替わる要素は index.html の data-waitlist-html 属性（文言の差し替え）と
+ * data-waitlist-only 属性（キャンセル待ちのときだけ表示）で指定しています。
+ * 説明会の申し込みボタンには影響しません（説明会は BRIEFING_DATE で自動切り替え）。
+ */
+const isWaitlistMode = false;
+
+// キャンセル待ちフォームのURL（キャンセル待ちモードのとき、合宿の申し込みボタンの移動先になります）。
+// 空のままの場合はページ遷移せず、「準備中」の案内を表示します。
+const WAITLIST_FORM_URL = "https://forms.gle/8P2VQheJ5FKdYU1W8";
+
+/**
  * 申し込み先のURL。ここに URL を入れると、対応するボタン・リンクすべてに反映されます。
  * 空のままの場合はページ遷移せず、「準備中」の案内を表示します。
  */
@@ -11,8 +26,18 @@ const APPLY_FORM_URL = "https://be-engineer.tech/event-list/514";
 // 説明会への申し込み Googleフォーム（data-briefing-link）
 const BRIEFING_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform";
 
+/**
+ * 説明会の開催日（日本時間、"YYYY-MM-DD"）。
+ * 開催日の前日 0:00（日本時間）になると、説明会の申し込みボタン・リンクを隠し、
+ * 「所属校へお問い合わせください」の案内文に切り替えます（終了後もそのまま）。
+ * 空にすると切り替えは行わず、申し込みボタンを表示し続けます。
+ */
+const BRIEFING_DATE = "2026-11-06";
+
 document.addEventListener("DOMContentLoaded", () => {
+    initWaitlistMode(); // 申し込みボタンの設定より先に、文言を切り替える
     initApplyLinks();
+    initBriefingSwitch();
     initMenu();
     initCarousel();
     initFaq();
@@ -39,6 +64,8 @@ function initApplyLinks() {
 
         // URL 未設定: 遷移させず案内を表示
         links.forEach((link) => {
+            link.href = "#";
+            link.removeAttribute("target");
             link.addEventListener("click", (event) => {
                 event.preventDefault();
                 if (!toast) return;
@@ -52,8 +79,26 @@ function initApplyLinks() {
         });
     };
 
-    setup("[data-apply-link]", APPLY_FORM_URL, "合宿のお申し込みは準備中です。公開までお待ちください。");
+    if (isWaitlistMode) {
+        setup("[data-apply-link]", WAITLIST_FORM_URL, "キャンセル待ちフォームは準備中です。公開までお待ちください。");
+    } else {
+        setup("[data-apply-link]", APPLY_FORM_URL, "合宿のお申し込みは準備中です。公開までお待ちください。");
+    }
     setup("[data-briefing-link]", BRIEFING_FORM_URL, "説明会のお申し込みは準備中です。公開までお待ちください。");
+}
+
+/* ---------- キャンセル待ちモード ----------
+   isWaitlistMode が true のとき、data-waitlist-html を持つ要素の中身をその値に差し替える
+   （締切表示 → キャンセル待ち受付中、合宿の申し込みボタン → キャンセル待ちフォーム など） */
+function initWaitlistMode() {
+    if (!isWaitlistMode) return;
+    document.documentElement.classList.add("is-waitlist");
+    document.querySelectorAll("[data-waitlist-html]").forEach((el) => {
+        el.innerHTML = el.dataset.waitlistHtml;
+    });
+    document.querySelectorAll("[data-waitlist-only]").forEach((el) => {
+        el.hidden = false;
+    });
 }
 
 /* ---------- ハンバーガーメニュー（1023px 以下） ---------- */
@@ -101,13 +146,12 @@ function initCarousel() {
     let current = 0;
     let captionTimer;
 
-    // 「！」の後ろで改行して2行に収める。data-caption 内の改行（&#10;）は PC だけの改行にする
+    // 「！」の後ろで改行して2行に収める。data-caption 内の改行（&#10;）の位置でも改行する（PC・SP 共通）
     const renderCaption = (text) => {
         caption.textContent = "";
         text.split("\n").forEach((line, j) => {
             if (j > 0) {
                 const br = document.createElement("br");
-                br.className = "gallery__br-pc";
                 caption.appendChild(br);
             }
             line.split(/(?<=！)/).forEach((part, i) => {
@@ -309,4 +353,43 @@ function initSnowfall() {
 
     resize();
     start();
+}
+
+/* ---------- 説明会の受付終了の自動切り替え ----------
+   [data-briefing-open]（申し込みボタン等）と [data-briefing-closed]（案内文）の hidden を切り替える。
+   hidden にした要素は画面に出ず、キーボード操作でもフォーカスされない */
+function initBriefingSwitch() {
+    if (!BRIEFING_DATE) return;
+
+    // 開催日の前日 0:00（日本時間 = UTC+9）
+    const eventDay = new Date(`${BRIEFING_DATE}T00:00:00+09:00`);
+    if (Number.isNaN(eventDay.getTime())) return;
+    const closeAt = eventDay.getTime() - 24 * 60 * 60 * 1000;
+
+    const openEls = document.querySelectorAll("[data-briefing-open]");
+    const closedEls = document.querySelectorAll("[data-briefing-closed]");
+    const MAX_TIMEOUT = 2 ** 31 - 1; // setTimeout の上限（約24.8日）
+    let timer;
+
+    const update = () => {
+        const closed = Date.now() >= closeAt;
+        openEls.forEach((el) => {
+            el.hidden = closed;
+        });
+        closedEls.forEach((el) => {
+            el.hidden = !closed;
+        });
+        clearTimeout(timer);
+        if (!closed) {
+            // ページを開いたまま切り替え時刻を迎えた場合も更新する
+            timer = setTimeout(update, Math.min(closeAt - Date.now() + 500, MAX_TIMEOUT));
+        }
+    };
+
+    // スリープ復帰やタブの切り替え後にも判定し直す
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") update();
+    });
+
+    update();
 }

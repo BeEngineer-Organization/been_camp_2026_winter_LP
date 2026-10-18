@@ -178,7 +178,7 @@ mark {
     }
 
     .program { --h: 1080; }
-    .schedule { --h: 1035; }
+    .schedule { --h: 1070; } /* 3枚の高さをそろえた分を含めて1画面に収める */
     .gallery { --h: 965; }
     .faq { --h: 880; }
 }
@@ -225,6 +225,20 @@ mark {
     height: max(3px, calc(4 * var(--s)));
     background: var(--white);
     translate: -50% 0;
+}
+
+/* 特徴の説明文で強調する「考え抜く力・伝える力・やりきる力」。
+   黄色の文字に、紺のぼかしなしの縁取り（上下左右・斜め 1px）と右下の影でピクセル調に */
+.features__em {
+    --edge: var(--navy);
+    color: var(--yellow);
+    font-style: normal;
+    font-weight: 900;
+    text-shadow:
+        -1px -1px 0 var(--edge), 0 -1px 0 var(--edge), 1px -1px 0 var(--edge),
+        -1px 0 0 var(--edge), 1px 0 0 var(--edge),
+        -1px 1px 0 var(--edge), 0 1px 0 var(--edge), 1px 1px 0 var(--edge),
+        2px 2px 0 var(--edge);
 }
 
 /* SP だけの改行（特徴・合宿の流れの説明文） */
@@ -363,6 +377,59 @@ mark {
 
 .apply-button--sub:active {
     box-shadow: 0 0 0 var(--blue);
+}
+
+/* ---------- 説明会の受付終了後の表示切り替え（script.js の BRIEFING_DATE で判定） ----------
+   [data-briefing-open] = 受付中だけ表示 / [data-briefing-closed] = 受付終了後だけ表示。
+   ボタン等の display 指定より優先して、hidden の要素を確実に隠す */
+:is([data-briefing-open], [data-briefing-closed])[hidden] {
+    display: none;
+}
+
+/* ---------- キャンセル待ちモード（script.js の isWaitlistMode = true で html に .is-waitlist） ---------- */
+/* 「キャンセル待ちフォーム」は「合宿に申し込む」より長いので、大きいボタンの文字を少し小さく */
+@media (min-width: 768px) {
+    /* FV は案内文が増える分、ボタンのまとまりを少し上に */
+    .is-waitlist .fv__cta {
+        top: calc(640 * var(--s));
+        gap: calc(18 * var(--s));
+    }
+
+    .is-waitlist .apply-button--large {
+        font-size: max(18px, calc(31 * var(--s)));
+        letter-spacing: 0.04em;
+    }
+}
+
+/* FV の案内（キャンセル待ちのときだけ表示） */
+.waitlist-notice {
+    color: var(--white);
+    font-size: max(13px, calc(18 * var(--s)));
+    font-weight: 700;
+    line-height: 1.7;
+    letter-spacing: 0.06em;
+    text-align: left;
+    word-break: auto-phrase;
+}
+
+/* 申し込みセクションの案内（2文）を文節で折り返す */
+.is-waitlist .apply__text {
+    text-align: left;
+    word-break: auto-phrase;
+}
+
+/* 受付終了後の案内文（ボタンがあった場所に、ボタンと同じくらいの存在感で） */
+.briefing-closed {
+    font-size: max(13px, calc(17 * var(--s)));
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+.briefing-closed--fv {
+    color: var(--white);
+    font-size: max(13px, calc(18 * var(--s)));
 }
 
 /* 申し込みURL未設定時の通知 */
@@ -759,6 +826,12 @@ mark {
     .fv__flake-left {
         left: calc(50% + (0 - var(--cx)) * var(--ux) + (192 - 0) * var(--u));
         top: calc((640 - var(--oy)) * var(--u));
+    }
+
+    /* キャンセル待ちのときは、案内文と重ならないようタイトルの左下（看板の左上あたり）へ */
+    .is-waitlist .fv__flake-left {
+        left: calc(50% + (0 - var(--cx)) * var(--ux) + (96 - 0) * var(--u));
+        top: calc((350 - var(--oy)) * var(--u));
     }
 }
 
@@ -1215,13 +1288,18 @@ mark {
 
 .schedule__list {
     display: grid;
+    grid-auto-rows: 1fr; /* 3枚のカードを一番高いカードに合わせて同じ高さに（PC・SP 共通） */
     gap: calc(59 * var(--sv, var(--s)));
     width: calc(1081 * var(--sx));
     margin: calc(104 * var(--sv, var(--s))) auto 0;
 }
 
+/* 高さがそろって空きができたカードは、見出しと本文をまとめて上下中央に置く */
 .schedule__card {
-    padding: calc(16 * var(--s)) calc(43 * var(--s)) calc(58 * var(--s));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(30 * var(--s)) calc(43 * var(--s)) calc(40 * var(--s)); /* 見出しの行間ぶん下を少し多めにし、見た目の上下をそろえる */
     color: var(--navy);
 }
 
@@ -1961,6 +2039,18 @@ mark {
    PC（1024px 以上）のみの調整
    ========================================================= */
 @media (min-width: 1024px) {
+    /* 学習内容: 上下の余白を見た目でそろえる。
+       ・パネル内: 下の空き（最低の高さ指定による余り）をなくし、上と同じ余白に
+       ・セクション: 下の余白から影（12）ぶんを差し引いた見た目の空きを、上（タイトルまで）と同じに */
+    .program {
+        padding-bottom: calc(118 * var(--sv, var(--s)) + 12 * var(--s)); /* 上の余白 + 影 */
+    }
+
+    .program__panel {
+        min-height: 0;
+        padding-bottom: calc(38 * var(--s)); /* 本文の行間ぶんを差し引いて、上と見た目をそろえる */
+    }
+
     /* 学習内容: 「発表」の説明文は改行位置を固定しているため、
        箱を最も長い行の幅まで縮めて、イラスト・吹き出しの中央にそろえる */
     .program__item:nth-child(3) .program__text {
@@ -1983,9 +2073,6 @@ mark {
    タブレット（1023px 以下）: ハンバーガーメニュー / 参加者の声を縦積み
    ========================================================= */
 @media (max-width: 1023px) {
-    .gallery__br-pc {
-        display: none;
-    }
 
     .site-header__inner {
         height: 72px;

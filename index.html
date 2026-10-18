@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Jersey+10&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261018c">
+    <link rel="stylesheet" href="styles.css?v=20261018n">
 </head>
 <body>
     <!-- 背景の雪（背景色のすぐ上の層。文字・イラストより下） -->
@@ -33,8 +33,8 @@
                     <li><a href="#faq" class="global-nav__link">よくある質問</a></li>
                 </ul>
                 <div class="site-header__cta">
-                    <p class="deadline deadline--small">＼ 締切は<b>11月22日(日)</b>！／</p>
-                    <a href="https://be-engineer.tech/event-list/514" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--header" data-apply-link>合宿に申し込む</a>
+                    <p class="deadline deadline--small" data-waitlist-html="＼ &lt;b&gt;キャンセル待ち&lt;/b&gt;受付中！／">＼ 締切は<b>11月22日(日)</b>！／</p>
+                    <a href="https://be-engineer.tech/event-list/514" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--header" data-apply-link data-waitlist-html="キャンセル待ちフォーム">合宿に申し込む</a>
                 </div>
             </nav>
 
@@ -84,9 +84,11 @@
                 </div>
 
                 <div class="fv__cta">
-                    <p class="deadline">＼ 締切は<b>11月22日(日)</b>！／</p>
-                    <a href="https://be-engineer.tech/event-list/514" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--large" data-apply-link>合宿に申し込む</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--sub" data-briefing-link>説明会に申し込む</a>
+                    <p class="waitlist-notice" data-waitlist-only hidden>定員に達しました！誠にありがとうございます。<br>キャンセル待ちをご希望される方は下記よりご登録ください！</p>
+                    <p class="deadline" data-waitlist-html="＼ &lt;b&gt;キャンセル待ち&lt;/b&gt;受付中！／">＼ 締切は<b>11月22日(日)</b>！／</p>
+                    <a href="https://be-engineer.tech/event-list/514" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--large" data-apply-link data-waitlist-html="キャンセル待ちフォーム">合宿に申し込む</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--sub" data-briefing-link data-briefing-open>説明会に申し込む</a>
+                    <p class="briefing-closed briefing-closed--fv" data-briefing-closed hidden>説明会への参加をご希望される方は、<br class="briefing-closed__br">所属校へお問い合わせください。</p>
                 </div>
             </div>
         </section>
@@ -121,8 +123,9 @@
                     <p class="overview__value overview__value--fee">¥99,000</p>
                 </li>
             </ul>
-            <p class="overview__note">オンライン説明会への参加を希望の方は、<br class="overview__br-sp">以下よりお申し込みください。</p>
-            <p class="overview__briefing"><a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--sub" data-briefing-link>説明会に申し込む</a></p>
+            <p class="overview__note" data-briefing-open>オンライン説明会への参加を希望の方は、<br class="overview__br-sp">以下よりお申し込みください。</p>
+            <p class="overview__briefing" data-briefing-open><a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--sub" data-briefing-link>説明会に申し込む</a></p>
+            <p class="overview__note" data-briefing-closed hidden>説明会への参加をご希望される方は、<br class="overview__br-sp">所属校へお問い合わせください。</p>
         </section>
 
         <!-- 合宿で得られる力 -->
@@ -134,7 +137,7 @@
                 <img src="images/冬合宿LP＿イラスト＿svg/特徴＿キラキラ＿右.svg" alt="" class="features__sparkle-right" width="54" height="45" loading="lazy">
                 <img src="images/冬合宿LP＿イラスト＿svg/特徴＿雲＿右.svg" alt="" class="features__cloud-right" width="795" height="379" loading="lazy">
             </div>
-            <p class="section-lead">普段の授業とは違う環境で、技術だけでなく、<br class="features__br-sp">考え抜く力・伝える力・やりきる力を育てます。</p>
+            <p class="section-lead">普段の授業とは違う環境で、技術だけでなく、<br class="features__br-sp"><em class="features__em">考え抜く力・伝える力・やりきる力</em>を育てます。</p>
             <ol class="features__list">
                 <li class="features__card pixel-card">
                     <span class="features__num">01</span>
@@ -228,10 +231,10 @@
                     <ul class="gallery__track">
                         <li class="gallery__slide" data-caption="自然豊かなロゴスランドで気分転換！開放的な環境でのびのび過ごせます"><img src="images-optimized/ピース.webp" alt="紅葉の中でピースをする参加者たち" width="1447" height="1087" loading="lazy"></li>
                         <li class="gallery__slide" data-caption="開発のあとはみんなでBBQ！仲間との交流も合宿の楽しみのひとつ"><img src="images-optimized/BBQ.webp" alt="BBQを楽しむ参加者たち" width="1477" height="1108" loading="lazy"></li>
-                        <li class="gallery__slide" data-caption="講義では新しい知識を吸収し、すぐに自分の開発へ活かします"><img src="images-optimized/授業.webp" alt="講義を受ける参加者たち" width="1108" height="1477" loading="lazy"></li>
-                        <li class="gallery__slide" data-caption="みんなで過ごす夜も合宿ならでは！笑顔の絶えない時間になりました"><img src="images-optimized/お泊まり.webp" alt="宿泊部屋でくつろぐ参加者たち" width="1100" height="1108" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="講義では新しい知識を吸収し、&#10;すぐに自分の開発へ活かします"><img src="images-optimized/授業.webp" alt="講義を受ける参加者たち" width="1108" height="1477" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="みんなで過ごす夜も合宿ならでは！笑顔の絶えない時間になります"><img src="images-optimized/お泊まり.webp" alt="宿泊部屋でくつろぐ参加者たち" width="1100" height="1108" loading="lazy"></li>
                         <li class="gallery__slide" data-caption="分からないところは相談しながら、&#10;じっくり開発に向き合います"><img src="images-optimized/パソコン.webp" alt="開発中のノートパソコン" width="2750" height="2287" loading="lazy"></li>
-                        <li class="gallery__slide" data-caption="試行錯誤を重ねながら、自分の手で少しずつ形にしていきます"><img src="images-optimized/開発.webp" alt="ノートパソコンで開発に取り組む参加者" width="4032" height="3024" loading="lazy"></li>
+                        <li class="gallery__slide" data-caption="試行錯誤を重ねながら、&#10;自分の手で少しずつ形にしていきます"><img src="images-optimized/開発.webp" alt="ノートパソコンで開発に取り組む参加者" width="4032" height="3024" loading="lazy"></li>
                     </ul>
                     <button type="button" class="gallery__arrow gallery__arrow--prev" data-carousel-prev aria-label="前の写真"></button>
                     <button type="button" class="gallery__arrow gallery__arrow--next" data-carousel-next aria-label="次の写真"></button>
@@ -295,7 +298,7 @@
                     </h3>
                     <div class="faq__a" id="faq-a1" role="region" aria-labelledby="faq-q1">
                         <div class="faq__a-inner">
-                            <p class="faq__a-box"><span class="faq__a-mark">A.</span>説明会に参加しなくても申し込みできます。実際のスケジュールや学習内容をより詳しく知りたい方は<a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="faq__link" data-briefing-link>説明会</a>にご参加ください。</p>
+                            <p class="faq__a-box"><span class="faq__a-mark">A.</span>説明会に参加しなくても申し込みできます。<span data-briefing-open>実際のスケジュールや学習内容をより詳しく知りたい方は<a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="faq__link" data-briefing-link>説明会</a>にご参加ください。</span><span data-briefing-closed hidden>説明会への参加をご希望される方は、所属校へお問い合わせください。</span></p>
                         </div>
                     </div>
                 </div>
@@ -307,7 +310,7 @@
                     </h3>
                     <div class="faq__a" id="faq-a2" role="region" aria-labelledby="faq-q2">
                         <div class="faq__a-inner">
-                            <p class="faq__a-box"><span class="faq__a-mark">A.</span>参加者の状況に合わせて進められるよう、スタッフがサポートします。必要な前提条件がある場合は募集時に明記します。</p>
+                            <p class="faq__a-box"><span class="faq__a-mark">A.</span>参加者の状況に合わせて進められるよう、スタッフがサポートします。</p>
                         </div>
                     </div>
                 </div>
@@ -349,14 +352,15 @@
             <h2 class="section-title" id="apply-title">申し込み・お問い合わせ</h2>
             <div class="apply__card pixel-card">
                 <p class="apply__catch">冬の最高の思い出をつくろう！</p>
-                <p class="apply__text">以下のボタンからお申し込みください。</p>
+                <p class="apply__text" data-waitlist-html="定員に達しました！誠にありがとうございます。&lt;br&gt;キャンセル待ちをご希望される方は下記よりご登録ください！">以下のボタンからお申し込みください。</p>
                 <div class="apply__main">
-                    <p class="deadline deadline--dark">＼ 締切は<b>11月22日(日)</b>！／</p>
-                    <a href="https://be-engineer.tech/event-list/514" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--large" data-apply-link>合宿に申し込む</a>
+                    <p class="deadline deadline--dark" data-waitlist-html="＼ &lt;b&gt;キャンセル待ち&lt;/b&gt;受付中！／">＼ 締切は<b>11月22日(日)</b>！／</p>
+                    <a href="https://be-engineer.tech/event-list/514" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--large" data-apply-link data-waitlist-html="キャンセル待ちフォーム">合宿に申し込む</a>
                 </div>
                 <div class="apply__sub">
-                    <p class="apply__sub-lead">まずは詳しく話を聞いてみたい方は</p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--sub" data-briefing-link>説明会に申し込む</a>
+                    <p class="apply__sub-lead" data-briefing-open>まずは詳しく話を聞いてみたい方は</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--sub" data-briefing-link data-briefing-open>説明会に申し込む</a>
+                    <p class="briefing-closed" data-briefing-closed hidden>説明会への参加をご希望される方は、<br class="briefing-closed__br">所属校へお問い合わせください。</p>
                 </div>
                 <img src="images/冬合宿LP＿イラスト＿svg/プログラミング＿男子.svg" alt="" class="apply__boy" width="1312" height="1199" loading="lazy">
             </div>
@@ -389,6 +393,6 @@
 
     <p class="apply-toast" data-apply-toast role="status" aria-live="polite" hidden></p>
 
-    <script src="script.js?v=20261018c"></script>
+    <script src="script.js?v=20261018k"></script>
 </body>
 </html>
