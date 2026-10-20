@@ -379,11 +379,17 @@ mark {
     box-shadow: 0 0 0 var(--blue);
 }
 
-/* ---------- 説明会の受付終了後の表示切り替え（script.js の BRIEFING_DATE で判定） ----------
-   [data-briefing-open] = 受付中だけ表示 / [data-briefing-closed] = 受付終了後だけ表示。
+/* ---------- 説明会の表示切り替え（script.js の BRIEFING_DATE / BRIEFING_END_TIME で判定） ----------
+   [data-briefing-open] = 受付中だけ表示 / [data-briefing-closed] = 問い合わせ案内の期間だけ表示 /
+   [data-briefing-topic] = 説明会の終了後に隠す。
    ボタン等の display 指定より優先して、hidden の要素を確実に隠す */
-:is([data-briefing-open], [data-briefing-closed])[hidden] {
+:is([data-briefing-open], [data-briefing-closed], [data-briefing-topic])[hidden] {
     display: none;
+}
+
+/* 説明会の FAQ を隠したとき、次の質問の上に間隔が残らないように */
+.faq__item[hidden] + .faq__item {
+    margin-top: 0;
 }
 
 /* ---------- キャンセル待ちモード（script.js の isWaitlistMode = true で html に .is-waitlist） ---------- */

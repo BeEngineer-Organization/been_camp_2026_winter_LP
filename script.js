@@ -27,12 +27,14 @@ const APPLY_FORM_URL = "https://be-engineer.tech/event-list/514";
 const BRIEFING_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform";
 
 /**
- * 説明会の開催日（日本時間、"YYYY-MM-DD"）。
- * 開催日の前日 0:00（日本時間）になると、説明会の申し込みボタン・リンクを隠し、
- * 「所属校へお問い合わせください」の案内文に切り替えます（終了後もそのまま）。
- * 空にすると切り替えは行わず、申し込みボタンを表示し続けます。
+ * 説明会の日時（日本時間）。表示は次の3段階で自動的に切り替わります。
+ *   開催日の前日まで            : 申し込みボタン・説明文を表示（受付中）
+ *   開催日 0:00 〜 BRIEFING_END_TIME : ボタンを隠し「所属校へお問い合わせください」を表示
+ *   開催日 BRIEFING_END_TIME 以降  : 説明会に関する表示をすべて隠す
+ * BRIEFING_DATE を空にすると切り替えは行わず、申し込みボタンを表示し続けます。
  */
-const BRIEFING_DATE = "2026-11-06";
+const BRIEFING_DATE = "2026-11-06"; // 開催日 "YYYY-MM-DD"
+const BRIEFING_END_TIME = "19:00"; // この時刻から説明会の表示をすべて隠す "HH:MM"
 
 document.addEventListener("DOMContentLoaded", () => {
     initWaitlistMode(); // 申し込みボタンの設定より先に、文言を切り替える
@@ -355,35 +357,61 @@ function initSnowfall() {
     start();
 }
 
-/* ---------- 説明会の受付終了の自動切り替え ----------
-   [data-briefing-open]（申し込みボタン等）と [data-briefing-closed]（案内文）の hidden を切り替える。
+/* ---------- 説明会の表示の自動切り替え ----------
+   [data-briefing-open]   : 受付中だけ表示（申し込みボタン・説明文）
+   [data-briefing-closed] : 問い合わせ案内の期間だけ表示
+   [data-briefing-topic]  : 説明会そのものの話題（FAQ など）。説明会の終了後に隠す
    hidden にした要素は画面に出ず、キーボード操作でもフォーカスされない */
-function initBriefingSwitch() {
-    if (!BRIEFING_DATE) return;
 
-    // 開催日の前日 0:00（日本時間 = UTC+9）
-    const eventDay = new Date(`${BRIEFING_DATE}T00:00:00+09:00`);
-    if (Number.isNaN(eventDay.getTime())) return;
-    const closeAt = eventDay.getTime() - 24 * 60 * 60 * 1000;
+/**
+ * 指定した時刻（ミリ秒）での説明会の表示状態を返す。
+ * "open"（受付中） / "inquiry"（問い合わせ案内） / "ended"（終了・すべて非表示） / null（日付未設定）
+ * テスト時は getBriefingState(new Date("2026-11-06T19:00:00+09:00").getTime()) のように呼べる
+ */
+function getBriefingState(nowMs) {
+    const times = getBriefingTimes();
+    if (!times) return null;
+    if (nowMs >= times.endAt) return "ended";
+    if (nowMs >= times.closeAt) return "inquiry";
+    return "open";
+}
+
+// 切り替え時刻（日本時間 = UTC+9 で計算するので、端末の時間帯設定に左右されない）
+function getBriefingTimes() {
+    if (!BRIEFING_DATE) return null;
+    const closeAt = new Date(`${BRIEFING_DATE}T00:00:00+09:00`).getTime();
+    const endAt = new Date(`${BRIEFING_DATE}T${BRIEFING_END_TIME || "23:59"}:00+09:00`).getTime();
+    if (Number.isNaN(closeAt) || Number.isNaN(endAt)) return null;
+    return { closeAt, endAt };
+}
+
+function initBriefingSwitch() {
+    const times = getBriefingTimes();
+    if (!times) return;
 
     const openEls = document.querySelectorAll("[data-briefing-open]");
-    const closedEls = document.querySelectorAll("[data-briefing-closed]");
+    const inquiryEls = document.querySelectorAll("[data-briefing-closed]");
+    const topicEls = document.querySelectorAll("[data-briefing-topic]");
     const MAX_TIMEOUT = 2 ** 31 - 1; // setTimeout の上限（約24.8日）
     let timer;
 
     const update = () => {
-        const closed = Date.now() >= closeAt;
+        const now = Date.now();
+        const state = getBriefingState(now);
         openEls.forEach((el) => {
-            el.hidden = closed;
+            el.hidden = state !== "open";
         });
-        closedEls.forEach((el) => {
-            el.hidden = !closed;
+        inquiryEls.forEach((el) => {
+            el.hidden = state !== "inquiry";
         });
+        topicEls.forEach((el) => {
+            el.hidden = state === "ended";
+        });
+
+        // ページを開いたまま次の切り替え時刻を迎えた場合も更新する
         clearTimeout(timer);
-        if (!closed) {
-            // ページを開いたまま切り替え時刻を迎えた場合も更新する
-            timer = setTimeout(update, Math.min(closeAt - Date.now() + 500, MAX_TIMEOUT));
-        }
+        const next = state === "open" ? times.closeAt : state === "inquiry" ? times.endAt : null;
+        if (next) timer = setTimeout(update, Math.min(next - now + 500, MAX_TIMEOUT));
     };
 
     // スリープ復帰やタブの切り替え後にも判定し直す
