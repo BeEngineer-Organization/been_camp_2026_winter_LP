@@ -1098,12 +1098,18 @@ mark {
     text-align: center;
 }
 
+/* 左右の余白をそろえる: 行の余りを文字間に配分（両端揃え）し、
+   行末の字間（letter-spacing）ぶんは右へはみ出させて打ち消す（PC・SP 共通） */
 .features__text {
     margin-top: calc(32 * var(--s));
+    margin-right: calc(var(--ls, 0.16em) * -1);
     font-size: max(13px, calc(20 * var(--s)));
     font-weight: 500;
     line-height: 1.48;
-    letter-spacing: 0.16em;
+    --ls: 0.16em;
+    letter-spacing: var(--ls);
+    text-align: justify;
+    text-justify: inter-character;
 }
 
 /* =========================================================
@@ -1251,6 +1257,12 @@ mark {
 .program__illust {
     width: calc(360 * var(--s));
     margin-top: calc(18 * var(--s));
+}
+
+/* 「発表」の SVG は絵が下寄り（中心が他の2つより高さの5%下）なので、
+   見た目の高さを他の2つにそろえる。本文の位置は3つとも変わらない */
+.program__item:nth-child(3) .program__illust {
+    translate: 0 -5%;
 }
 
 .program__text {
@@ -2582,10 +2594,10 @@ mark {
     }
 
     .features__text {
+        --ls: 0.06em;
         margin-top: 16px;
         font-size: 15px;
         line-height: 1.8;
-        letter-spacing: 0.06em;
     }
 
     /* ---------- 学習プログラム ---------- */
