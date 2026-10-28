@@ -36,6 +36,24 @@ const BRIEFING_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJ
 const BRIEFING_DATE = "2026-11-06"; // 開催日 "YYYY-MM-DD"
 const BRIEFING_END_TIME = "19:00"; // この時刻から説明会の表示をすべて隠す "HH:MM"
 
+/**
+ * テーマ（季節イベントなどの見た目の切り替え）
+ * localhost では常時、公開環境では ?theme=halloween を付けたときに <html data-theme="halloween"> になります
+ * （判定は index.html の <head> 内。他のクエリパラメータと一緒でも動作します）。
+ * テーマ専用の CSS は styles.css の :root[data-theme="halloween"] 以下に、
+ * テーマ専用の処理は THEME_INITS に書きます。パラメータがなければ何も実行されません。
+ */
+const CURRENT_THEME = document.documentElement.dataset.theme || "";
+const THEME_INITS = {
+    halloween: () => {
+        // 開いたときの暗転（CSS の body::before）は約1.35秒で消える。念のため2秒後に必ず外す
+        setTimeout(() => document.documentElement.classList.add("is-curtain-done"), 2000);
+        playHalloweenBats();
+        initLanternSwitch();
+        initTentCat();
+    },
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     initWaitlistMode(); // 申し込みボタンの設定より先に、文言を切り替える
     initApplyLinks();
@@ -45,7 +63,14 @@ document.addEventListener("DOMContentLoaded", () => {
     initFaq();
     initFadeIn();
     initSnowfall();
+    initTheme();
 });
+
+/* ---------- テーマ ---------- */
+function initTheme() {
+    const init = THEME_INITS[CURRENT_THEME];
+    if (init) init();
+}
 
 /* ---------- 申し込みボタン ---------- */
 function initApplyLinks() {
@@ -274,6 +299,8 @@ function initSnowfall() {
     const ctx = canvas.getContext("2d");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const DOT = 2; // 1ドットの大きさ（CSS px）
+    // ハロウィンのときだけ、雪にオレンジの光と小さなコウモリを混ぜる（通常テーマは雪のみ）
+    const isHalloween = CURRENT_THEME === "halloween";
     let flakes = [];
     let width = 0;
     let height = 0;
@@ -282,17 +309,62 @@ function initSnowfall() {
 
     const random = (min, max) => min + Math.random() * (max - min);
 
-    const createFlake = (y) => ({
-        x: random(0, width),
-        y,
-        size: DOT * Math.ceil(random(0.5, 2.5)), // 2px または 4px（まれに 6px）
-        speed: random(18, 48), // 落下速度（px/秒）
-        drift: random(-8, 8), // 一定方向への流れ（風）
-        sway: random(6, 22), // 横揺れの幅
-        freq: random(0.3, 1.1), // 横揺れの速さ
-        phase: random(0, Math.PI * 2),
-        alpha: random(0.35, 0.75),
+    const createFlake = (y, kind = "snow") => {
+        const base = {
+            kind,
+            x: random(0, width),
+            y,
+            phase: random(0, Math.PI * 2),
+        };
+        if (kind === "ember") return { ...base, ...createEmber() };
+        if (kind === "bat") return { ...base, ...createMiniBat() };
+        return {
+            ...base,
+            size: DOT * Math.ceil(random(0.5, 2.5)), // 2px または 4px（まれに 6px）
+            speed: random(18, 48), // 落下速度（px/秒）
+            drift: random(-8, 8), // 一定方向への流れ（風）
+            sway: random(6, 22), // 横揺れの幅
+            freq: random(0.3, 1.1), // 横揺れの速さ
+            alpha: random(0.35, 0.75),
+        };
+    };
+
+    // オレンジ〜黄色の光（ドットを組み合わせた形。ゆっくり降りながら、ほのかに明滅）
+    const createEmber = () => ({
+        shape: ["block", "plus", "plus", "big"][Math.floor(random(0, 4))],
+        color: Math.random() < 0.6 ? "255, 140, 40" : "255, 196, 70",
+        speed: random(10, 26),
+        drift: random(-6, 6),
+        sway: random(8, 24),
+        freq: random(0.25, 0.8),
+        alpha: random(0.7, 1),
+        twinkle: random(0.8, 2), // 明滅の速さ
     });
+
+    // 小さなコウモリ（左右に揺れたり斜めに流れたりしながら降りる）
+    const createMiniBat = () => ({
+        speed: random(14, 32),
+        drift: random(-28, 28),
+        sway: random(18, 40),
+        freq: random(0.4, 0.9),
+        alpha: random(0.75, 0.95),
+        flap: random(5, 8), // 1秒あたりの羽ばたき回数
+    });
+
+    // 画面の広さに応じた数。ハロウィンは 雪 約50% / 光 約35% / コウモリ 約15%（多くなりすぎないよう上限あり）
+    const buildFlakes = () => {
+        const count = Math.min(140, Math.round((width * height) / 9000));
+        if (!isHalloween) {
+            return Array.from({ length: count }, () => createFlake(random(0, height)));
+        }
+        const maxBats = width < 768 ? 3 : 6;
+        const kinds = [
+            ...Array(Math.round(count * 0.5)).fill("snow"),
+            ...Array(Math.round(count * 0.35)).fill("ember"),
+            ...Array(Math.min(Math.round(count * 0.15), maxBats)).fill("bat"),
+        ];
+        return kinds.map((kind) => createFlake(random(0, height), kind));
+    };
 
     const resize = () => {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -301,17 +373,61 @@ function initSnowfall() {
         canvas.width = Math.round(width * dpr);
         canvas.height = Math.round(height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const count = Math.min(140, Math.round((width * height) / 9000));
-        flakes = Array.from({ length: count }, () => createFlake(random(0, height)));
+        flakes = buildFlakes();
     };
+
+    // 光の形（ドット単位）。c = 中心（明るい） / a = 外側（少し淡い）
+    const EMBER_SHAPES = {
+        block: ["cc", "cc"],
+        plus: [".a.", "aca", ".a."],
+        big: ["..a..", ".aca.", "accca", ".aca.", "..a.."],
+    };
+
+    const drawEmber = (f, x, y, time) => {
+        const a = f.alpha * (0.55 + 0.45 * Math.sin(time * f.twinkle + f.phase));
+        const shape = EMBER_SHAPES[f.shape];
+        shape.forEach((row, ry) => {
+            for (let rx = 0; rx < row.length; rx++) {
+                const c = row[rx];
+                if (c === ".") continue;
+                ctx.fillStyle = `rgba(${f.color}, ${(c === "c" ? a : a * 0.55).toFixed(3)})`;
+                ctx.fillRect(x + rx * DOT, y + ry * DOT, DOT, DOT);
+            }
+        });
+    };
+
+    const drawMiniBat = (f, x, y, time) => {
+        const frame = MINI_BAT_FRAMES[Math.floor(time * f.flap + f.phase) % 2];
+        ctx.fillStyle = `rgba(27, 14, 40, ${f.alpha})`;
+        frame.forEach((row, ry) => {
+            for (let rx = 0; rx < row.length; rx++) {
+                if (row[rx] === "X") ctx.fillRect(x + rx * DOT, y + ry * DOT, DOT, DOT);
+            }
+        });
+    };
+
+    // 降ってくるコウモリの画面上の位置（描画と当たり判定で共通）
+    const flakePos = (f, time) => ({
+        x: Math.round((f.x + Math.sin(time * f.freq + f.phase) * f.sway) / DOT) * DOT,
+        y: Math.round(f.y / DOT) * DOT,
+    });
 
     const draw = (time) => {
         ctx.clearRect(0, 0, width, height);
         flakes.forEach((f) => {
-            const x = Math.round((f.x + Math.sin(time * f.freq + f.phase) * f.sway) / DOT) * DOT;
-            const y = Math.round(f.y / DOT) * DOT;
-            ctx.fillStyle = `rgba(255, 255, 255, ${f.alpha})`;
-            ctx.fillRect(x, y, f.size, f.size);
+            if (f.kind === "spider") {
+                drawSpider(f, time);
+                return;
+            }
+            const { x, y } = flakePos(f, time);
+            if (f.kind === "ember") {
+                drawEmber(f, x, y, time);
+            } else if (f.kind === "bat") {
+                drawMiniBat(f, x, y, time);
+            } else {
+                ctx.fillStyle = `rgba(255, 255, 255, ${f.alpha})`;
+                ctx.fillRect(x, y, f.size, f.size);
+            }
         });
     };
 
@@ -319,14 +435,19 @@ function initSnowfall() {
         const dt = Math.min((now - last) / 1000, 0.1);
         last = now;
         flakes.forEach((f, i) => {
+            if (f.kind === "spider") {
+                // 蜘蛛は独自の動き。いなくなったら、その枠に新しいコウモリを上から降らせる
+                if (!updateSpider(f, dt)) flakes[i] = createFlake(-24, "bat");
+                return;
+            }
             f.y += f.speed * dt;
             f.x += f.drift * dt;
-            if (f.y > height + 8) {
-                flakes[i] = createFlake(-8);
-            } else if (f.x < -30) {
-                f.x += width + 60;
-            } else if (f.x > width + 30) {
-                f.x -= width + 60;
+            if (f.y > height + 24) {
+                flakes[i] = createFlake(-24, f.kind);
+            } else if (f.x < -40) {
+                f.x += width + 80;
+            } else if (f.x > width + 40) {
+                f.x -= width + 80;
             }
         });
         draw(now / 1000);
@@ -353,9 +474,198 @@ function initSnowfall() {
     });
     reduceMotion.addEventListener("change", start);
 
+    if (isHalloween) initBatToSpider();
+
     resize();
     start();
+
+    /* ---------- ハロウィン: 降ってくるコウモリを押すと蜘蛛に変身 ----------
+       コウモリはゆっくり滑らかに降りるのに対し、蜘蛛は
+         移動 → 急停止 → ほぼ逆方向へ素早く移動 → 急停止 → …
+       をくり返してカサカサ這い回る。6〜8秒たつと画面の外へ逃げる。
+       動きを減らす設定のときは、蜘蛛はその場で止まったまま少しして消える */
+    function initBatToSpider() {
+        // ボタンやリンク、カードの上は押しても反応させない（雪のキャンバスは一番奥にあるため）
+        const BLOCK = "a, button, input, label, textarea, select, [role='button'], .pixel-card, .voice__card, .global-nav, .site-header, .site-footer";
+        const HIT_PAD = 12; // 当たり判定を絵より少し広く（小さく動くので押しやすく）
+
+        const findBat = (cx, cy) => {
+            const time = performance.now() / 1000;
+            return flakes.find((f) => {
+                if (f.kind !== "bat") return false;
+                const { x, y } = flakePos(f, time);
+                return cx >= x - HIT_PAD && cx <= x + 11 * DOT + HIT_PAD && cy >= y - HIT_PAD && cy <= y + 5 * DOT + HIT_PAD;
+            });
+        };
+
+        document.addEventListener("click", (event) => {
+            if (event.target.closest(BLOCK)) return;
+            const bat = findBat(event.clientX, event.clientY);
+            if (!bat) return;
+            const { x, y } = flakePos(bat, performance.now() / 1000);
+            const i = flakes.indexOf(bat);
+            flakes[i] = createSpider(x + 5.5 * DOT, y + 2.5 * DOT);
+            if (reduceMotion.matches) {
+                draw(0);
+                setTimeout(() => {
+                    const j = flakes.indexOf(flakes[i]);
+                    if (flakes[j] && flakes[j].kind === "spider") flakes[j] = createFlake(random(0, height), "bat");
+                    draw(0);
+                }, 2500);
+            }
+        });
+
+        // PC: コウモリの上ではカーソルを指の形に
+        let hoverRaf = 0;
+        document.addEventListener("mousemove", (event) => {
+            if (hoverRaf) return;
+            hoverRaf = requestAnimationFrame(() => {
+                hoverRaf = 0;
+                const over = !event.target.closest(BLOCK) && findBat(event.clientX, event.clientY);
+                document.documentElement.classList.toggle("is-over-bat", Boolean(over));
+            });
+        });
+    }
+
+    function createSpider(cx, cy) {
+        return {
+            kind: "spider",
+            cx,
+            cy,
+            state: "move", // move → stop → dash → pause → move …（flee = 逃げる）
+            stateLeft: random(0.3, 0.6),
+            angle: random(0, Math.PI * 2),
+            speed: random(170, 230), // コウモリ（14〜32px/秒）よりずっと速い
+            life: random(6, 8),
+            legPhase: 0,
+            puff: 0.28, // 変身したときの煙の残り時間
+            alpha: 1,
+        };
+    }
+
+    // 次に向かう方向が画面の外へ向かうなら、端からはね返る向きに直す
+    function keepInside(sp, dist) {
+        const m = 16;
+        let dx = Math.cos(sp.angle) * dist;
+        let dy = Math.sin(sp.angle) * dist;
+        if (sp.cx + dx < m || sp.cx + dx > width - m) dx = -dx;
+        if (sp.cy + dy < m || sp.cy + dy > height - m) dy = -dy;
+        sp.angle = Math.atan2(dy, dx);
+    }
+
+    // 戻り値 false = 画面から消えた
+    function updateSpider(sp, dt) {
+        if (sp.puff > 0) sp.puff -= dt;
+        sp.life -= dt;
+        if (sp.life <= 0 && sp.state !== "flee") {
+            // 一番近い画面の端へ一気に逃げる
+            const ex = sp.cx < width / 2 ? -40 : width + 40;
+            const ey = sp.cy < height / 2 ? -40 : height + 40;
+            sp.angle = Math.abs(ex - sp.cx) < Math.abs(ey - sp.cy) ? (ex < 0 ? Math.PI : 0) : (ey < 0 ? -Math.PI / 2 : Math.PI / 2);
+            sp.angle += random(-0.3, 0.3);
+            sp.state = "flee";
+            sp.speed = 320;
+        }
+
+        if (sp.state === "move" || sp.state === "dash" || sp.state === "flee") {
+            sp.cx += Math.cos(sp.angle) * sp.speed * dt;
+            sp.cy += Math.sin(sp.angle) * sp.speed * dt;
+            sp.legPhase += dt * 14; // 移動中だけ脚を動かす
+        }
+        if (sp.state === "flee") {
+            return sp.cx > -40 && sp.cx < width + 40 && sp.cy > -40 && sp.cy < height + 40;
+        }
+
+        sp.stateLeft -= dt;
+        if (sp.stateLeft > 0) return true;
+
+        // 状態の切り替え（減速せず、その瞬間にピタッと止まる／走り出す）
+        if (sp.state === "move") {
+            sp.state = "stop";
+            sp.stateLeft = Math.random() < 0.2 ? random(0.45, 0.8) : random(0.1, 0.3); // ときどき長めに止まる
+        } else if (sp.state === "stop") {
+            sp.state = "dash"; // ほぼ逆方向へ、さらに速く
+            sp.angle += Math.PI + random(-0.45, 0.45);
+            sp.speed = random(260, 340);
+            sp.stateLeft = random(0.15, 0.4);
+            keepInside(sp, sp.speed * sp.stateLeft);
+        } else if (sp.state === "dash") {
+            sp.state = "pause";
+            sp.stateLeft = random(0.1, 0.25);
+        } else {
+            sp.state = "move"; // 新しい方向（上下左右・斜め）
+            sp.angle = Math.floor(random(0, 8)) * (Math.PI / 4) + random(-0.25, 0.25);
+            sp.speed = random(170, 230);
+            sp.stateLeft = random(0.3, 0.6);
+            keepInside(sp, sp.speed * sp.stateLeft);
+        }
+        return true;
+    }
+
+    function drawSpider(sp, time) {
+        const frame = SPIDER_FRAMES[Math.floor(sp.legPhase) % 2];
+        const ox = Math.round((sp.cx - 5.5 * DOT) / DOT) * DOT;
+        const oy = Math.round((sp.cy - 3.5 * DOT) / DOT) * DOT;
+        frame.forEach((row, ry) => {
+            for (let rx = 0; rx < row.length; rx++) {
+                const c = row[rx];
+                if (c === ".") continue;
+                ctx.fillStyle = c === "o" ? "rgba(255, 177, 74, 0.95)" : "rgba(24, 12, 36, 0.95)";
+                ctx.fillRect(ox + rx * DOT, oy + ry * DOT, DOT, DOT);
+            }
+        });
+        // 変身の煙（ドットが外へ広がって消える）
+        if (sp.puff > 0) {
+            const t = 1 - sp.puff / 0.28;
+            ctx.fillStyle = `rgba(217, 206, 244, ${(1 - t).toFixed(2)})`;
+            for (let k = 0; k < 8; k++) {
+                const a = (k / 8) * Math.PI * 2;
+                const r = 6 + t * 18;
+                ctx.fillRect(Math.round((sp.cx + Math.cos(a) * r) / DOT) * DOT, Math.round((sp.cy + Math.sin(a) * r) / DOT) * DOT, DOT * 2, DOT * 2);
+            }
+        }
+    }
 }
+
+// コウモリが変身する蜘蛛（11×7 ドット、2枚で脚が動く。o = 目）
+const SPIDER_FRAMES = [
+    [
+        "X.X.....X.X",
+        ".X.X...X.X.",
+        "..XXXXXXX..",
+        "XXXoXXXoXXX",
+        "..XXXXXXX..",
+        ".X.X...X.X.",
+        "X...X.X...X",
+    ],
+    [
+        ".X.X...X.X.",
+        "X..X...X..X",
+        "..XXXXXXX..",
+        "XXXoXXXoXXX",
+        "..XXXXXXX..",
+        "X.X.....X.X",
+        ".X..X.X..X.",
+    ],
+];
+
+// 降ってくる小さなコウモリ（11×5 ドット、2枚で羽ばたき）
+const MINI_BAT_FRAMES = [
+    [
+        "X.........X",
+        "XX..X.X..XX",
+        ".XXXXXXXXX.",
+        "...XXXXX...",
+        "....X.X....",
+    ],
+    [
+        "....X.X....",
+        "....XXX....",
+        ".XXXXXXXXX.",
+        "XX..XXX..XX",
+        "X.........X",
+    ],
+];
 
 /* ---------- 説明会の表示の自動切り替え ----------
    [data-briefing-open]   : 受付中だけ表示（申し込みボタン・説明文）
@@ -420,4 +730,274 @@ function initBriefingSwitch() {
     });
 
     update();
+}
+
+/* ---------- ハロウィン: FV のコウモリ登場アニメーション ----------
+   ページを開いたときに1回だけ、今見えている画面の奥（中央）から手前へコウモリが飛んでくる
+   （再読み込みでページの途中が表示されていても、その画面の上で再生する）。
+   動きは CSS（styles.css の .bat-intro）で、コウモリごとの方向・速さ・出現タイミング・拡大率を
+   CSS 変数でランダムに渡す。終わったら要素ごと削除する。動きを減らす設定のときは再生しない */
+const BAT_FRAMES = {
+    // 16×9 ドット（X = 体・翼の縁 / w = 翼の膜）。2枚を交互に表示して羽ばたかせる
+    up: [
+        "X..............X",
+        "XX............XX",
+        "XwX...X..X...XwX",
+        "XwwX..XXXX..XwwX",
+        "XwwwXXXXXXXXwwwX",
+        ".XwwwXXXXXXwwwX.",
+        "..XXX.XXXX.XXX..",
+        ".......XX.......",
+        "................",
+    ],
+    down: [
+        "................",
+        "......X..X......",
+        "......XXXX......",
+        "..XXXXXXXXXXXX..",
+        ".XwwwXXXXXXwwwX.",
+        "XwwwX.XXXX.XwwwX",
+        "XwwX...XX...XwwX",
+        "XwX..........XwX",
+        "X..............X",
+    ],
+};
+
+// ドット絵をそのまま SVG の四角形に変換（ぼかしなしで拡大できる）
+function batFrameSvg(rows, cls) {
+    const paths = { X: "", w: "" };
+    rows.forEach((row, y) => {
+        [...row].forEach((c, x) => {
+            if (paths[c] !== undefined) paths[c] += `M${x} ${y}h1v1h-1z`;
+        });
+    });
+    return `<g class="${cls}"><path class="bat__body" d="${paths.X}"/><path class="bat__wing" d="${paths.w}"/></g>`;
+}
+
+function playHalloweenBats() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const isSp = window.matchMedia("(max-width: 767px)").matches;
+    const count = isSp ? 9 : 14;
+    const random = (min, max) => min + Math.random() * (max - min);
+    const svg = `<svg viewBox="0 0 16 9" aria-hidden="true">${batFrameSvg(BAT_FRAMES.up, "bat__up")}${batFrameSvg(BAT_FRAMES.down, "bat__down")}</svg>`;
+
+    const layer = document.createElement("div");
+    layer.className = "bat-intro";
+    layer.setAttribute("aria-hidden", "true");
+
+    let total = 0;
+    for (let i = 0; i < count; i++) {
+        const bat = document.createElement("div");
+        bat.className = "bat-intro__bat";
+        // 方向を均等に散らし（少しずつ揺らす）、画面の外まで飛ばす
+        const angle = (i / count) * Math.PI * 2 + random(-0.35, 0.35);
+        const dist = random(70, 95); // 画面の長辺に対する %（vmax 単位）
+        // 暗転が明けはじめる 0.25 秒後から、順番に少しずつずらして飛び出す
+        const delay = 0.25 + (i / count) * 0.45 + random(0, 0.12);
+        const dur = random(1.4, 1.75);
+        total = Math.max(total, delay + dur);
+        bat.style.cssText = [
+            `--x0: ${random(-6, 6).toFixed(1)}vmin`,
+            `--y0: ${random(-4, 4).toFixed(1)}vmin`,
+            `--tx: ${(Math.cos(angle) * dist).toFixed(1)}vmax`,
+            `--ty: ${(Math.sin(angle) * dist * 0.75).toFixed(1)}vmax`,
+            `--s1: ${random(2, 3.4).toFixed(2)}`,
+            `--rot: ${random(-18, 18).toFixed(0)}deg`,
+            `--dur: ${dur.toFixed(2)}s`,
+            `--delay: ${delay.toFixed(2)}s`,
+            `--flap: ${random(0.16, 0.24).toFixed(2)}s`,
+        ].join(";");
+        bat.innerHTML = svg;
+        layer.appendChild(bat);
+    }
+
+    document.body.appendChild(layer);
+    // 全員が飛び去ったら削除（最大でも約2.6秒）
+    setTimeout(() => layer.remove(), (total + 0.1) * 1000);
+}
+
+/* ---------- ハロウィン: ランタンで夜にする ----------
+   ランタンを押す（クリック・タップ・Enter/Space）たびに、点灯 ⇔ 消灯を切り替える。
+   状態は <html data-lantern="on|off"> で持ち、消灯のときは CSS（body::after）が画面全体に暗い幕を重ねる。
+   再読み込みすると点灯（初期状態）に戻る。
+   火が消えたランタンの画像を用意したら、LANTERN_OFF_SRC に指定すると画像も連動して切り替わる */
+const LANTERN_OFF_SRC = "images/冬合宿LP＿イラスト＿svg＿ハロウィン/ランタン＿消灯＿h.svg";
+
+function initLanternSwitch() {
+    const lantern = document.querySelector(".schedule__lantern");
+    if (!lantern) return;
+    const root = document.documentElement;
+    const onSrc = lantern.dataset.halloweenSrc || lantern.getAttribute("src");
+
+    // 画像をボタンとして扱う（キーボード操作・読み上げに対応）
+    lantern.setAttribute("role", "button");
+    lantern.setAttribute("tabindex", "0");
+    lantern.setAttribute("aria-label", "ランタンの明かりを切り替える");
+
+    const setLit = (lit) => {
+        root.dataset.lantern = lit ? "on" : "off";
+        lantern.setAttribute("aria-pressed", String(!lit));
+        if (LANTERN_OFF_SRC) lantern.src = lit ? onSrc : LANTERN_OFF_SRC;
+    };
+    const toggle = () => setLit(root.dataset.lantern === "off");
+
+    lantern.addEventListener("click", toggle);
+    lantern.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            toggle();
+        }
+    });
+
+    setLit(true);
+}
+
+/* ---------- ハロウィン: テントを押すと黒猫が出てきて歩き去る ----------
+   猫は images/…ハロウィン/猫/cat_1〜cat_10.svg の10枚を順に切り替えるコマ送り（約10fps）。
+   ① テントの後ろから歩いて出てくる
+   ② 0.5秒ほど立ち止まる（静止コマ cat_5）
+   ③ そのまま歩いて画面の外へ（PC は右へ、SP は左へ。SP は少し小さく表示）
+   原画は左向きなので、右へ進む PC だけ表示側で左右反転する（移動の transform は .hw-cat、反転は .hw-cat__sprite と要素を分ける）。
+   移動はコマ送りと連動（1コマで CAT_STEP ドット前進）させ、足が地面を滑らないようにする。
+   猫がいる間はテントを押しても新しい猫は出さない */
+const CAT_DIR = "images/冬合宿LP＿イラスト＿svg＿ハロウィン/猫/";
+// 各コマの大きさ（ドット数。原画の 1 ドット = viewBox の 7）と、耳の先の列。
+// 原画はコマごとに絵ぴったりで切り抜かれているため、耳の先の列と足元（下端）をそろえて重ねる
+const CAT_ART = [
+    { w: 35, h: 30, ear: 3 },
+    { w: 34, h: 31, ear: 3 },
+    { w: 37, h: 31, ear: 6 },
+    { w: 33, h: 30, ear: 3 },
+    { w: 33, h: 28, ear: 3 },
+    { w: 33, h: 30, ear: 3 },
+    { w: 35, h: 32, ear: 5 },
+    { w: 38, h: 34, ear: 3 },
+    { w: 34, h: 33, ear: 3 },
+    { w: 35, h: 31, ear: 3 },
+];
+const CAT_FRAMES = CAT_ART.length;
+const CAT_EAR = Math.max(...CAT_ART.map((a) => a.ear)); // 共通の表示領域での耳の先の列
+const CAT_W = Math.max(...CAT_ART.map((a) => CAT_EAR - a.ear + a.w)); // 共通の表示領域（ドット数）
+const CAT_H = Math.max(...CAT_ART.map((a) => a.h));
+const CAT_NOSE = CAT_EAR - 3; // 鼻先の列（原画の向き＝左向きで数える）
+const CAT_FRAME_MS = 100; // 1コマの長さ（10fps、10コマで1周約1秒）
+const CAT_STEP = 2.5; // 1コマで進むドット数（接地している足が原画で1コマに動く量の平均）
+const CAT_STILL = 4; // 立ち止まるときのコマ（cat_5）
+const CAT_BACK = CAT_EAR - CAT_ART[CAT_STILL].ear + CAT_ART[CAT_STILL].w; // 静止コマのお尻・しっぽ側の端の列
+const CAT_SP_SCALE = 0.7; // SP の大きさ（PC 比）
+
+function initTentCat() {
+    const tent = document.querySelector(".fv__tent");
+    const scene = tent && tent.parentElement;
+    if (!tent || !scene) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let active = false;
+
+    // 10枚を先に読み込んでおき、切り替えたときのちらつきを防ぐ
+    const srcs = CAT_ART.map((_, i) => `${CAT_DIR}cat_${i + 1}.svg`);
+    srcs.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+    });
+
+    tent.classList.add("is-cat-tent");
+
+    tent.addEventListener("click", () => {
+        if (active) return; // 連打しても1匹だけ
+        active = true;
+
+        // テントの位置を基準に計算（テントの画像は左右反転して表示している）
+        const sr = scene.getBoundingClientRect();
+        const tr = tent.getBoundingClientRect();
+        const tentLeft = tr.left - sr.left;
+        // PC: テントの右から出て、テントの奥側（右の木の後ろ）を右へ。
+        // SP: 右は木がテントのすぐ横にあり隠れてしまうため、テントの左の裾から出て BBQ の後ろを左へ
+        const isSp = window.matchMedia("(max-width: 767px)").matches;
+        const dir = isSp ? -1 : 1;
+        const ground = tr.top - sr.top + tr.height * (isSp ? 0.63 : 0.62);
+        // 1ドットを端末の整数ピクセルにして輪郭をくっきり
+        const dpr = window.devicePixelRatio || 1;
+        const snap = (v) => Math.round(v * dpr) / dpr;
+        const baseDot = Math.max(2, Math.round((tr.width * 0.12) / 30 / 2) * 2);
+        const dot = isSp ? Math.max(1, Math.round(baseDot * CAT_SP_SCALE * dpr)) / dpr : baseDot;
+        const catW = dot * CAT_W;
+        const catH = dot * CAT_H;
+        // はじめはテントの後ろに隠れている（PC は右端、SP は鼻先が左の斜面の少し内側）
+        const startLeft = isSp ? tentLeft + tr.width * 0.2 - CAT_NOSE * dot : tentLeft + tr.width * 0.84 - catW;
+
+        const cat = document.createElement("div");
+        cat.className = isSp ? "hw-cat hw-cat--left" : "hw-cat";
+        cat.style.cssText = `left:${snap(startLeft)}px;top:${snap(ground - dot - catH)}px;width:${catW}px;height:${catH}px`;
+        cat.innerHTML = `<div class="hw-cat__sprite">${CAT_ART.map(
+            (a, i) =>
+                `<img src="${srcs[i]}" alt="" width="${a.w * dot}" height="${a.h * dot}" style="left:${(CAT_EAR - a.ear) * dot}px">`
+        ).join("")}</div>`;
+        // テント・右の木・BBQ より奥に置く（テントの後ろから出て、木や BBQ の後ろを通って去る）
+        const back = scene.querySelector(".fv__tree-right") || tent;
+        scene.insertBefore(cat, back);
+
+        const frames = [...cat.querySelectorAll("img")];
+        let x = 0; // 進んだドット数
+        let f = 0;
+        let timer = 0;
+        let done = false;
+        const show = (n) => frames.forEach((el, i) => el.classList.toggle("is-on", i === n));
+        const place = () => (cat.style.transform = `translate3d(${snap(dir * x * dot)}px, 0, 0)`);
+        const finish = () => {
+            if (done) return;
+            done = true;
+            clearTimeout(timer);
+            cat.remove();
+            active = false;
+        };
+
+        // 立ち止まる位置: しっぽ側の端がテントから出たところ（PC は右の木にかからないよう、テントのすぐ横）
+        const outDots = isSp ? Math.ceil((startLeft + CAT_BACK * dot - (tentLeft + tr.width * 0.12)) / dot) : CAT_W - 10;
+
+        if (reduceMotion.matches) {
+            // 動きを減らす設定: テントの横に立っているだけで、少しして消える
+            x = outDots;
+            place();
+            show(CAT_STILL);
+            timer = setTimeout(finish, 1600);
+            return;
+        }
+
+        // 歩く: 1コマごとに step ドット前進して次のコマへ。until() を満たしたら next()
+        const walk = (step, until, next) => {
+            const tick = () => {
+                if (done) return;
+                x += step;
+                f = (f + 1) % CAT_FRAMES;
+                place();
+                show(f);
+                if (until()) return next();
+                timer = setTimeout(tick, CAT_FRAME_MS);
+            };
+            timer = setTimeout(tick, CAT_FRAME_MS);
+        };
+
+        // ① ちょうど cat_5 で立ち止まる位置に着くよう、歩き出しのコマと1コマの歩幅を合わせる
+        const inFrames = Math.max(1, Math.round(outDots / CAT_STEP));
+        f = (((CAT_STILL - inFrames) % CAT_FRAMES) + CAT_FRAMES) % CAT_FRAMES;
+        place();
+        show(f);
+        // 体が画面の外へ出きるまでのドット数
+        const visibleLeft = Math.max(sr.left, 0) - sr.left;
+        const visibleRight = Math.min(sr.right, document.documentElement.clientWidth) - sr.left;
+        const exitDots = Math.ceil((isSp ? startLeft + catW - visibleLeft : visibleRight - startLeft) / dot) + 1;
+
+        walk(
+            outDots / inFrames,
+            () => x >= outDots - 0.01,
+            () => {
+                // ② 立ち止まる
+                timer = setTimeout(() => {
+                    // ③ 歩いて画面の外へ
+                    walk(CAT_STEP, () => x >= exitDots, finish);
+                }, 500);
+            }
+        );
+    });
 }

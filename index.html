@@ -9,7 +9,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Jersey+10&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261022a">
+    <link rel="stylesheet" href="styles.css?v=20261029o">
+    <script>
+        // ローカルでは常時ハロウィン表示、公開環境では ?theme=halloween のときだけ切り替える。
+        // CSS より先に判定して、通常デザインが一瞬表示されるのを防ぐ。
+        (() => {
+            const theme = new URLSearchParams(location.search).get("theme");
+            const host = location.hostname;
+            const isLocal = host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "[::1]";
+            if (theme === "halloween" || isLocal) {
+                document.documentElement.dataset.theme = "halloween";
+                // ハロウィン用の画像がある <img> だけ参照先を差し替える（data-halloween-src）
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.querySelectorAll("img[data-halloween-src]").forEach((img) => {
+                        img.src = img.dataset.halloweenSrc;
+                    });
+                });
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- 背景の雪（背景色のすぐ上の層。文字・イラストより下） -->
@@ -76,11 +94,11 @@
                     <img src="images/冬合宿LP＿イラスト＿svg/FV＿木＿積雪＿２.svg" alt="" class="fv__tree-right" width="1097" height="1434">
                     <img src="images/冬合宿LP＿イラスト＿svg/FV＿雪の結晶＿左.svg" alt="" class="fv__flake-left" width="114" height="80">
                     <img src="images/冬合宿LP＿イラスト＿svg/FV＿雪の結晶＿右.svg" alt="" class="fv__flake-right" width="471" height="468">
-                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿テント.svg" alt="" class="fv__tent" width="1448" height="1086">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿テント.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/FV＿テント＿h.svg" alt="" class="fv__tent" width="1448" height="1086">
                     <img src="images/冬合宿LP＿イラスト＿svg/FV＿積雪＿小.svg" alt="" class="fv__snow-small" width="566" height="339">
-                    <img src="images/冬合宿LP＿イラスト＿svg/BBQ＿人あり.svg" alt="" class="fv__bbq" width="1536" height="1024">
+                    <img src="images/冬合宿LP＿イラスト＿svg/BBQ＿人あり.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/BBQ＿人あり＿h.svg" alt="" class="fv__bbq" width="1536" height="1024">
                     <img src="images/冬合宿LP＿イラスト＿svg/FV＿積雪＿大.svg" alt="" class="fv__snow-large" width="1254" height="1254">
-                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿集団.svg" alt="" class="fv__group" width="1300" height="1004">
+                    <img src="images/冬合宿LP＿イラスト＿svg/FV＿集団.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/FV＿集団＿h.svg" alt="" class="fv__group" width="1300" height="1004">
                 </div>
 
                 <div class="fv__cta">
@@ -98,7 +116,7 @@
             <h2 class="section-title" id="overview-title">申込概要</h2>
             <ul class="overview__list">
                 <li class="overview__card pixel-card">
-                    <div class="overview__icon overview__icon--date"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿開催日程.svg" alt="" width="1254" height="1254" loading="lazy"></div>
+                    <div class="overview__icon overview__icon--date"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿開催日程.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/申込概要＿開催日程＿h.svg" alt="" width="1254" height="1254" loading="lazy"></div>
                     <h3 class="overview__label">開催日程</h3>
                     <p class="overview__date">
                         <span class="overview__date-day"><b>12</b>月<b>26</b>日(土)</span>
@@ -108,7 +126,7 @@
                     </p>
                 </li>
                 <li class="overview__card pixel-card">
-                    <div class="overview__icon overview__icon--venue"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿会場.svg" alt="" width="1402" height="1122" loading="lazy"></div>
+                    <div class="overview__icon overview__icon--venue"><img src="images/冬合宿LP＿イラスト＿svg/申込概要＿会場.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/申込概要＿会場＿h.svg" alt="" width="1402" height="1122" loading="lazy"></div>
                     <h3 class="overview__label">会場</h3>
                     <p class="overview__value">ロゴスランド京都</p>
                 </li>
@@ -194,7 +212,7 @@
 
         <!-- 合宿の流れ -->
         <section class="section schedule" id="schedule" aria-labelledby="schedule-title">
-            <img src="images/冬合宿LP＿イラスト＿svg/ランタン.svg" alt="" class="schedule__lantern" width="1223" height="1286" loading="lazy">
+            <img src="images/冬合宿LP＿イラスト＿svg/ランタン.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/ランタン＿h.svg" alt="" class="schedule__lantern" width="1223" height="1286" loading="lazy">
             <h2 class="section-title" id="schedule-title">合宿の流れ</h2>
             <p class="section-lead">短期集中でグループ開発を通じて<br class="schedule__br-sp">実務としてのプログラミングに取り組みます。</p>
             <ol class="schedule__list">
@@ -216,7 +234,7 @@
 
         <!-- 前回の合宿の様子 -->
         <section class="section gallery" id="gallery" aria-labelledby="gallery-title">
-            <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿おいかけっこ.svg" alt="" class="gallery__kids" width="1312" height="1199" loading="lazy">
+            <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿おいかけっこ.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/昨年の様子＿おいかけっこ＿h.svg" alt="" class="gallery__kids" width="1312" height="1199" loading="lazy">
             <img src="images/冬合宿LP＿イラスト＿svg/FV＿雪の結晶＿右.svg" alt="" class="gallery__flake-top" width="471" height="468" loading="lazy">
             <img src="images/冬合宿LP＿イラスト＿svg/木＿積雪＿１.svg" alt="" class="gallery__tree" width="951" height="1144" loading="lazy">
             <h2 class="section-title" id="gallery-title">前回の合宿の様子</h2>
@@ -240,7 +258,7 @@
                 </div>
             </div>
 
-            <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿雪だるま.svg" alt="" class="gallery__snowman" width="1327" height="1186" loading="lazy">
+            <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿雪だるま.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/雪だるま＿h.svg" alt="" class="gallery__snowman" width="1327" height="1186" loading="lazy">
             <img src="images/冬合宿LP＿イラスト＿svg/昨年の様子＿雪の結晶.svg" alt="" class="gallery__flake-bottom" width="1021" height="529" loading="lazy">
         </section>
 
@@ -251,7 +269,7 @@
                 <ul class="voice__list">
                     <li class="voice__card pixel-card">
                         <div class="voice__head">
-                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿男子学生.svg" alt="" width="826" height="969" loading="lazy"></span></div>
+                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿男子学生.svg" alt="" width="826" height="969" loading="lazy"><img src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/参加者の声＿男子学生＿h.svg" alt="" class="voice__avatar-night voice__avatar-night--boy" loading="lazy"></span></div>
                             <p class="voice__label pixel-card">中2男子・京都校</p>
                         </div>
                         <h3 class="voice__title">いつもは1人で悩んでしまうけど・・・<br><mark>合宿で同じように頑張る仲間に<br>出会えました！</mark></h3>
@@ -261,7 +279,7 @@
                     </li>
                     <li class="voice__card pixel-card">
                         <div class="voice__head">
-                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" alt="" width="779" height="932" loading="lazy"></span></div>
+                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿女子学生.svg" alt="" width="779" height="932" loading="lazy"><img src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/参加者の声＿女子学生＿h.svg" alt="" class="voice__avatar-night voice__avatar-night--girl" loading="lazy"></span></div>
                             <p class="voice__label pixel-card">高2女子・梅田校</p>
                         </div>
                         <h3 class="voice__title">難しそうだった機械学習も、<br><mark>楽しく学べて友達も増えました！</mark></h3>
@@ -271,7 +289,7 @@
                     </li>
                     <li class="voice__card pixel-card">
                         <div class="voice__head">
-                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" alt="" width="820" height="946" loading="lazy"></span></div>
+                            <div class="voice__avatar pixel-card"><span class="voice__avatar-inner"><img src="images/冬合宿LP＿イラスト＿svg/参加者の声＿保護者.svg" alt="" width="820" height="946" loading="lazy"><img src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/参加者の声＿保護者＿h.svg" alt="" class="voice__avatar-night voice__avatar-night--parent" loading="lazy"></span></div>
                             <p class="voice__label pixel-card">中2保護者</p>
                         </div>
                         <h3 class="voice__title">帰ってからも<br class="voice__br-sp">「もっとやりたかった」と<br>話すほど、<br><mark>充実した3日間だったようです。</mark></h3>
@@ -361,8 +379,10 @@
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSf_3AdpF3JDJh3WRBll85fIAoghrh-oY9J5MlyVynWfEVRELw/viewform" target="_blank" rel="noopener noreferrer" class="apply-button apply-button--sub" data-briefing-link data-briefing-open>説明会に申し込む</a>
                     <p class="briefing-closed" data-briefing-closed hidden>説明会への参加をご希望される方は、<br class="briefing-closed__br">所属校へお問い合わせください。</p>
                 </div>
-                <img src="images/冬合宿LP＿イラスト＿svg/プログラミング＿男子.svg" alt="" class="apply__boy" width="1312" height="1199" loading="lazy">
+                <img src="images/冬合宿LP＿イラスト＿svg/プログラミング＿男子.svg" data-halloween-src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/プログラミング＿男子＿h.svg" alt="" class="apply__boy" width="1312" height="1199" loading="lazy">
             </div>
+            <!-- ハロウィンでランタンを消したときだけ現れるお化け（暗い幕より手前に出すため、カードの外に置く） -->
+            <img src="images/冬合宿LP＿イラスト＿svg＿ハロウィン/お化け.svg" alt="" class="apply__ghost" width="163" height="150" loading="lazy">
         </section>
     </main>
 
@@ -392,6 +412,6 @@
 
     <p class="apply-toast" data-apply-toast role="status" aria-live="polite" hidden></p>
 
-    <script src="script.js?v=20261020a"></script>
+    <script src="script.js?v=20261029o"></script>
 </body>
 </html>

@@ -3084,3 +3084,415 @@ mark {
         letter-spacing: 0.06em;
     }
 }
+
+/* =========================================================
+   テーマ: ハロウィン（localhost では常時、公開環境では URL に ?theme=halloween のときだけ）
+   ハロウィン用のスタイルは、すべて :root[data-theme="halloween"] から始めて書く。
+   例）:root[data-theme="halloween"] { --sky: ...; }
+       :root[data-theme="halloween"] .fv { ... }
+   通常の表示には一切影響しない。
+   ========================================================= */
+
+/* ---------- ハロウィン: 背景色 ----------
+   色の変数（--sky / --blue / --navy）は文字・ボタンにも使っているため変数は変えず、
+   背景を塗っている箇所だけを上書きする */
+:root[data-theme="halloween"] {
+    --hw-bg-base: #b6b9e8; /* 基本背景: 水色 → ラベンダーブルー */
+    --hw-bg-program: #5a4e9d; /* 学習プログラム: 青 → ディープバイオレット */
+}
+
+:root[data-theme="halloween"] body {
+    background: var(--hw-bg-base);
+}
+
+:root[data-theme="halloween"] .program::before {
+    background: var(--hw-bg-program);
+}
+
+:root[data-theme="halloween"] .site-footer {
+    background: #241b42; /* フッター: ネイビー → ミッドナイトパープル */
+}
+
+/* SP・タブレットの全画面メニューも基本背景と同じ色に */
+@media (max-width: 1023px) {
+    :root[data-theme="halloween"] .global-nav {
+        background: var(--hw-bg-base);
+    }
+}
+
+/* ランタン: ハロウィンのときだけ押せるようにする（点灯・消灯は script.js の initLanternSwitch） */
+:root[data-theme="halloween"] .schedule__lantern {
+    z-index: 3;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 消灯したランタン（ランタン＿消灯＿h.svg）は余白なしの縦長（85.8×159.0）で、点灯版（1223×1286、余白あり）と
+   キャンバスが違う。絵の高さ・左上の位置が点灯時と同じになるよう、幅と位置を換算して指定する */
+:root[data-theme="halloween"][data-lantern="off"] .schedule__lantern {
+    width: calc(87.4 * var(--s));
+    margin: calc(12.1 * var(--s)) 0 0 calc(49.85 * var(--s));
+}
+
+@media (max-width: 767px) {
+    :root[data-theme="halloween"][data-lantern="off"] .schedule__lantern {
+        width: 35.6px;
+        margin: 4.9px 0 0 20.3px;
+    }
+}
+
+:root[data-theme="halloween"] .schedule__lantern:focus-visible {
+    outline: 3px solid var(--cream);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* 降ってくるコウモリの上では指のカーソル（押すと蜘蛛に変身。script.js の initBatToSpider） */
+:root[data-theme="halloween"].is-over-bat,
+:root[data-theme="halloween"].is-over-bat body {
+    cursor: pointer;
+}
+
+/* ---------- ハロウィン: テントの黒猫（script.js の initTentCat） ---------- */
+:root[data-theme="halloween"] .fv__tent.is-cat-tent {
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root[data-theme="halloween"] .hw-cat {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform; /* 右への移動（script.js が translate3d で動かす） */
+}
+
+/* 原画は左向きなので、右へ進む PC はここで左右反転して右向きにする（移動の transform と分けている） */
+:root[data-theme="halloween"] .hw-cat__sprite {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(-1);
+}
+
+/* SP は左へ進むので、原画の向き（左向き）のまま */
+:root[data-theme="halloween"] .hw-cat--left .hw-cat__sprite {
+    transform: none;
+}
+
+/* cat_1〜cat_10 を足元（下端）と耳の先をそろえて重ね、表示中の1枚だけに is-on を付けて瞬時に切り替える。
+   隠すコマも visibility で残しておき、切り替えのときに読み込み・描画し直さないようにする */
+:root[data-theme="halloween"] .hw-cat__sprite img {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    max-width: none;
+    visibility: hidden;
+}
+
+:root[data-theme="halloween"] .hw-cat__sprite img.is-on {
+    visibility: visible;
+}
+
+/* ---------- ハロウィン: 夜モード（ランタンを消すと <html data-lantern="off">） ----------
+   画面全体に半透明の暗い幕を重ね、背景・カード・文字・イラスト・追従メニュー・ボタンまで
+   まとめて暗くする。画面に固定（スクロールしても暗いまま）で、クリック・スクロールは素通り */
+:root[data-theme="halloween"] {
+    --hw-night-overlay: rgba(12, 8, 33, 0.68);
+    --hw-night-fade: 0.8s ease;
+}
+
+:root[data-theme="halloween"] body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 90; /* 追従メニュー（50）・コウモリ（40）より手前、開いたときの暗転（95）より奥 */
+    background: var(--hw-night-overlay);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--hw-night-fade), visibility 0s linear 0.8s;
+}
+
+:root[data-theme="halloween"][data-lantern="off"] body::after {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--hw-night-fade), visibility 0s;
+}
+
+/* 夜のあいだだけ現れるお化け（申し込み・お問い合わせ）。
+   カードの右下の角に、左下の男の子と左右対称になるよう置き、絵の大きさは男の子より少し小さくする
+   （男の子の画像は周りに余白があり、絵の幅は画像の約91%）。
+   暗い幕（90）より手前に出してはっきり見せる。カードは isolation で重なりが閉じているため、カードの外（.apply 直下）に置く */
+.apply__ghost {
+    display: none; /* 通常テーマでは出さない */
+}
+
+:root[data-theme="halloween"] .apply__ghost {
+    display: block;
+    z-index: 91; /* 暗い幕（90）より手前、開いたときの暗転（95）より奥 */
+    right: calc((100% - 965 * var(--sx)) / 2 - 182 * var(--s));
+    bottom: calc(53 * var(--s));
+    width: calc(240 * var(--s)); /* 男の子の絵の約2/3 */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--hw-night-fade), visibility 0s linear 0.8s;
+}
+
+:root[data-theme="halloween"][data-lantern="off"] .apply__ghost {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--hw-night-fade), visibility 0s;
+}
+
+@media (max-width: 767px) {
+    /* SP のカード幅は min(100% - 左右の余白32px, 560px)。男の子（カード幅の46%・最大180px）の絵の約2/3にする */
+    :root[data-theme="halloween"] .apply__ghost {
+        right: calc((100% - min(100% - 32px, 560px)) / 2 - 13px);
+        bottom: 41px;
+        width: min((100% - 32px) * 0.28, 108px);
+    }
+}
+
+/* 夜のあいだは参加者の声のアイコンをハロウィンの仮装（＿h）に切り替える（暗い幕はそのままかかる）。
+   仮装の絵は顔の大きさ・位置が元と違うため、両目の位置が元のアイコンと重なるよう、幅・位置を枠の内側に対する % で指定。
+   帽子・耳などのはみ出しは枠（.voice__avatar-inner の overflow: hidden）で切り取る */
+.voice__avatar-night {
+    display: none; /* 通常テーマでは出さない */
+}
+
+:root[data-theme="halloween"] .voice__avatar img.voice__avatar-night {
+    display: block;
+    visibility: hidden;
+    max-width: none;
+    translate: none;
+}
+
+:root[data-theme="halloween"][data-lantern="off"] .voice__avatar img {
+    visibility: hidden;
+}
+
+:root[data-theme="halloween"][data-lantern="off"] .voice__avatar img.voice__avatar-night {
+    visibility: visible;
+}
+
+:root[data-theme="halloween"] .voice__avatar-night--boy {
+    left: -5.5%;
+    top: 1.5%;
+    width: 96.3%;
+}
+
+:root[data-theme="halloween"] .voice__avatar-night--girl {
+    left: -26.7%;
+    top: -18.1%;
+    width: 141%;
+}
+
+:root[data-theme="halloween"] .voice__avatar-night--parent {
+    /* 顔の大きさを元どおりにすると他の2人より小さく見えるため、目の位置を中心に約1.2倍にしている */
+    left: 2%; /* 右側に余白が出ないよう、目の位置より少し右へ寄せている */
+    top: 7.9%;
+    width: 93.1%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="halloween"] body::after,
+    :root[data-theme="halloween"] .apply__ghost {
+        transition: none;
+    }
+}
+
+/* ---------- ハロウィン: アクセントカラー（UI の青・水色 → 紫系） ----------
+   色の変数を紫に置き換える。背景3色は上の専用指定で固定しているので変わらない。
+   画像（イラスト・雪の結晶など）には一切手を加えない */
+:root[data-theme="halloween"] {
+    --hw-accent: #604a9b; /* メインアクセント */
+    --hw-accent-light: #d9cef4; /* 淡いアクセント */
+    --hw-dark: #3a2a64; /* UI の影・枠線 */
+    --hw-orange: #ffb14a; /* 小さなアクセント */
+
+    --blue: var(--hw-accent); /* ボタンの枠線・文字、見出しの文字、FAQ アイコン、点線など */
+    --sky: var(--hw-accent); /* ラベル、キャッチ、CHAPTER の見出しなど */
+    --photo-shadow: var(--hw-dark); /* 写真の影 */
+}
+
+/* UI の影・枠線は濃い紫に */
+:root[data-theme="halloween"] .pixel-card,
+:root[data-theme="halloween"] .voice__label,
+:root[data-theme="halloween"] .program__panel {
+    --shade: var(--hw-dark);
+}
+
+:root[data-theme="halloween"] .voice__card,
+:root[data-theme="halloween"] .voice__avatar {
+    --bc: var(--hw-dark);
+}
+
+/* 説明会ボタン（白地）: 枠線・文字・矢印は紫、影は濃い紫、ホバーは淡い紫 */
+:root[data-theme="halloween"] .apply-button--sub {
+    box-shadow: var(--sx) var(--sy) 0 var(--hw-dark);
+}
+
+:root[data-theme="halloween"] .apply-button--sub:hover {
+    background: var(--hw-accent-light);
+    box-shadow: calc(var(--sx) + 1px) calc(var(--sy) + 2px) 0 var(--hw-dark);
+}
+
+:root[data-theme="halloween"] .apply-button--sub:active {
+    box-shadow: 0 0 0 var(--hw-dark);
+}
+
+/* 色を直接指定している箇所 */
+:root[data-theme="halloween"] .features__num {
+    color: var(--hw-accent);
+}
+
+/* 合宿の流れの見出し: CHAPTER 部分とタイトル部分を別々の色に（3つ共通） */
+:root[data-theme="halloween"] {
+    --hw-schedule-chapter: #3a2a64; /* CHAPTER 1〜3 */
+    --hw-schedule-title: #a55224; /* ベースアプリの完成 / グループ開発 / 発表 */
+}
+
+:root[data-theme="halloween"] .schedule__chapter {
+    color: var(--hw-schedule-chapter);
+}
+
+:root[data-theme="halloween"] .schedule__title {
+    color: var(--hw-schedule-title);
+}
+
+/* 人物アイコンの枠の中は淡い紫（人物のイラスト自体はそのまま） */
+:root[data-theme="halloween"] .voice__avatar {
+    --face: var(--hw-accent-light);
+}
+
+/* オレンジは「考え抜く力・伝える力・やりきる力」の強調だけに使う */
+:root[data-theme="halloween"] .features__em {
+    --edge: var(--hw-dark);
+    color: var(--hw-orange);
+}
+
+/* ---------- ハロウィン: 雪だるまの画像 ----------
+   ハロウィン版（雪だるま＿h.svg）は余白なしの縦長（402.6×475.6）で、元画像（1327×1186、周りに余白あり）と
+   キャンバスが違う。絵の見た目の高さ・中心・足元の位置が元と同じになるよう、幅と位置を換算して指定する */
+:root[data-theme="halloween"] .gallery__snowman {
+    left: calc(50% + 294.6 * var(--s));
+    bottom: calc(25.1 * var(--s));
+    width: calc(142.6 * var(--s));
+}
+
+@media (max-width: 767px) {
+    :root[data-theme="halloween"] .gallery__snowman {
+        right: 22px;
+        bottom: 9px;
+        width: 72px;
+    }
+}
+
+/* ---------- ハロウィン: 開いたときの暗転 ----------
+   最初の表示から黒い幕で覆い、フェードアウトしてページが現れる（CSS だけで動くのでちらつかない）。
+   コウモリは暗転が明けはじめるころに飛び出す */
+:root[data-theme="halloween"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 95; /* すべての要素より手前（申し込みの通知より奥） */
+    background: #0b0612;
+    pointer-events: none;
+    animation: halloween-curtain 1.1s ease-out 0.25s both;
+}
+
+/* 念のための後片付け（script.js が2秒後に付ける） */
+:root[data-theme="halloween"].is-curtain-done body::before {
+    display: none;
+}
+
+@keyframes halloween-curtain {
+    from { opacity: 1; }
+    to { opacity: 0; visibility: hidden; }
+}
+
+/* ---------- ハロウィン: コウモリ登場アニメーション（script.js の playHalloweenBats） ----------
+   今見えている画面全体に重ねる演出レイヤー（スクロール位置に関係なく画面に固定）。
+   クリック・スクロールは下の要素にそのまま届く */
+:root[data-theme="halloween"] .bat-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 40; /* ページの内容より手前、追従メニュー（50）と暗転の幕（95）より奥 */
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* 奥（画面の中央やや上）から出発し、拡大しながら外へ散る */
+:root[data-theme="halloween"] .bat-intro__bat {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    width: 84px;
+    margin: -24px 0 0 -42px;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: bat-fly var(--dur) cubic-bezier(0.45, 0, 0.75, 1) var(--delay) both;
+}
+
+:root[data-theme="halloween"] .bat-intro__bat svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    shape-rendering: crispEdges; /* ドットの輪郭をぼかさない */
+}
+
+:root[data-theme="halloween"] .bat__body {
+    fill: #150a1f;
+}
+
+:root[data-theme="halloween"] .bat__wing {
+    fill: #2c1640;
+}
+
+/* 羽ばたき: 2枚の絵を交互に表示 */
+:root[data-theme="halloween"] .bat__up {
+    animation: bat-flap var(--flap) steps(1) infinite;
+}
+
+:root[data-theme="halloween"] .bat__down {
+    animation: bat-flap var(--flap) steps(1) calc(var(--flap) / -2) infinite;
+}
+
+@keyframes bat-flap {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes bat-fly {
+    0% {
+        opacity: 0;
+        transform: translate3d(var(--x0), var(--y0), 0) scale(0.15) rotate(0deg);
+    }
+    15% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--tx), var(--ty), 0) scale(var(--s1)) rotate(var(--rot));
+    }
+}
+
+@media (max-width: 767px) {
+    :root[data-theme="halloween"] .bat-intro__bat {
+        top: 30%;
+        width: 60px;
+        margin: -17px 0 0 -30px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root[data-theme="halloween"] .bat-intro,
+    :root[data-theme="halloween"] body::before {
+        display: none;
+    }
+}
