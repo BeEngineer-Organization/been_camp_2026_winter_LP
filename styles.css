@@ -3167,17 +3167,11 @@ mark {
     will-change: transform; /* 右への移動（script.js が translate3d で動かす） */
 }
 
-/* 原画は左向きなので、右へ進む PC はここで左右反転して右向きにする（移動の transform と分けている） */
+/* 左へ進むので、原画の向き（左向き）のまま表示する */
 :root[data-theme="halloween"] .hw-cat__sprite {
     position: relative;
     width: 100%;
     height: 100%;
-    transform: scaleX(-1);
-}
-
-/* SP は左へ進むので、原画の向き（左向き）のまま */
-:root[data-theme="halloween"] .hw-cat--left .hw-cat__sprite {
-    transform: none;
 }
 
 /* cat_1〜cat_10 を足元（下端）と耳の先をそろえて重ね、表示中の1枚だけに is-on を付けて瞬時に切り替える。
@@ -3243,12 +3237,18 @@ mark {
     opacity: 1;
     visibility: visible;
     transition: opacity var(--hw-night-fade), visibility 0s;
+    animation: hw-ghost-float 3s ease-in-out infinite; /* 現れているあいだ、ふわふわ上下に浮かぶ */
+}
+
+@keyframes hw-ghost-float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -8%; } /* お化けの高さの約8%ぶん上へ */
 }
 
 @media (max-width: 767px) {
     /* SP のカード幅は min(100% - 左右の余白32px, 560px)。男の子（カード幅の46%・最大180px）の絵の約2/3にする */
     :root[data-theme="halloween"] .apply__ghost {
-        right: calc((100% - min(100% - 32px, 560px)) / 2 - 13px);
+        right: calc((100% - min(100% - 32px, 560px)) / 2 + 2px); /* カードの右端から少し内側（左）へ寄せる */
         bottom: 41px;
         width: min((100% - 32px) * 0.28, 108px);
     }
@@ -3299,6 +3299,11 @@ mark {
     :root[data-theme="halloween"] body::after,
     :root[data-theme="halloween"] .apply__ghost {
         transition: none;
+    }
+
+    /* 動きを減らす設定: 浮かばずに止まったまま */
+    :root[data-theme="halloween"][data-lantern="off"] .apply__ghost {
+        animation: none;
     }
 }
 

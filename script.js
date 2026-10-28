@@ -857,8 +857,8 @@ function initLanternSwitch() {
    猫は images/…ハロウィン/猫/cat_1〜cat_10.svg の10枚を順に切り替えるコマ送り（約10fps）。
    ① テントの後ろから歩いて出てくる
    ② 0.5秒ほど立ち止まる（静止コマ cat_5）
-   ③ そのまま歩いて画面の外へ（PC は右へ、SP は左へ。SP は少し小さく表示）
-   原画は左向きなので、右へ進む PC だけ表示側で左右反転する（移動の transform は .hw-cat、反転は .hw-cat__sprite と要素を分ける）。
+   ③ そのまま左へ歩いて画面の外へ（SP は少し小さく表示）
+   原画の向き（左向き）のまま、テントの左の裾から出て左へ進む。
    移動はコマ送りと連動（1コマで CAT_STEP ドット前進）させ、足が地面を滑らないようにする。
    猫がいる間はテントを押しても新しい猫は出さない */
 const CAT_DIR = "images/冬合宿LP＿イラスト＿svg＿ハロウィン/猫/";
@@ -882,6 +882,8 @@ const CAT_W = Math.max(...CAT_ART.map((a) => CAT_EAR - a.ear + a.w)); // 共通�
 const CAT_H = Math.max(...CAT_ART.map((a) => a.h));
 const CAT_NOSE = CAT_EAR - 3; // 鼻先の列（原画の向き＝左向きで数える）
 const CAT_FRAME_MS = 100; // 1コマの長さ（10fps、10コマで1周約1秒）
+const CAT_FAST_MS = 55; // 立ち止まったあとの1コマの長さ（約18fps）。コマ送りを速めて歩調を上げる（1コマの歩幅は同じなので足は滑らない）
+const CAT_SPEEDUP = 10; // 立ち止まったあと、何コマかけて CAT_FAST_MS まで速めるか
 const CAT_STEP = 2.5; // 1コマで進むドット数（接地している足が原画で1コマに動く量の平均）
 const CAT_STILL = 4; // 立ち止まるときのコマ（cat_5）
 const CAT_BACK = CAT_EAR - CAT_ART[CAT_STILL].ear + CAT_ART[CAT_STILL].w; // 静止コマのお尻・しっぽ側の端の列
@@ -911,11 +913,16 @@ function initTentCat() {
         const sr = scene.getBoundingClientRect();
         const tr = tent.getBoundingClientRect();
         const tentLeft = tr.left - sr.left;
-        // PC: テントの右から出て、テントの奥側（右の木の後ろ）を右へ。
-        // SP: 右は木がテントのすぐ横にあり隠れてしまうため、テントの左の裾から出て BBQ の後ろを左へ
+        // テントの左の裾（テント本体の左端 = 幅の12%、裾の高さ = 高さの63%）から出て、BBQ の後ろを左へ
+        const tentEdge = tentLeft + tr.width * 0.12;
         const isSp = window.matchMedia("(max-width: 767px)").matches;
-        const dir = isSp ? -1 : 1;
-        const ground = tr.top - sr.top + tr.height * (isSp ? 0.63 : 0.62);
+        let ground = tr.top - sr.top + tr.height * 0.63;
+        // PC は BBQ の人の帽子（てっぺんは BBQ 画像の高さの約6.4%）より上を通し、立ち止まったときに足元が隠れないようにする
+        const bbq = scene.querySelector(".fv__bbq");
+        if (!isSp && bbq) {
+            const br = bbq.getBoundingClientRect();
+            ground = Math.min(ground, br.top - sr.top + br.height * 0.064 - 2);
+        }
         // 1ドットを端末の整数ピクセルにして輪郭をくっきり
         const dpr = window.devicePixelRatio || 1;
         const snap = (v) => Math.round(v * dpr) / dpr;
@@ -923,19 +930,18 @@ function initTentCat() {
         const dot = isSp ? Math.max(1, Math.round(baseDot * CAT_SP_SCALE * dpr)) / dpr : baseDot;
         const catW = dot * CAT_W;
         const catH = dot * CAT_H;
-        // はじめはテントの後ろに隠れている（PC は右端、SP は鼻先が左の斜面の少し内側）
-        const startLeft = isSp ? tentLeft + tr.width * 0.2 - CAT_NOSE * dot : tentLeft + tr.width * 0.84 - catW;
+        // はじめはテントの後ろに隠れている（鼻先が左の斜面の少し内側）
+        const startLeft = tentLeft + tr.width * 0.2 - CAT_NOSE * dot;
 
         const cat = document.createElement("div");
-        cat.className = isSp ? "hw-cat hw-cat--left" : "hw-cat";
+        cat.className = "hw-cat";
         cat.style.cssText = `left:${snap(startLeft)}px;top:${snap(ground - dot - catH)}px;width:${catW}px;height:${catH}px`;
         cat.innerHTML = `<div class="hw-cat__sprite">${CAT_ART.map(
             (a, i) =>
                 `<img src="${srcs[i]}" alt="" width="${a.w * dot}" height="${a.h * dot}" style="left:${(CAT_EAR - a.ear) * dot}px">`
         ).join("")}</div>`;
-        // テント・右の木・BBQ より奥に置く（テントの後ろから出て、木や BBQ の後ろを通って去る）
-        const back = scene.querySelector(".fv__tree-right") || tent;
-        scene.insertBefore(cat, back);
+        // テント横の雪の結晶・テント・BBQ より奥、木より手前に置く（テントの後ろから出て、BBQ の後ろを通って去る。FV のタイトル・看板よりも奥）
+        scene.insertBefore(cat, scene.querySelector(".fv__flake-right") || tent);
 
         const frames = [...cat.querySelectorAll("img")];
         let x = 0; // 進んだドット数
@@ -943,7 +949,7 @@ function initTentCat() {
         let timer = 0;
         let done = false;
         const show = (n) => frames.forEach((el, i) => el.classList.toggle("is-on", i === n));
-        const place = () => (cat.style.transform = `translate3d(${snap(dir * x * dot)}px, 0, 0)`);
+        const place = () => (cat.style.transform = `translate3d(${snap(-x * dot)}px, 0, 0)`);
         const finish = () => {
             if (done) return;
             done = true;
@@ -952,8 +958,14 @@ function initTentCat() {
             active = false;
         };
 
-        // 立ち止まる位置: しっぽ側の端がテントから出たところ（PC は右の木にかからないよう、テントのすぐ横）
-        const outDots = isSp ? Math.ceil((startLeft + CAT_BACK * dot - (tentLeft + tr.width * 0.12)) / dot) : CAT_W - 10;
+        // 立ち止まる位置: SP はしっぽ側の端がテントから出たところ。
+        // PC は FV のタイトルのすぐ右（鼻先がタイトルの右端から1ドット離れる位置）で全身を見せる。
+        // どちらも体がテントから出きる位置より手前では止まらない
+        const tentOutDots = Math.ceil((startLeft + CAT_BACK * dot - tentEdge) / dot);
+        const title = document.querySelector(".fv__title img");
+        const titleRight = title && title.getBoundingClientRect().right - sr.left;
+        const outDots =
+            isSp || !title ? tentOutDots : Math.max(tentOutDots, Math.round((startLeft + CAT_NOSE * dot - (titleRight + dot)) / dot));
 
         if (reduceMotion.matches) {
             // 動きを減らす設定: テントの横に立っているだけで、少しして消える
@@ -964,8 +976,9 @@ function initTentCat() {
             return;
         }
 
-        // 歩く: 1コマごとに step ドット前進して次のコマへ。until() を満たしたら next()
-        const walk = (step, until, next) => {
+        // 歩く: 1コマごとに step ドット前進して次のコマへ。コマの長さは msAt(i)（i = 何コマ目か）。until() を満たしたら next()
+        const walk = (step, msAt, until, next) => {
+            let i = 0;
             const tick = () => {
                 if (done) return;
                 x += step;
@@ -973,9 +986,10 @@ function initTentCat() {
                 place();
                 show(f);
                 if (until()) return next();
-                timer = setTimeout(tick, CAT_FRAME_MS);
+                i += 1;
+                timer = setTimeout(tick, msAt(i));
             };
-            timer = setTimeout(tick, CAT_FRAME_MS);
+            timer = setTimeout(tick, msAt(0));
         };
 
         // ① ちょうど cat_5 で立ち止まる位置に着くよう、歩き出しのコマと1コマの歩幅を合わせる
@@ -985,17 +999,22 @@ function initTentCat() {
         show(f);
         // 体が画面の外へ出きるまでのドット数
         const visibleLeft = Math.max(sr.left, 0) - sr.left;
-        const visibleRight = Math.min(sr.right, document.documentElement.clientWidth) - sr.left;
-        const exitDots = Math.ceil((isSp ? startLeft + catW - visibleLeft : visibleRight - startLeft) / dot) + 1;
+        const exitDots = Math.ceil((startLeft + catW - visibleLeft) / dot) + 1;
 
         walk(
             outDots / inFrames,
+            () => CAT_FRAME_MS,
             () => x >= outDots - 0.01,
             () => {
                 // ② 立ち止まる
                 timer = setTimeout(() => {
-                    // ③ 歩いて画面の外へ
-                    walk(CAT_STEP, () => x >= exitDots, finish);
+                    // ③ 歩調を少しずつ速めながら、歩いて画面の外へ
+                    walk(
+                        CAT_STEP,
+                        (i) => CAT_FRAME_MS - (CAT_FRAME_MS - CAT_FAST_MS) * Math.min(1, i / CAT_SPEEDUP),
+                        () => x >= exitDots,
+                        finish
+                    );
                 }, 500);
             }
         );
